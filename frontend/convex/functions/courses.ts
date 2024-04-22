@@ -96,3 +96,43 @@ export const deleteCourse = mutation({
     },
 });
 
+
+//Retrieve all Courses Created by User
+export const getCoursesCreatedByUser = query({
+    args: {
+        UserID: v.id("Users"),
+    },
+    handler: async (ctx, args) => {
+        try{
+        const courses = await ctx.db
+            .query("Courses")
+            .withIndex("by_CreatorID", q => q.eq("CreatorID", args.UserID))
+            .collect();
+        return courses;
+        }
+
+        catch(e){
+            console.error(e);
+            return null;
+        }
+    },
+});
+
+//Retrieve all Public courses
+export const getPublicCourses = query({
+    handler: async (ctx) => {
+        try{
+        const courses = await ctx.db
+            .query("Courses")
+            .withIndex("by_Visibility", q => q.eq("Visibility", "Public"))
+            .collect();
+        return courses;
+        }
+
+        catch(e){
+            console.error(e);
+            return null;
+        }
+    },
+});
+

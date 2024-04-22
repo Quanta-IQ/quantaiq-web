@@ -6,7 +6,7 @@ import Link from "next/link";
 import CourseCard from "../../../../components/course/course-card";
 import CourseFeed from "../../../../components/course/course-feed";
 
-export default function Home() {
+export default function Page({params} : {params: {slug: string}}) {
   return (
     <main className="flex min-h-screen flex-col p-24 pl-48 pr-6">
       <div className="mb-4 mt-4 ml-4">

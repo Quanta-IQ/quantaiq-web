@@ -23,7 +23,7 @@ export default function SyllabusCard(
             <div className="flex flex-row gap-2">
                 {courseInfo && <CreateLesson courseID={courseID} courseName={courseInfo!.CourseName}/>}
 
-                <LessonFeed />
+                {courseInfo &&<LessonFeed courseID={courseID} courseName={courseInfo!.CourseName}/>}
             </div>
         </>
     )

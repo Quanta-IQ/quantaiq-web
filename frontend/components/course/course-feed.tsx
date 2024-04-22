@@ -14,7 +14,7 @@ export default function CourseFeed() {
     const userConvex = useUserConvexData();
 
     const getCoursesCreated = useQuery(api.functions.courses.getCoursesCreatedByUser, {
-        UserID: userConvex?._id
+        UserID: userConvex!._id
     })
 
     console.log(getCoursesCreated);
@@ -26,6 +26,7 @@ export default function CourseFeed() {
             <div className="mt-3 flex flex-wrap gap-4">
                 {getCoursesCreated?.map((course: any) => {
                     return <CourseCard 
+                    key={course._id}
                     courseID={course._id}
                     courseName={course.CourseName}
                     courseDescription={course.CourseDescription}

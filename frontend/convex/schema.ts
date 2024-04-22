@@ -60,14 +60,14 @@ export default defineSchema({
         Number: v.number(),
         Description: v.string(),
         Objective: v.string(),
-        Content: v.array(
+        Content: v.optional(v.array(
             v.object(
                 {
                     type: v.string(),
                     data: v.any(),
                 }
             )
-        ),  
+        )),  
     }).index("by_CourseID", ["CourseID"]),
 
     //Class (Classroom for a course)

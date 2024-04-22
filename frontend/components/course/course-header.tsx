@@ -21,15 +21,15 @@ export default function CourseHead(
 
     return (
       <>
-      {courseInfo && <div className="mb-4 mt-4 ml-4">
-          <div className="flex flex-row justify-between pb-6">
+      {courseInfo && <div className="ml-4 pb-4">
+          <div className="flex flex-row justify-between">
           <div>
-            <h1 className="text-4xl font-bold">{courseInfo.CourseName}</h1>
+            <h1 className="text-3xl font-bold">{courseInfo.CourseName}</h1>
             <p className="text-gray-500 "> {courseInfo.CourseDescription}</p>
           </div>
           </div>
-          <Separator />
-          <div className="flex flex-row items-center pt-6 gap-4 ">
+          
+          <div className="flex flex-row items-center pt-3 gap-4 pb-4">
           <Button variant={window.location.pathname.includes('/syllabus') ? 'default' : 'secondary'}>
             <Link href={`/courses/${courseInfo._id}/syllabus`}>
             Syllabus
@@ -56,7 +56,9 @@ export default function CourseHead(
             </Link>
           </Button>
           </div>
-        </div>}
+          <Separator />
+        </div>
+        }
       </>
     )
 }

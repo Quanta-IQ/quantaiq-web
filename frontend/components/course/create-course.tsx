@@ -87,7 +87,7 @@ export default function CreateCourseForm({ user }: Props) {
             const matches = error.message.match(regex);
             
             toast({
-              title: "Uh Oh! Error creating user",
+              title: "Uh Oh! Error creating course",
               description: matches ? matches[1] : error.message,
               variant: "destructive"
             })

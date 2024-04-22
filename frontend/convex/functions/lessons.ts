@@ -80,3 +80,27 @@ export const deleteLesson = mutation({
         return deletedLesson;
     }
 });
+
+
+//Return all lessons for a course
+
+export const getLessonsByCourseID = query({
+    args: {
+        CourseID: v.id("Courses")
+    },
+    handler: async (ctx, args) => {
+        try{
+            const courses = await ctx.db
+                .query("Lessons")
+                .withIndex("by_CourseID", q => q.eq("CourseID", args.CourseID))
+                .collect();
+            return courses;
+            }
+    
+            catch(e){
+                console.error(e);
+                return null;
+            }
+
+    }
+});

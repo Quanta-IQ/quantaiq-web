@@ -3,6 +3,8 @@
 
 import React from "react";
 import CourseHead from "@/components/course/course-header";
+import SyllabusCard from "@/components/course/syllabus/syllabus-card";
+import SyllabusChat from "@/components/course/syllabus/syllabus-chat";
 
 
 export default function Page({params} : {params: {slug: string}}) {
@@ -12,7 +14,12 @@ export default function Page({params} : {params: {slug: string}}) {
       <>
      
         <CourseHead courseID={params.slug} />
-        Syllabus and Lessons
+        <div className="w-full">
+          <SyllabusCard 
+          courseID={params.slug}
+          />
+        </div>
+        
       </>
     );
 }

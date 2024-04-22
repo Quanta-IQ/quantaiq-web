@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import CourseHead from "../../../../../components/course/course-header";
+import CourseHead from "@/components/course/course-header";
 
 
 export default function Page({params} : {params: {slug: string}}) {
@@ -11,7 +11,7 @@ export default function Page({params} : {params: {slug: string}}) {
       <>
      
         <CourseHead courseID={params.slug} />
-        Home
+        Edit Details
       </>
     );
 }

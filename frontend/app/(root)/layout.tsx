@@ -6,6 +6,7 @@ const inter = Inter({ subsets: ["latin"] });
 import AuthProvider from '@/providers/AuthProvider';
 import ConvexClientProvider from "@/providers/ConvexClientProvider";
 import NavBar from "@/components/shared/navbar/topbar";
+import LeftSidebar from "@/components/shared/navbar/leftnav";
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -23,7 +24,7 @@ export default function RootLayout({
       <AuthProvider>
         <ConvexClientProvider>
           <NavBar />
-
+          <LeftSidebar />
           {children}
         </ConvexClientProvider>
       </AuthProvider>

@@ -11,13 +11,13 @@ export const sidebarLinks = [
     },
     {
         imgURL: "/assets/community.svg",
-        route: "/community",
-        label: "Communities",
+        route: "/classes",
+        label: "Classes",
     },
     {
         imgURL: "/assets/face.svg",
         route: "/learn",
-        label: "Teacher",
+        label: "Learn AI",
     },
     {
         imgURL: "/assets/create.svg",

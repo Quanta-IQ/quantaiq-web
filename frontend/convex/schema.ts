@@ -34,11 +34,11 @@ export default defineSchema({
     //TODO: Review this schema and Edit
     CourseData: defineTable({
         CourseID: v.id("Courses"),
-        Data: v.object(
+        Data: v.optional(v.object(
             {
                 type: v.string(),
                 data: v.any(),
-            }
+            })
         ),
         Syllabus: v.optional(
             v.array(

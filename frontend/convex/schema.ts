@@ -27,7 +27,8 @@ export default defineSchema({
     })
     .index("by_CourseName", ["CourseName"])
     .index("by_CourseCode", ["CourseCode"])
-    .index("by_CreatorID", ["CreatorID"]),
+    .index("by_CreatorID", ["CreatorID"])
+    .index("by_Visibility", ["Visibility"]),
 
     //Course Data
     //TODO: Review this schema and Edit

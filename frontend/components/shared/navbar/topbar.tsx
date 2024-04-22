@@ -25,8 +25,9 @@ export default function NavBar(){
 return ( <>
       <div className="navbar ">
             <nav className="navbar-container">
-                 <div className="md:pb-2 w-full mt-2 pb-2">
-                      <p className="text-2xl font-bold text-primary">
+                 <div className="md:pb-2 w-full mt-2 pb-2 flex flex-row items-center gap-2">
+                      <Image src="/assets/atomic.png" className="w-8 h-auto"  alt="logo" width={100} height={100} />
+                      <p className="text-xl font-bold text-black">
                         quantaIQ
                       </p>
                  </div>

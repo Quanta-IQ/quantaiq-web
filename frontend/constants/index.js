@@ -10,6 +10,11 @@ export const sidebarLinks = [
         label: "Tests",
     },
     {
+        imgURL:"/assets/book.svg",
+        route: "/courses",
+        label: "Courses",
+    },
+    {
         imgURL: "/assets/community.svg",
         route: "/classes",
         label: "Classes",

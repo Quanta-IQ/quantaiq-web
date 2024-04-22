@@ -95,3 +95,4 @@ export const deleteCourse = mutation({
         return deletedCourse;
     },
 });
+

@@ -88,7 +88,8 @@ export default defineSchema({
         ClassID: v.id("Classes"),
     })
     .index("by_UserID", ["UserID"])
-    .index("by_ClassID", ["ClassID"]),
+    .index("by_ClassID", ["ClassID"])
+    .index("by_UserID_ClassID", ["UserID", "ClassID"]),
 
     //Student table for each class
     Students: defineTable({
@@ -96,6 +97,7 @@ export default defineSchema({
         ClassID: v.id("Classes"),
     })
     .index("by_UserID", ["UserID"])
-    .index("by_ClassID", ["ClassID"]),
+    .index("by_ClassID", ["ClassID"])
+    .index("by_UserID_ClassID", ["UserID", "ClassID"]),
 
 });

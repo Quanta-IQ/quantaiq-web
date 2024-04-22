@@ -79,7 +79,7 @@ export default function CreateCourseForm({ user }: Props) {
             toast({
                 title: "Course Created",
                 description: `Course ${values.CourseName} created successfully`,
-                variant: "success"
+                variant: "default"
             })
         }
         catch (error: any) {

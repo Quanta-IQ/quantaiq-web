@@ -4,10 +4,10 @@ import { Metadata } from 'next';
  
 export const metadata: Metadata = {
   title: {
-    template: 'gitit Communities',
-    default: 'gitit Communities',
+    template: 'quantaIQ',
+    default: 'quantaIQ',
   },
-  description: 'The communities in gitit',
+  description: 'Courses in the QuantaIQ platform.',
 }; 
 
 export default function Layout({ children }: { children: React.ReactNode }) {

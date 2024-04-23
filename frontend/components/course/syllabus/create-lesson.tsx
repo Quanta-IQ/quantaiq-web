@@ -30,6 +30,7 @@ import { handleFileUpload, handleFileDelete } from "@/lib/actions/lesson.aws.act
 import { ScrollArea } from "@/components/ui/scroll-area";
 
 
+
 const formSchema = z.object({
     Name: z.string().min(3).max(100),
     Description: z.string().min(3).max(1000),
@@ -126,8 +127,6 @@ export default function CreateLesson(
         } catch (error) {
             console.error(error);
         }
-
-
     }
 
     const onSubmit = async (values: z.infer<typeof formSchema>) => {
@@ -290,6 +289,10 @@ export default function CreateLesson(
                                                 <Button variant="destructive" className="text-xs h-8" onClick={() => fileDelete(fileUrl)}>
                                                     Remove
                                                 </Button>
+
+                                                
+
+
                                             </div>
                                         );
                                     })}

@@ -35,6 +35,11 @@ export default function CourseHead(
             Syllabus
             </Link>
           </Button>
+          <Button variant={window.location.pathname.includes('/lessons') ? 'default' : 'secondary'}>
+            <Link href={`/courses/${courseInfo._id}/lessons`}>
+            Lessons
+            </Link>
+          </Button>
           <Button variant={window.location.pathname.includes('/test') ? 'default' : 'secondary'}>
             <Link href={`/courses/${courseInfo._id}/test`}>
             Test

@@ -12,8 +12,8 @@ export const createLesson = mutation({
         Objective: v.string(),
         Content: v.optional(v.array(
             v.object({
-                type: v.string(),
-                data: v.any()
+                label: v.string(),
+                url: v.string()
             })
         ))
     },
@@ -50,8 +50,8 @@ export const updateLesson = mutation({
             Objective: v.optional(v.string()),
             Content: v.optional(v.array(
                 v.object({
-                    type: v.string(),
-                    data: v.any()
+                    label: v.string(),
+                    url: v.string()
                 })  
             )),
         })

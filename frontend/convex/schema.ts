@@ -63,8 +63,8 @@ export default defineSchema({
         Content: v.optional(v.array(
             v.object(
                 {
-                    type: v.string(),
-                    data: v.any(),
+                    label: v.string(),
+                    url: v.string(),
                 }
             )
         )),  

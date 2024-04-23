@@ -35,48 +35,50 @@ const formSchema = z.object({
 
 
 interface Props {
-    courseID: string;
-    courseName: string;
+    lessonID: string;
 }
 
 
 
 
-export default function CreateLesson(
-    {courseID, courseName}: Props
+export default function EditLesson(
+    {lessonID}: Props
 
 ){
-
-    const createLesson = useMutation(api.functions.lessons.createLesson);
-    const courseLessons = useQuery(api.functions.lessons.getLessonsByCourseID, {
-        CourseID: courseID as Id<"Courses">
+    const lessonInfo = useQuery(api.functions.lessons.getLessonByID, {
+        LessonID: lessonID as Id<"Lessons">
     });
 
-    console.log(courseLessons?.length);
+    const updateLesson = useMutation(api.functions.lessons.updateLesson);
+
+    console.log(lessonInfo);
+
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
         defaultValues:{
-            Name: "",
-            Description: "",
-            Objectives: "",
+            Name: lessonInfo?.Name || "",
+            Description:  lessonInfo?.Description || "",
+            Objectives: lessonInfo?.Objective || "",
         }
     });
 
     const onSubmit = async (values: z.infer<typeof formSchema>) => {
         console.log("Form", values);
-        const Number = (courseLessons?.length || 0) + 1;
-
+        
         try {
-            const createdLesson = await createLesson({
-                CourseID: courseID as Id<"Courses">,
-                Name: values.Name,
-                Number,
-                Description: values.Description,
-                Objective: values.Objectives,
+           
+            const result = await updateLesson({
+                LessonID: lessonID ,
+                data: {
+                    Name: values.Name,
+                    Description: values.Description,
+                    Objective: values.Objectives
+                }
             });
 
+
             toast({
-                title: "Lesson created",
+                title: "Lesson Updated",
                 description: `Lesson ${values.Name} has been created`,
                 variant: "default"
             });
@@ -105,15 +107,15 @@ export default function CreateLesson(
             <Card className="w-full">
                 <CardHeader>
                     <CardTitle>
-                        Create Lesson
+                        Edit Lesson
                     </CardTitle>
                     <CardDescription>
-                        Create a new lesson for course {courseName} 
+                        Edit the lesson 
                     </CardDescription>
                 </CardHeader>
                 <CardContent>
-                <Form {...form}>
-                    <form onSubmit = {form.handleSubmit(onSubmit)} className="flex flex-col justify-start gap-5 pr-5 pl-5">
+                {lessonInfo && <Form {...form}>
+                    <form onSubmit={form.handleSubmit(onSubmit)} className="flex flex-col justify-start gap-5 pr-5 pl-5">
                         <FormField
                             control={form.control}
                             name="Name"
@@ -121,7 +123,10 @@ export default function CreateLesson(
                             <FormItem className="flex w-full flex-col gap-2 ">
                                 <FormLabel >Lesson Name</FormLabel>
                                 <FormControl>
-                                <Input  {...field} />
+                                <Input  {...field}
+                                placeholder={lessonInfo.Name}
+                                value={field.value || lessonInfo.Name} 
+                                />
                                 </FormControl>
                                 <FormMessage />
                             </FormItem>
@@ -135,7 +140,9 @@ export default function CreateLesson(
                             <FormItem className="flex flex-col ">
                                 <FormLabel >Lesson Description</FormLabel>
                                 <FormControl>
-                                <Textarea  {...field} />
+                                <Textarea  {...field} 
+                                placeholder={lessonInfo.Description}
+                                value={field.value || lessonInfo.Description} />
                                 </FormControl>
                                 <FormMessage />
                             </FormItem>
@@ -149,7 +156,9 @@ export default function CreateLesson(
                             <FormItem className="flex flex-col ">
                                 <FormLabel >Lesson Objectives</FormLabel>
                                 <FormControl>
-                                <Textarea  {...field} />
+                                <Textarea  {...field} 
+                                placeholder={lessonInfo.Objective}
+                                value={field.value || lessonInfo.Objective} />
                                 </FormControl>
                                 <FormMessage />
                             </FormItem>
@@ -158,9 +167,9 @@ export default function CreateLesson(
 
                         
 
-                        <Button type="submit" >Add</Button>
+                        <Button type="submit" >Make Changes</Button>
                     </form>
-                </Form>
+                </Form>}
                 </CardContent>
             </Card>
         </>

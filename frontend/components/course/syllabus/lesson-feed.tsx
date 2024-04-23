@@ -20,6 +20,8 @@ import {
     CardDescription,
     CardContent,
 } from "@/components/ui/card"
+import { Button } from "@/components/ui/button"
+import Link from "next/link";
 
 
 interface Props {
@@ -49,21 +51,54 @@ export default function LessonFeed(
                         <CardDescription>
                             Lessons for {courseName} 
                         </CardDescription>
+                        <div className="flex flex-row gap-2">
+                            <Button >
+                                <Link href={`/courses/${courseID}/syllabus`}>
+                                    Add Lesson
+                                </Link>
+                            </Button>
+                            <Button variant="outline">
+                                    {/* Make Functional Delete Button */}
+                                    Re-arrange
+                            </Button>
+                            <Button variant="outline">
+                                    {/* Make Functional Delete Button */}
+                                    Print
+                            </Button>
+                        </div>
                     </CardHeader>
-                    <div className="flex flex-col gap-4">
+                    <div className="flex flex-col gap-4 pb-16">
                     {courseLessons?.map((lessons: any) => {
-                    return <div 
+                    return <Card 
                     key={lessons._id}
-                    className="border ml-3 mr-3 p-4">
-                        <CardContent>
+                    className="border ml-3 mr-3 ">
+                        <CardHeader>
                             <CardTitle>
                                 {lessons.Number} - {lessons.Name}
                             </CardTitle>
                             <CardDescription>
                                 {lessons.Description}
                             </CardDescription>
+                        </CardHeader>
+                        <CardContent className="flex flex-row gap-3">
+                            <Button >
+                                <Link href={`/courses/${courseID}/syllabus`}>
+                                    View
+                                </Link>
+                            </Button>
+                            <Button variant="outline">
+                                <Link href={`${window.location.pathname}?edit=${lessons._id}`}>
+                                    Edit
+                                </Link>
+                                
+                            </Button>
+                            
+                            <Button variant="outline">
+                                    {/* Make Functional Delete Button */}
+                                    Delete
+                            </Button>
                         </CardContent>
-                    </div>
+                    </Card>
                     })}
 
                     </div>

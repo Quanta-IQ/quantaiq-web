@@ -183,6 +183,7 @@ export default function CreateLesson(
 
             form.reset();
             setFiles([]);
+            setPrompt("");
 
         }
 

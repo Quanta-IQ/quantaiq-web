@@ -19,7 +19,7 @@ export const routeTestSchema = testSchema.omit({
 });
 
 export const chatSchema = z.object({
-    prompt: z.string().min(3).max(30),
+    prompt: z.string().min(3).max(1000),
 });
 
 export const ChatMessage = z.object({

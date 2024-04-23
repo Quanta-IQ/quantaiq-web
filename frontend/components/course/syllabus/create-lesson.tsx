@@ -8,7 +8,7 @@ import {
 } from "@/components/ui/card"
 import { api } from "@/convex/_generated/api"
 import { Id } from "@/convex/_generated/dataModel";
-import {z } from "zod"
+import {set, z } from "zod"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
 import {
@@ -25,9 +25,10 @@ import { Textarea } from "@/components/ui/textarea"
 import { Button } from "@/components/ui/button"
 import { toast } from "@/components/ui/use-toast";
 import {  useQuery, useMutation } from "convex/react"
-import { ChangeEvent, useState } from "react";
+import { ChangeEvent, useEffect, useState } from "react";
 import { handleFileUpload, handleFileDelete } from "@/lib/actions/lesson.aws.actions";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import { Divide } from "lucide-react";
 
 
 
@@ -47,11 +48,16 @@ interface Props {
 
 
 
+
+
 export default function CreateLesson(
     {courseID, courseName}: Props
 
 ){
     const [processState, setProcessState] = useState<string | null>("Add Lesson");
+    const [autoFillState, setAutoFillState] = useState<string | null>("AI AutoFill");
+    const [prompt, setPrompt] = useState<string>("");
+    
     const [processingFiles, setProcessingFiles] = useState(false);
     //List of File URLs
     const [files, setFiles] = useState<string[]>([]);
@@ -193,6 +199,63 @@ export default function CreateLesson(
           }
         
     };
+    
+    useEffect(() => {
+        if (form.getValues().Name && form.getValues().Description)
+        {  setPrompt(`
+        [INSTRUCTIONS] Output should only be the numbered list of lesson objectives [CONTEXT]Create a list of lesson objectives bullet format. COURSE: ${courseName}; LESSONNAME: ${form.getValues().Name} LESSONDESCRIPTION: ${form.getValues().Description}[END CONTEXT]`);
+    }
+    }, [form.getValues()]);
+
+    console.log("Prompt", prompt);
+
+
+    const handleAutoFill = async () => {
+        setAutoFillState("AI processing...")
+        // TODO: Implement AI AutoFill logic here
+        console.log("AutoFill")
+
+        //use prompt to call api
+
+        try {
+            // Assuming your API is hosted on the same domain and the endpoint path is '/api/your-endpoint'
+            const response = await fetch('/api/anyscale', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ "prompt": prompt}),
+            });
+    
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+    
+            const data = await response.json();
+            console.log(data);
+    
+            // Extracting the content from the response
+            const content = data.response.choices[0].message.content;
+            console.log(content);
+
+            // Set the content to the Objectives field
+            form.setValue('Objectives', content);
+
+            //Toast
+            toast({
+                title: "AI AutoFill",
+                description: `AI has filled in the objectives`,
+                variant: "default"
+            });
+
+            setAutoFillState("AI AutoFill")
+
+        } catch (error) {
+            console.error("Error fetching data: ", error);
+            // Handle fetch errors (network issues, server errors, etc.)
+        }
+
+    };
 
     return (
         <>
@@ -207,7 +270,7 @@ export default function CreateLesson(
                 </CardHeader>
                 <CardContent>
                 <Form {...form}>
-                    <form onSubmit = {form.handleSubmit(onSubmit)} className="flex flex-col justify-start gap-5 pr-5 pl-5">
+                    <form className="flex flex-col justify-start gap-5 pr-5 pl-5" onSubmit={form.handleSubmit(onSubmit)}>
                         <FormField
                             control={form.control}
                             name="Name"
@@ -215,7 +278,9 @@ export default function CreateLesson(
                             <FormItem className="flex w-full flex-col gap-2 ">
                                 <FormLabel >Lesson Name</FormLabel>
                                 <FormControl>
-                                <Input  {...field} />
+                                <Input  
+                                {...field}
+                                 />
                                 </FormControl>
                                 <FormMessage />
                             </FormItem>
@@ -235,18 +300,29 @@ export default function CreateLesson(
                             </FormItem>
                             )}
                         />
-
+                       
                         <FormField
                             control={form.control}
                             name="Objectives"
                             render={({ field }) => (
-                            <FormItem className="flex flex-col ">
-                                <FormLabel >Lesson Objectives</FormLabel>
-                                <FormControl>
-                                <Textarea  {...field} />
-                                </FormControl>
-                                <FormMessage />
-                            </FormItem>
+                            <>
+                                
+                                <FormItem className="flex flex-col "> 
+                                    <div className="w-full mb-4">
+                                        <FormLabel >Lesson Objectives</FormLabel>
+                                        {prompt && 
+                                        <span className="max-w-sm h-8 text-xs ml-4"  onClick={handleAutoFill}>
+                                            {autoFillState}
+                                        </span>
+                                        }
+                                    </div>
+                                    <FormControl>
+                                    <Textarea  {...field} />
+                                    </FormControl>
+                                    <FormMessage />
+                                </FormItem>
+                            </>
+                            
                             )}
                         />
 
@@ -305,7 +381,7 @@ export default function CreateLesson(
                         />
 
 
-                        <Button type="submit" >{processState}</Button>
+                        <Button type="submit">{processState}</Button>
                     </form>
                 </Form>
                 </CardContent>

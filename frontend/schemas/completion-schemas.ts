@@ -66,3 +66,7 @@ export const ChatHistoryEntry = z.object({
     prompt: z.string(),
     response: ChatResponseObject.nullable(),
 });
+
+export const ApiResponseSchema = z.object({
+    response: ChatCompletionObject
+});

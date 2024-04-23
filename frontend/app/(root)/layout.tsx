@@ -25,7 +25,10 @@ export default function RootLayout({
         <ConvexClientProvider>
           <NavBar />
           <LeftSidebar />
+          <main className="flex min-h-screen flex-col pb-4 pt-12 pl-40 pr-4">
+
           {children}
+          </main>
         </ConvexClientProvider>
       </AuthProvider>
       </body>

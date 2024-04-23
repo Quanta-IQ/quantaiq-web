@@ -36,7 +36,7 @@ return ( <>
                       {
                         !user.isLogin &&(
                             <>
-                                <Button className="primary-button max-md:h-8">
+                                <Button className="primary-button h-8 max-md:h-8">
                                       <Link href="/sign-in" >
                                             Sign In
                                       </Link>
@@ -46,7 +46,7 @@ return ( <>
                       }
                       {user.isLogin && (
                             <>
-                                 <Button className="primary-button max-md:h-8" onClick={logout}>
+                                 <Button className="primary-button h-8 max-md:h-8" onClick={logout}>
                                             Sign Out
                                  </Button>
                             </>

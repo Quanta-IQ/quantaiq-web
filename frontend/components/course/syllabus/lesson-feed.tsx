@@ -88,7 +88,7 @@ export default function LessonFeed(
 
     return (
         <>
-            <ScrollArea className="h-[700px] w-full rounded-md border ">
+            <ScrollArea className="h-[750px] w-full rounded-md border ">
                 
                     <CardHeader>
                         <CardTitle>

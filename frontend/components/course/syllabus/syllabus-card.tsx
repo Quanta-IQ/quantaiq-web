@@ -26,10 +26,13 @@ export default function SyllabusCard(
 
     return (
         <>
-            <div className="flex flex-row gap-2">
+            <div className="grid grid-cols-3 gap-2">
                 {courseInfo && !editLesson &&  <CreateLesson courseID={courseID} courseName={courseInfo!.CourseName}/>}
                 {courseInfo && editLesson &&  <EditLesson courseID={courseID} lessonID={editLesson}/>}
+                <div className="col-span-2" >
                 {courseInfo &&<LessonFeed courseID={courseID} courseName={courseInfo!.CourseName}/>}
+                </div>
+                
             </div>
         </>
     )

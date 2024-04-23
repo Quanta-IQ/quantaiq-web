@@ -24,11 +24,14 @@ export default function RootLayout({
    
               <main className="max-h-screen justify-center">
                   <section className = "main-container">
-                    <div className="mt-20 w-full items-center">
-                      <p className="text-4xl font-bold text-primary items-center text-center">
-                        quantaIQ
-                      </p>
-                    </div>
+                   
+                      <div className="mt-20 items-center pb-2 flex flex-row justify-center gap-2">
+                            <Image src="/assets/atomic.png" className="w-12 h-auto"  alt="logo" width={100} height={100} />
+                            <p className="text-3xl font-bold text-black">
+                              quantaIQ
+                            </p>
+                      </div>
+
                     {children}
                   </section>
                   

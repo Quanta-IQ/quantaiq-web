@@ -57,19 +57,7 @@ function LeftSidebar() {
                 )}
             </div>
 
-            <div className="mt-10 px-6">
-                
-                        <div className="flex cursor-pointer gap-4 p-4" onClick={logout}>
-                            <Image
-                                src="/assets/logout.svg"
-                                alt="logout"
-                                width={24}
-                                height={24}
-                            />
-                            <p className="text-gray-300 max-lg:hidden"> Logout </p>
-                        </div>
-                
-            </div>
+            
         </section>
 
     )}

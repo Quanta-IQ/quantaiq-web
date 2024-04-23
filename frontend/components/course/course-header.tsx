@@ -21,7 +21,7 @@ export default function CourseHead(
 
     return (
       <>
-      {courseInfo && <div className="ml-4 pb-4">
+      {courseInfo && <div className="pt-4 ml-4 pb-2 bg-white">
           <div className="flex flex-row justify-between">
           <div>
             <h1 className="text-3xl font-bold">{courseInfo.CourseName}</h1>

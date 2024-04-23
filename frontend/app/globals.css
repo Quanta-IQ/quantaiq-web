@@ -91,7 +91,7 @@
   }
 
   .navbar {
-    @apply animate-in fade-in fixed bg-white top-0 z-30 h-16  w-full flex w-full items-center justify-between  py-2 border-b border-gray-200 max-md:h-16
+    @apply animate-in fade-in fixed bg-white top-0 z-30 h-12  w-full flex w-full items-center justify-between  py-2 border-b border-gray-200 max-md:h-16
       }
 
   .navbar-container {

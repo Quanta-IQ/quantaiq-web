@@ -23,7 +23,6 @@ export default function Home() {
   
 
   return (
-    <main className="flex min-h-screen flex-col p-24 pl-48 pr-6 ">
       <div className="mb-4 mt-4 ml-4">
         <div className="flex flex-row justify-between mb-4">
           <div>
@@ -45,6 +44,5 @@ export default function Home() {
 
 
 
-    </main>
   );
 }

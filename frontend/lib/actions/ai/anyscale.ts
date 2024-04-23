@@ -24,6 +24,7 @@ export async function anyscaleCompletion(
           },
         ],
         temperature: 0.7,
+     
       });
 
       const result = ChatCompletionObject.safeParse(completion)

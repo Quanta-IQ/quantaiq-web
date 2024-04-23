@@ -28,9 +28,9 @@ import {  useQuery, useMutation } from "convex/react"
 
 
 const formSchema = z.object({
-    Name: z.string().min(3).max(30),
-    Description: z.string().min(3).max(250),
-    Objectives: z.string().min(3).max(250),
+    Name: z.string().min(3).max(100),
+    Description: z.string().min(3).max(1000),
+    Objectives: z.string().min(3).max(1000),
 });
 
 
@@ -125,7 +125,8 @@ export default function EditLesson(
                                 <FormControl>
                                 <Input  {...field}
                                 placeholder={lessonInfo.Name}
-                                value={field.value || lessonInfo.Name} 
+                                value={field.value || lessonInfo.Name}
+                             
                                 />
                                 </FormControl>
                                 <FormMessage />
@@ -142,7 +143,8 @@ export default function EditLesson(
                                 <FormControl>
                                 <Textarea  {...field} 
                                 placeholder={lessonInfo.Description}
-                                value={field.value || lessonInfo.Description} />
+                                value={field.value || lessonInfo.Description}
+                                />
                                 </FormControl>
                                 <FormMessage />
                             </FormItem>
@@ -158,7 +160,8 @@ export default function EditLesson(
                                 <FormControl>
                                 <Textarea  {...field} 
                                 placeholder={lessonInfo.Objective}
-                                value={field.value || lessonInfo.Objective} />
+                                value={field.value || lessonInfo.Objective}
+                                />
                                 </FormControl>
                                 <FormMessage />
                             </FormItem>

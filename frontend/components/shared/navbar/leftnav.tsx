@@ -31,7 +31,7 @@ function LeftSidebar() {
 
     if (user.isLogin) {return (
         <section className="custom-scrollbar leftsidebar">
-            <div className="flex w-full flex-1 flex-col gap-6 px-6">
+            <div className="flex w-full flex-1 flex-col gap-3 px-3">
                 {sidebarLinks.map((link) => {
                     const isActive = 
                     (pathname?.startsWith(link.route) && link.route.length > 1) ||

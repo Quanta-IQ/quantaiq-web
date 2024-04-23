@@ -6,7 +6,7 @@ import Search from "@/components/ui/search";
 import {Button} from "@/components/ui/button";
 import Link from "next/link";
 import { api } from "@/convex/_generated/api"
-import { Id } from "../../../../../convex/_generated/dataModel";
+import { Id } from "@/convex/_generated/dataModel";
 import {Separator} from "@/components/ui/separator";
 
 

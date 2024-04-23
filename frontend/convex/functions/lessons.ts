@@ -77,6 +77,8 @@ export const deleteLesson = mutation({
     },
     handler: async (ctx, args) => {
         const deletedLesson = await ctx.db.delete(args.LessonID);
+    
+        
         return deletedLesson;
     }
 });

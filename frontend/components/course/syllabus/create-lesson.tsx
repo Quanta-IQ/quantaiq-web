@@ -25,12 +25,14 @@ import { Textarea } from "@/components/ui/textarea"
 import { Button } from "@/components/ui/button"
 import { toast } from "@/components/ui/use-toast";
 import {  useQuery, useMutation } from "convex/react"
+import { useState } from "react";
 
 
 const formSchema = z.object({
-    Name: z.string().min(3).max(30),
-    Description: z.string().min(3).max(250),
-    Objectives: z.string().min(3).max(250),
+    Name: z.string().min(3).max(100),
+    Description: z.string().min(3).max(1000),
+    Objectives: z.string().min(3).max(1000),
+    Files: z.any().optional()
 });
 
 
@@ -59,6 +61,7 @@ export default function CreateLesson(
             Name: "",
             Description: "",
             Objectives: "",
+            Files: null
         }
     });
 

@@ -100,15 +100,19 @@ export const deleteCourse = mutation({
 //Retrieve all Courses Created by User
 export const getCoursesCreatedByUser = query({
     args: {
-        UserID: v.id("Users"),
+        UserID: v.optional(v.id("Users")),
     },
     handler: async (ctx, args) => {
         try{
-        const courses = await ctx.db
-            .query("Courses")
-            .withIndex("by_CreatorID", q => q.eq("CreatorID", args.UserID))
-            .collect();
-        return courses;
+        if (args.UserID) {
+            const courses = await ctx.db
+                .query("Courses")
+                .withIndex("by_CreatorID", q => q.eq("CreatorID", args.UserID))
+                .collect();
+            return courses;
+        } else {
+            return null;
+        }
         }
 
         catch(e){

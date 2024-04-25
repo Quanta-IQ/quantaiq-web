@@ -14,7 +14,7 @@ export default function CourseFeed() {
     const userConvex = useUserConvexData();
 
     const getCoursesCreated = useQuery(api.functions.courses.getCoursesCreatedByUser, {
-        UserID: userConvex?._id
+        UserID: userConvex?._id 
     })
 
     console.log(getCoursesCreated);

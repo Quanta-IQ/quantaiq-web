@@ -107,7 +107,7 @@ export const getCoursesCreatedByUser = query({
         if (args.UserID) {
             const courses = await ctx.db
                 .query("Courses")
-                .withIndex("by_CreatorID", q => q.eq("CreatorID", args.UserID))
+                .withIndex("by_CreatorID", q => q.eq("CreatorID", args.UserID!))
                 .collect();
             return courses;
         } else {

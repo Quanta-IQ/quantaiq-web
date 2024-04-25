@@ -7,6 +7,7 @@ import AuthProvider from '@/providers/AuthProvider';
 import ConvexClientProvider from "@/providers/ConvexClientProvider";
 import NavBar from "@/components/shared/navbar/topbar";
 import LeftSidebar from "@/components/shared/navbar/leftnav";
+import { Toaster } from "@/components/ui/toaster";
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -29,6 +30,7 @@ export default function RootLayout({
 
           {children}
           </main>
+          <Toaster />
         </ConvexClientProvider>
       </AuthProvider>
       </body>

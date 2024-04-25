@@ -29,6 +29,7 @@ import { useRouter } from "next/navigation";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { toast } from "@/components/ui/use-toast";
 import { Id } from "@/convex/_generated/dataModel";
+import { Router } from "next/router";
 
 
 const formSchema = z.object({
@@ -77,7 +78,7 @@ export default function CreateCourseForm({ user }: Props) {
                 CourseCode: CourseCode
             })
             toast({
-                title: "Course Created",
+                title: `${values.CourseName} Created`,
                 description: `Course ${values.CourseName} created successfully`,
                 variant: "default"
             })

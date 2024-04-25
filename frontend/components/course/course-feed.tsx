@@ -1,41 +1,28 @@
 "use client";
-import {useEffect} from "react";
-import { AuthContext} from "../../providers/AuthProvider";
-import useUserConvexData from "../../hooks/useUserConvexData";
-import {useRouter} from "next/navigation";
-import {api} from "../../convex/_generated/api";
-import CourseCard from "./course-card";
-import { useQuery } from "convex/react";
-import React from "react";
 
+import CourseCard from "./course-card";
+import React from "react";
+import { Course } from "@/schemas/course-schemas";
+import { useCourses } from "@/hooks/useCourses";
 
 export default function CourseFeed() {
-    const {user}: any = AuthContext();
-    const userConvex = useUserConvexData();
+    const courses = useCourses();
 
-    const getCoursesCreated = useQuery(api.functions.courses.getCoursesCreatedByUser, {
-        UserID: userConvex?._id
-    })
-
-    console.log(getCoursesCreated);
-
+    if (!courses) {
+        return <div>No courses found.</div>;
+    }
 
     return (
-        <>
-            
-            <div className="mt-3 flex flex-wrap gap-4">
-                {getCoursesCreated?.map((course: any) => {
-                    return <CourseCard 
+        <div className="mt-3 flex flex-wrap gap-4">
+            {courses.map((course: Course) => (
+                <CourseCard 
                     key={course._id}
                     courseID={course._id}
                     courseName={course.CourseName}
                     courseDescription={course.CourseDescription}
-                    creator={course.CreatorID} 
-                    />
-                })}
-
-            </div>
-      
-        </>
-    )
-}
+                    creator={course.CreatorID}
+                />
+            ))}
+        </div>
+    );
+};

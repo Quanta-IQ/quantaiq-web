@@ -152,13 +152,13 @@ export default function OnboardingForm({user} : Props) {
                     <FormLabel className='flex flex-col mt-5'>
                         {field.value ? (
                         <Avatar className="w-full h-auto">
-                          <AvatarImage src={field.value} alt="@gitit" />
-                          <AvatarFallback>GG</AvatarFallback>
+                          <AvatarImage src={field.value} alt="user_photo" />
+                          <AvatarFallback>user_photo</AvatarFallback>
                         </Avatar>
                         ) : (
                         <Avatar  className="w-full h-auto">
                           <AvatarImage src={"/assets/avatar/avatar.png"} alt="@gitit" />
-                          <AvatarFallback>GG</AvatarFallback>
+                          <AvatarFallback>user_photo</AvatarFallback>
                         </Avatar>
                         )}
                     </FormLabel>
@@ -186,7 +186,7 @@ export default function OnboardingForm({user} : Props) {
                   <FormItem className="flex w-full flex-col gap-2 ">
                     <FormLabel >Username</FormLabel>
                     <FormControl>
-                      <Input className="max-w-sm"  {...field} />
+                      <Input {...field} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -252,7 +252,7 @@ export default function OnboardingForm({user} : Props) {
                   <FormItem className="flex flex-col ">
                     <FormLabel >Bio</FormLabel>
                     <FormControl>
-                      <Textarea className="max-w-sm"  {...field} />
+                      <Textarea {...field} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>

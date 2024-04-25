@@ -47,7 +47,7 @@ export default function OnboardingCard(){
     }, [userConvex]);
     return(
         <>
-            <Card className="w-80 p-5">
+            <Card className="w-800 p-5">
                 
                 {!onboarded && user.isLogin &&
                 <>

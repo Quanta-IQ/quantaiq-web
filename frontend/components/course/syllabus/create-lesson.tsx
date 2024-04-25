@@ -88,12 +88,16 @@ export default function CreateLesson(
         if (e.target.files && e.target.files.length > 0) {
             const file = e.target.files[0];
               
-            if (!((file.type.includes("image") && file.type !== "image/svg+xml") ||
-               file.type.includes("pdf") ||
-               file.type.includes("text/plain"))) {
-            alert("Invalid file. Please select an image, PDF, or text file.");
+            // if (!((file.type.includes("image") && file.type !== "image/svg+xml") ||
+            //    file.type.includes("pdf") ||
+            //    file.type.includes("text/plain"))) {
+            
+            // enforcing PDF for now
+            if (!(file.type.includes("pdf"))) {
+            alert("Invalid file. Please select a PDF.");
             return;
             }
+
             //TODO: Add Logic Upload to S3
             reader.onload = async (event) => {
                 const dataFile = event.target?.result?.toString() || "";
@@ -101,6 +105,11 @@ export default function CreateLesson(
                 try {
                     const uploadedFile = await handleFileUpload(file.name, dataFile, courseID, "dump", file.type);
                     console.log("Uploaded File", uploadedFile);
+                    //TODO: update file into lesson database
+
+                    // TESTING CONCEPT. CREATING EMBEDDING AT THIS STEP. REFACTOR TO CREATE EMBEDDING LATER ON
+                    // IN THE BACKGROUND (AFTER LESSON CREATION) SO IT CAN HAPPEN IN THE BACKGROUND.
+
                     // Add to Files Array
                     setFiles([...files, uploadedFile!.toString()]);
                 } catch (error) {

@@ -100,4 +100,42 @@ export default defineSchema({
     .index("by_ClassID", ["ClassID"])
     .index("by_UserID_ClassID", ["UserID", "ClassID"]),
 
-});
+    messages: defineTable({
+      // Whether the message is from the AI or the human
+      isViewer: v.boolean(),
+      // Which conversation this message belongs to
+      sessionId: v.string(),
+      // Message content
+      text: v.string(),
+    }).index("bySessionId", ["sessionId"]),
+
+    documents: defineTable({
+      // The original page URL for the document
+      url: v.string(),
+      // The parsed document content
+      text: v.string(),
+    }).index("byUrl", ["url"]),
+
+    chunks: defineTable({
+      // Which document this chunk belongs to
+      documentId: v.id("documents"),
+      // The chunk content
+      text: v.string(),
+      // If the chunk has been embedded, which embedding corresponds to it
+      embeddingId: v.union(v.id("embeddings"), v.null()),
+    })
+      .index("byDocumentId", ["documentId"])
+      .index("byEmbeddingId", ["embeddingId"]),
+      
+    // the actual embeddings
+    embeddings: defineTable({
+      embedding: v.array(v.number()),
+      chunkId: v.id("chunks"),
+    })
+      .index("byChunkId", ["chunkId"])
+      .vectorIndex("byEmbedding", {
+        vectorField: "embedding",
+        dimensions: 1536,
+      }),
+  });
+  

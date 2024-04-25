@@ -3,6 +3,7 @@ import {
 } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import React from "react"
+import Link from "next/link"
 
 
 interface CourseCardProps {
@@ -29,14 +30,14 @@ export default function CourseCard(
                 </div>
                 <div className="flex items-center pt-4 gap-4">
                     <Button variant="secondary">
-                        <a href={`/courses/${courseID}`}>
+                        <Link href={`/courses/${courseID}`}>
                             View Course
-                        </a>
+                        </Link>
                     </Button>
                     <Button variant="secondary">
-                        <a href={`/courses/${courseID}/edit`}>
+                        <Link href={`/courses/${courseID}/edit`}>
                             Edit Course
-                        </a>
+                        </Link>
                     </Button>
                 </div>
             </div>

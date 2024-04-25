@@ -260,7 +260,7 @@ export default function CreateLesson(
 
     return (
         <>
-            <Card className="w-full">
+            <Card className="w-full ml-1">
                 <CardHeader>
                     <CardTitle>
                         Create Lesson

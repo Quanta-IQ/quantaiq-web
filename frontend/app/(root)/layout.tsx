@@ -25,11 +25,13 @@ export default function RootLayout({
       <AuthProvider>
         <ConvexClientProvider>
           <NavBar />
+          <div className="flex flex-row h-full w-full">
           <LeftSidebar />
-          <main className="flex min-h-screen flex-col pb-4 pt-12 pl-40 pr-4">
-
+          <main className="flex min-h-screen flex-col pb-4 pt-12  pr-4 w-full">
+          
           {children}
           </main>
+          </div>
           <Toaster />
         </ConvexClientProvider>
       </AuthProvider>

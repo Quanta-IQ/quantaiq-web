@@ -13,24 +13,23 @@ import { useEffect } from "react";
 
 
 function LeftSidebar() {
-    const router = useRouter();
+
     const pathname = usePathname();
-    const auth = getAuth();
+
     const {user}:any = AuthContext();
-    const logout = async () => {
-        try {
-          signOut(auth)
-        } catch (error) {
-          
-        } finally {
-          router.push("/")
+    const [isHidden, setIsHidden] = React.useState(false);
 
-        }
-      };
 
+
+    const hideLeftBar = () => {
+        setIsHidden(!isHidden);
+    }
+ 
 
     if (user.isLogin) {return (
-        <section className="custom-scrollbar leftsidebar">
+        <>
+        
+        <div className={`custom-scrollbar leftsidebar ${isHidden ? 'w-[80px]' : 'w-[190px]'}`}>
             <div className="flex w-full flex-1 flex-col gap-3 px-3">
                 {sidebarLinks.map((link) => {
                     const isActive = 
@@ -49,17 +48,41 @@ function LeftSidebar() {
                                 width = {24}
                                 height = {24}
                             /> 
-                            <p className = " max-lg:hidden">
+                            {!isHidden && <p>
                                 {link.label}
-                            </p>
+                            </p>}
                         </Link>
+
+
                     )}
                 )}
             </div>
-
             
-        </section>
 
+            <div>
+                
+                        <div className="flex cursor-pointer gap-4 p-4 pl-6" onClick={hideLeftBar}>
+                            {!isHidden && <Image
+                                src="/assets/left.svg"
+                                alt="logout"
+                                width={24}
+                                height={24}
+                            />}
+                            {
+                                isHidden && <Image
+                                src="/assets/right.svg"
+                                alt="logout"
+                                width={24}
+                                height={24}
+                            />
+                            }
+                            {!isHidden && <p className="text-gray-300 "> Hide </p>}
+                        </div>
+                
+            </div>
+            
+        </div>
+        </>
     )}
 }
 

@@ -1,5 +1,5 @@
-import { action } from "../../_generated/server";
-import { internal } from "../../_generated/api";
+import { action } from "../_generated/server";
+import { internal } from "../_generated/api";
 import { v } from "convex/values";
 import OpenAI from "openai";
 

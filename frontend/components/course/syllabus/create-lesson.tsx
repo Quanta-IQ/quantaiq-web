@@ -65,7 +65,7 @@ export default function CreateLesson(
         CourseID: courseID as Id<"Courses">
     });
     //Added handling for ai convex
-    const anyscaleOneshot = useAction(api.functions.ai.anyscale.CompletionOneshot);
+    const anyscaleOneshot = useAction(api.ai.anyscale.CompletionOneshot);
 
 
     console.log(courseLessons?.length);

@@ -1,4 +1,5 @@
 import {z} from 'zod'
+//LEAVING THIS FOR FUTURE REFERENCE BUT NOT USING IT SO FAR
 
 export const testSchema = z.object({
     testName: z.string().min(3).max(30),

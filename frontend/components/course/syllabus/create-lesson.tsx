@@ -24,11 +24,10 @@ import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
 import { Button } from "@/components/ui/button"
 import { toast } from "@/components/ui/use-toast";
-import {  useQuery, useMutation } from "convex/react"
+import {  useQuery, useMutation, useAction } from "convex/react"
 import { ChangeEvent, useEffect, useState } from "react";
 import { handleFileUpload, handleFileDelete } from "@/lib/actions/lesson.aws.actions";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { Divide } from "lucide-react";
 
 
 
@@ -65,6 +64,9 @@ export default function CreateLesson(
     const courseLessons = useQuery(api.functions.lessons.getLessonsByCourseID, {
         CourseID: courseID as Id<"Courses">
     });
+    //Added handling for ai convex
+    const anyscaleOneshot = useAction(api.ai.anyscale.CompletionOneshot);
+
 
     console.log(courseLessons?.length);
     const form = useForm<z.infer<typeof formSchema>>({
@@ -219,28 +221,16 @@ export default function CreateLesson(
         //use prompt to call api
 
         try {
-            // Assuming your API is hosted on the same domain and the endpoint path is '/api/your-endpoint'
-            const response = await fetch('/api/anyscale', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ "prompt": prompt}),
+            const content = await anyscaleOneshot({
+                system_prompt: "Complete the Task",
+                user_prompt: prompt
             });
-    
-            if (!response.ok) {
-                throw new Error(`HTTP error! status: ${response.status}`);
-            }
-    
-            const data = await response.json();
-            console.log(data);
-    
-            // Extracting the content from the response
-            const content = data.response.choices[0].message.content;
-            console.log(content);
+
 
             // Set the content to the Objectives field
-            form.setValue('Objectives', content);
+            if (content) {
+                form.setValue('Objectives', content)
+            };
 
             //Toast
             toast({

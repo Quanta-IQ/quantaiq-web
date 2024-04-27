@@ -14,6 +14,7 @@ import type {
   FilterApi,
   FunctionReference,
 } from "convex/server";
+import type * as ai_anyscale from "../ai/anyscale.js";
 import type * as functions_classes from "../functions/classes.js";
 import type * as functions_courses from "../functions/courses.js";
 import type * as functions_lessons from "../functions/lessons.js";
@@ -28,6 +29,7 @@ import type * as functions_users from "../functions/users.js";
  * ```
  */
 declare const fullApi: ApiFromModules<{
+  "ai/anyscale": typeof ai_anyscale;
   "functions/classes": typeof functions_classes;
   "functions/courses": typeof functions_courses;
   "functions/lessons": typeof functions_lessons;

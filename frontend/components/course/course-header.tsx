@@ -14,6 +14,8 @@ import {Separator} from "@/components/ui/separator";
 export default function CourseHead(
     {courseID} : {courseID: string}
 ){
+    const [hideTitle, setHideTitle] = React.useState(false);
+
     const courseInfo = useQuery(api.functions.courses.getCourseByCourseID, {
         CourseID: courseID as Id<"Courses">
     }) 
@@ -21,16 +23,20 @@ export default function CourseHead(
 
     return (
       <>
-      {courseInfo && <div className="pt-4 ml-4 pb-2 bg-white">
-          <div className="flex flex-row justify-between">
+      {courseInfo && <div className="pt-4 pb-2 bg-white">
+        
+          {!hideTitle && 
+          <div className="flex flex-row justify-between pb-2 pl-4">
           <div>
             <h1 className="text-3xl font-bold">{courseInfo.CourseName}</h1>
             <p className="text-gray-500 "> {courseInfo.CourseDescription}</p>
           </div>
           </div>
+          }
           
-          <div className="flex flex-row items-center pt-3 gap-4 pb-4">
+          <div className="flex flex-row items-center  gap-4 pb-4 pl-4">
           <Button variant={window.location.pathname.includes('/syllabus') ? 'default' : 'secondary'}>
+            
             <Link href={`/courses/${courseInfo._id}/syllabus`}>
             Syllabus
             </Link>
@@ -59,6 +65,22 @@ export default function CourseHead(
             <Link href={`/courses/${courseInfo._id}/edit`}>
             Edit Details
             </Link>
+          </Button>
+          <Button variant="outline" onClick={() => setHideTitle(!hideTitle)}>
+            {!hideTitle && <Image
+              src="/assets/up.svg"
+              alt="logout"
+              width={24}
+              height={24}
+            />}
+            {
+              hideTitle && <Image
+              src="/assets/down.svg"
+              alt="logout"
+              width={24}
+              height={24}
+            />
+            }
           </Button>
           </div>
           <Separator />

@@ -40,7 +40,7 @@ export const embedList = internalAction({
         chunks.map( (chunk: any) => chunk.Text)
         );
 
-      await asyncMap(embeddings, async (embedding: any, i: string | number) => {
+      await asyncMap(embeddings, async (embedding: any, i:  number) => {
         const { _id: chunkId } = chunks[i];
        
         await ctx.runMutation(internal.ingest.embed.addEmbedding, {

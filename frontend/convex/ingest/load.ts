@@ -1,11 +1,10 @@
 "use node"
-
+import { internal } from "../_generated/api";
 import { Id } from "../_generated/dataModel"; 
 import { query, mutation, internalAction, internalMutation } from "../_generated/server";
 import { v } from "convex/values";
 import { URLDetailContent } from "@/types/ingestion-types";
 import pdf2md from '@opendocsg/pdf2md';
-
 const axios = require("axios");
 
 
@@ -39,6 +38,11 @@ export const fetchContentFromUrl = internalAction({
                     size: pdfText.length,
                     type: "application/pdf"
                 } as URLDetailContent
+
+                const text = result.content as string;
+                if (pdfText.length > 0) {
+                    await ctx.runMutation(internal.ingest.document.updateDocument, { url, text });
+                  }
                 return result;
             }
 
@@ -47,16 +51,4 @@ export const fetchContentFromUrl = internalAction({
             throw new Error("Failed to fetch content from URL: " + error);
         }
     }
-});
-
-
-export const splitText = internalAction({
-    args: {
-        text: v.string()
-    },
-
-    handler: async (ctx, args) =>  {
-        const text = args.text
-        return text
-    },
 });

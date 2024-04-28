@@ -41,9 +41,9 @@ export default function LessonPanel(
                         </p>
                         <div className="flex flex-col space-y-3 pr-2 pt-4">
                             {courseLessons?.map((lesson: any) => (
-                                <Link href={`/courses/${courseID}/lessons?select=${lesson._id}`}>
+                                <Link key={lesson.Number} href={`/courses/${courseID}/lessons?select=${lesson._id}`}>
                                     <p className={`flex items-center space-x-2 ${lesson._id === selectedLesson ? 'font-extrabold' : ''}`}>
-                                        <p>{lesson.Number} - {lesson.Name}</p>
+                                        {lesson.Number} - {lesson.Name}
                                     </p>
                                 </Link>
                             ))}

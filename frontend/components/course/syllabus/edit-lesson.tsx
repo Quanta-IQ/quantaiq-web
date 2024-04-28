@@ -78,8 +78,7 @@ export default function EditLesson(
         Docs: lessonInfo?.Content
     })
 
-
-    console.log(lessonInfo);
+    console.log("Lesson Docs", lessonDocs);
 
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
@@ -91,15 +90,17 @@ export default function EditLesson(
         }
     });
 
-    //useEffect if lessonInfo changes, set files to the content of the lesson
+    //useEffect if lessonDocs changes, set files to the content of the lesson
     useEffect(() => {
         setFiles([]);
-        if(lessonInfo?.Content){
-            
-            setFiles(lessonInfo.Content.map((content) => content.url));
+        if (lessonDocs) {
+            // Ignore TypeScript for now
+            //@ts-ignore
+            setFiles(lessonDocs.filter(Boolean).map((document) => document.URL));
         }
-    }
-    , [lessonInfo]);
+    }, [lessonDocs]);
+
+    console.log("Files", files)
 
 
     //File Handlers
@@ -169,7 +170,8 @@ export default function EditLesson(
             try {
             const doc = await createDocument({
                 Label: filename as string,
-                URL: fileUrl
+                URL: fileUrl,
+                Course: courseID as Id<"Courses">
             }) as Id<"Documents">;
             return doc
             } catch (error) {
@@ -190,13 +192,15 @@ export default function EditLesson(
                     }
                 });
             } else {
+                const filteredContentArray = contentArray.filter((content) => content !== undefined) as Id<"Documents">[];
+                
                 const result = await updateLesson({
                     LessonID: lessonID ,
                     data: {
                         Name: values.Name,
                         Description: values.Description,
                         Objective: values.Objectives,
-                        Content: contentArray
+                        Content: filteredContentArray
                     }
                 });
             }

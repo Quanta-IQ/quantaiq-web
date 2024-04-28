@@ -74,7 +74,7 @@ export default function EditLesson(
     const [processingFiles, setProcessingFiles] = useState(false);
 
     const updateLesson = useMutation(api.functions.lessons.updateLesson);
-    const lessonDocs = useQuery(api.ingest.load.getDocsByLesson,{
+    const lessonDocs = useQuery(api.functions.lessons.getDocsByLesson,{
         Docs: lessonInfo?.Content
     })
 
@@ -159,7 +159,7 @@ export default function EditLesson(
         }
     }
 
-    const createDocument = useMutation(api.functions.ingest.createDocument);
+    const createDocument = useMutation(api.functions.lessons.createDocument);
     
     const onSubmit = async (values: z.infer<typeof formSchema>) => {
         console.log("Form", values);

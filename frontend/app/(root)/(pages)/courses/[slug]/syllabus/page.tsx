@@ -14,7 +14,7 @@ export default function Page({params} : {params: {slug: string}}) {
       <>
      
         <CourseHead courseID={params.slug} />
-        <div className="w-full">
+        <div className="w-full pt-2">
           <SyllabusCard 
           courseID={params.slug}
           />

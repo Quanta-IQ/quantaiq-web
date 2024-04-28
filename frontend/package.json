@@ -34,6 +34,7 @@
     "react-beautiful-dnd": "^13.1.1",
     "react-dom": "^18",
     "react-hook-form": "^7.51.3",
+    "react-resizable-panels": "^2.0.18",
     "tailwind-merge": "^2.3.0",
     "tailwindcss-animate": "^1.0.7",
     "use-debounce": "^10.0.0",

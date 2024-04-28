@@ -13,7 +13,7 @@ import {
   } from "@/components/ui/resizable"
 import { useRouter, useSearchParams } from "next/navigation";
 import EditLesson from "../syllabus/edit-lesson";
-
+import Chat from "@/components/chat/chat";
 
 export default function LessonPanel(
     {courseID} : {courseID: string}
@@ -28,14 +28,13 @@ export default function LessonPanel(
     });
 
     //url pathname
-    const router = useRouter();
     const selectedLesson = useSearchParams().get("select");
     console.log(selectedLesson);
 
     return (
         <>
             <ResizablePanelGroup direction="horizontal">
-                <ResizablePanel className="min-w-60" >
+                <ResizablePanel className="min-w-60"  >
                     <div className="pt-2">
                         <p className="text-2xl font-extrabold">
                             Lessons
@@ -52,11 +51,11 @@ export default function LessonPanel(
                     </div>
                     
                 </ResizablePanel>
-            <ResizableHandle />
+            <ResizableHandle withHandle  />
                 <ResizablePanel className="min-w-96">
-                    Chat UI
+                    <Chat />
                 </ResizablePanel>
-            <ResizableHandle />
+            <ResizableHandle withHandle  />
                 <ResizablePanel className="min-w-96" >
                     {
                         !selectedLesson && 

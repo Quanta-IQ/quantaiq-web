@@ -4,7 +4,7 @@ import { query, mutation, internalAction, internalMutation } from "../_generated
 import { v } from "convex/values";
 import { URLDetailContent } from "@/types/ingestion-types";
 import { RecursiveCharacterTextSplitter } from "langchain/text_splitter";
-import { asyncMap } from "modern-async";
+import { asyncMap } from 'modern-async';
 
 export const updateDocument = internalMutation(
     async (ctx, { url, text }: { url: string; text: string }) => {

@@ -74,7 +74,7 @@ export default function EditLesson(
     const [processingFiles, setProcessingFiles] = useState(false);
 
     const updateLesson = useMutation(api.functions.lessons.updateLesson);
-    const lessonDocs = useQuery(api.functions.ingest.getDocsByLesson,{
+    const lessonDocs = useQuery(api.ingest.load.getDocsByLesson,{
         Docs: lessonInfo?.Content
     })
 

@@ -65,7 +65,7 @@ export default function CreateLesson(
         CourseID: courseID as Id<"Courses">
     });
 
-    const createDocument = useMutation(api.functions.ingest.createDocument);
+    const createDocument = useMutation(api.ingest.load.createDocument);
 
     //Added handling for ai convex
     const anyscaleOneshot = useAction(api.ai.anyscale.CompletionOneshot);

@@ -17,9 +17,9 @@ import type {
 import type * as ai_anyscale from "../ai/anyscale.js";
 import type * as functions_classes from "../functions/classes.js";
 import type * as functions_courses from "../functions/courses.js";
-import type * as functions_ingest from "../functions/ingest.js";
 import type * as functions_lessons from "../functions/lessons.js";
 import type * as functions_users from "../functions/users.js";
+import type * as ingest_load from "../ingest/load.js";
 
 /**
  * A utility for referencing Convex functions in your app's API.
@@ -33,9 +33,9 @@ declare const fullApi: ApiFromModules<{
   "ai/anyscale": typeof ai_anyscale;
   "functions/classes": typeof functions_classes;
   "functions/courses": typeof functions_courses;
-  "functions/ingest": typeof functions_ingest;
   "functions/lessons": typeof functions_lessons;
   "functions/users": typeof functions_users;
+  "ingest/load": typeof ingest_load;
 }>;
 export declare const api: FilterApi<
   typeof fullApi,

@@ -69,6 +69,9 @@ export default defineSchema({
     Documents: defineTable({
         Label: v.string(),
         URL: v.string(),
+        Text: v.optional(v.string()),
+        Size: v.optional(v.number()),
+        Type: v.optional(v.string()),
         Course: v.id("Courses")
     }).index("byUrl", ["URL"])
     .index("byCourse", ["Course"]),

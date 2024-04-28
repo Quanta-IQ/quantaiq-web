@@ -19,8 +19,8 @@ import type * as functions_classes from "../functions/classes.js";
 import type * as functions_courses from "../functions/courses.js";
 import type * as functions_lessons from "../functions/lessons.js";
 import type * as functions_users from "../functions/users.js";
+import type * as ingest_document from "../ingest/document.js";
 import type * as ingest_load from "../ingest/load.js";
-import type * as types from "../types.js";
 
 /**
  * A utility for referencing Convex functions in your app's API.
@@ -36,8 +36,8 @@ declare const fullApi: ApiFromModules<{
   "functions/courses": typeof functions_courses;
   "functions/lessons": typeof functions_lessons;
   "functions/users": typeof functions_users;
+  "ingest/document": typeof ingest_document;
   "ingest/load": typeof ingest_load;
-  types: typeof types;
 }>;
 export declare const api: FilterApi<
   typeof fullApi,

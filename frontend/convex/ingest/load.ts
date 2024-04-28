@@ -1,14 +1,16 @@
 "use node"
 
 import { Id } from "../_generated/dataModel"; 
-import { query, mutation, internalAction } from "../_generated/server";
+import { query, mutation, internalAction, internalMutation } from "../_generated/server";
 import { v } from "convex/values";
 import { URLDetailContent } from "@/types/ingestion-types";
+import pdf2md from '@opendocsg/pdf2md';
 const pdf= require( 'pdf-parse');
 const fs = require("fs");
 const axios = require("axios");
 
-// Fetch content from URL
+
+// Fetch content from URL -> Parse into text
 export const fetchContentFromUrl = internalAction({
     args: {
         url: v.string()
@@ -45,4 +47,16 @@ export const fetchContentFromUrl = internalAction({
             throw new Error("Failed to fetch content from URL: " + error);
         }
     }
+});
+
+
+export const splitText = internalAction({
+    args: {
+        text: v.string()
+    },
+
+    handler: async (ctx, args) =>  {
+        const text = args.text
+        return text
+    },
 });

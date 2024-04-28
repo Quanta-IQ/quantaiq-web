@@ -1,6 +1,7 @@
 "use client"
 import Image from "next/image";
-import React from "react";
+import React, { Suspense } from 'react';
+
 import Search from "@/components/ui/search";
 import {Button} from "@/components/ui/button";
 import Link from "next/link";
@@ -25,6 +26,7 @@ export default function Home() {
 
 
   return (
+    
       <div className="mb-4 mt-4 ml-4">
         <div className="flex flex-row justify-between">
           <div>
@@ -46,7 +48,9 @@ export default function Home() {
                 Create a new course
               </DialogDescription>
               <Separator />
+              
               <CreateCourseForm user={{ user_id: user.user?.uid }}/>
+
             </DialogContent>
           </Dialog>
 
@@ -54,15 +58,15 @@ export default function Home() {
         </div>
         
         <div className="mt-3 mb-3"> 
-          <Search placeholder="TODO: Make this functional" />
+          <Suspense fallback={<div>Loading...</div>}>
+            <Search placeholder="TODO: Make this functional" />
+          </Suspense>
         </div>
         <div className="mt-3">
             <CourseFeed />
         </div>
         
       </div>
-      
-      
 
       
 

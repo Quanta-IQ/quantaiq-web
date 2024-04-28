@@ -8,7 +8,13 @@ import Link from "next/link";
 import { api } from "@/convex/_generated/api"
 import { Id } from "@/convex/_generated/dataModel";
 import {Separator} from "@/components/ui/separator";
-
+import {NotebookPen,
+  BookType,
+  FilePenLine,
+  Presentation,
+  Bot,
+  Settings
+} from "lucide-react";
 
 
 export default function CourseHead(
@@ -23,7 +29,7 @@ export default function CourseHead(
 
     return (
       <>
-      {courseInfo && <div className="pt-4 pb-2 bg-white">
+      {courseInfo && <div className="pt-4  bg-white">
         
           {!hideTitle && 
           <div className="flex flex-row justify-between pb-2 pl-4">
@@ -36,32 +42,37 @@ export default function CourseHead(
           
           <div className="flex flex-row items-center  gap-4 pb-4 pl-4">
           <Button variant={window.location.pathname.includes('/syllabus') ? 'default' : 'secondary'}>
-            
+            <NotebookPen className="h-4 w-4 mr-2" />
             <Link href={`/courses/${courseInfo._id}/syllabus`}>
             Syllabus
             </Link>
           </Button>
           <Button variant={window.location.pathname.includes('/lessons') ? 'default' : 'secondary'}>
+            <BookType className="h-4 w-4 mr-2" />
             <Link href={`/courses/${courseInfo._id}/lessons`}>
             Lessons
             </Link>
           </Button>
           <Button variant={window.location.pathname.includes('/test') ? 'default' : 'secondary'}>
+            <FilePenLine className="h-4 w-4 mr-2" />
             <Link href={`/courses/${courseInfo._id}/test`}>
             Test
             </Link>
           </Button>
           <Button variant={window.location.pathname.includes('/class') ? 'default' : 'secondary'}>
+            <Presentation className="h-4 w-4 mr-2" />
             <Link href={`/courses/${courseInfo._id}/class`}>
             Classes
             </Link>
           </Button>
           <Button variant={window.location.pathname.includes('/ai') ? 'default' : 'secondary'}>
+            <Bot className="h-4 w-4 mr-2" />
             <Link href={`/courses/${courseInfo._id}/ai`}>
             AI Tools
             </Link>
           </Button>
           <Button variant={window.location.pathname.includes('/edit') ? 'default' : 'secondary'}>
+          <Settings className="h-4 w-4 mr-2" />
             <Link href={`/courses/${courseInfo._id}/edit`}>
             Edit Details
             </Link>

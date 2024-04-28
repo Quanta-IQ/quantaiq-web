@@ -68,14 +68,17 @@ export default function EditLesson(
     const lessonInfo = useQuery(api.functions.lessons.getLessonByID, {
         LessonID: lessonID as Id<"Lessons">
     });
+
     
 
     const [processingFiles, setProcessingFiles] = useState(false);
 
     const updateLesson = useMutation(api.functions.lessons.updateLesson);
+    const lessonDocs = useQuery(api.functions.lessons.getDocsByLesson,{
+        Docs: lessonInfo?.Content
+    })
 
-
-    console.log(lessonInfo);
+    console.log("Lesson Docs", lessonDocs);
 
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
@@ -87,15 +90,17 @@ export default function EditLesson(
         }
     });
 
-    //useEffect if lessonInfo changes, set files to the content of the lesson
+    //useEffect if lessonDocs changes, set files to the content of the lesson
     useEffect(() => {
         setFiles([]);
-        if(lessonInfo?.Content){
-            
-            setFiles(lessonInfo.Content.map((content) => content.url));
+        if (lessonDocs) {
+            // Ignore TypeScript for now
+            //@ts-ignore
+            setFiles(lessonDocs.filter(Boolean).map((document) => document.URL));
         }
-    }
-    , [lessonInfo]);
+    }, [lessonDocs]);
+
+    console.log("Files", files)
 
 
     //File Handlers
@@ -154,18 +159,25 @@ export default function EditLesson(
         }
     }
 
-
+    const createDocument = useMutation(api.functions.lessons.createDocument);
+    
     const onSubmit = async (values: z.infer<typeof formSchema>) => {
         console.log("Form", values);
-        const contentArray = files.map((fileUrl) => {
+        const contentArray = await Promise.all(files.map(async (fileUrl) => {
             const url = new URL(fileUrl);
             const pathname = url.pathname;
             const filename = pathname.split('/').pop();
-            return {
-                label: filename as string,
-                url: fileUrl,
-            };
-        });
+            try {
+            const doc = await createDocument({
+                Label: filename as string,
+                URL: fileUrl,
+                Course: courseID as Id<"Courses">
+            }) as Id<"Documents">;
+            return doc
+            } catch (error) {
+            console.error(error);
+            }
+        }));
         
         console.log("Content Array", contentArray);
 
@@ -180,13 +192,15 @@ export default function EditLesson(
                     }
                 });
             } else {
+                const filteredContentArray = contentArray.filter((content) => content !== undefined) as Id<"Documents">[];
+                
                 const result = await updateLesson({
                     LessonID: lessonID ,
                     data: {
                         Name: values.Name,
                         Description: values.Description,
                         Objective: values.Objectives,
-                        Content: contentArray
+                        Content: filteredContentArray
                     }
                 });
             }
@@ -322,7 +336,14 @@ export default function EditLesson(
                                                 <span className="text-sm text-gray-400 mt-2">{filename}</span>
                                                
                                                 <AlertDialog>
-                                                <AlertDialogTrigger><Button variant="destructive" className="text-xs h-8" >Delete</Button></AlertDialogTrigger>
+                                                <AlertDialogTrigger>
+                                                    <div  
+                                                        onClick={() => fileDelete(fileUrl)}
+                                                        className="h-10 py-2 px-4 border border-input bg-background hover:bg-accent hover:text-accent-foreground inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50"
+                                                    >
+                                                        Delete
+                                                    </div>
+                                                </AlertDialogTrigger>
                                                 <AlertDialogContent>
                                                     <AlertDialogHeader>
                                                     <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>

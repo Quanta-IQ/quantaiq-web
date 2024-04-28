@@ -1,5 +1,6 @@
 import { Id } from "../_generated/dataModel"; 
-import { query, mutation } from "../_generated/server";
+import { internal } from "../_generated/api";
+import { query, mutation, internalMutation  } from "../_generated/server";
 import { v } from "convex/values";
 
 // Create
@@ -11,10 +12,7 @@ export const createLesson = mutation({
         Description: v.string(),
         Objective: v.string(),
         Content: v.optional(v.array(
-            v.object({
-                label: v.string(),
-                url: v.string()
-            })
+            v.id("Documents")
         ))
     },
     handler: async (ctx, args) => {
@@ -49,10 +47,7 @@ export const updateLesson = mutation({
             Description: v.optional(v.string()),
             Objective: v.optional(v.string()),
             Content: v.optional(v.array(
-                v.object({
-                    label: v.string(),
-                    url: v.string()
-                })  
+                v.id("Documents") 
             )),
         })
     },
@@ -84,6 +79,9 @@ export const deleteLesson = mutation({
 });
 
 
+
+
+
 //Return all lessons for a course
 
 export const getLessonsByCourseID = query({
@@ -106,3 +104,44 @@ export const getLessonsByCourseID = query({
 
     }
 });
+
+//Upload Lesson File on Documents
+export const createDocument = mutation({
+    args: {
+        Label: v.string(),
+        URL: v.string(),
+        Course: v.id("Courses")
+    },
+    handler: async (ctx, args) => {
+        const docID = await ctx.db.insert("Documents",args)
+        await ctx.scheduler.runAfter(500, internal.ingest.load.fetchContentFromUrl,{
+            url: args.URL
+        })
+        return docID
+    }
+})
+
+// Get all docs in a lesson
+
+export const getDocsByLesson = query({
+    args:{
+        Docs: v.optional(v.array(v.string()))
+    },
+
+    handler: async(ctx, args) => {
+        try {
+            if(args.Docs){
+            return await Promise.all(args.Docs.map(async (docId) => {
+                const doc = await ctx.db.get( docId as Id<"Documents">);
+                return doc;
+            }));}
+            else{
+                return null
+            }
+        }
+        catch (error) {
+                    console.error(error);
+                    throw new Error("Failed to get documents by lesson");
+                }
+    }
+})

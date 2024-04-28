@@ -61,14 +61,38 @@ export default defineSchema({
         Description: v.string(),
         Objective: v.string(),
         Content: v.optional(v.array(
-            v.object(
-                {
-                    label: v.string(),
-                    url: v.string(),
-                }
-            )
+            v.id("Documents")
         )),  
     }).index("by_CourseID", ["CourseID"]),
+
+    //Documents
+    Documents: defineTable({
+        Label: v.string(),
+        URL: v.string(),
+        Text: v.optional(v.string()),
+        Size: v.optional(v.number()),
+        Type: v.optional(v.string()),
+        Course: v.id("Courses")
+    }).index("byUrl", ["URL"])
+    .index("byCourse", ["Course"]),
+
+    //Document Chunk
+    Chunks: defineTable({
+        DocumentID: v.id("Documents"),
+        Text: v.string(),
+        EmbeddingID: v.union(v.id("Embeddings"), v.null()),
+    }).index("byDocumentID", ["DocumentID"])
+    .index("byEmbeddingID", ["EmbeddingID"]),
+
+    Embeddings: defineTable({
+        Embedding: v.array(v.number()),
+        ChunkID: v.id("Chunks")
+    })
+    .index("byChunkID", ["ChunkID"])
+    .vectorIndex("byEmbedding",{
+        vectorField: "Embedding",
+        dimensions: 1536,
+    }),
 
     //Class (Classroom for a course)
     Classes: defineTable({
@@ -99,5 +123,8 @@ export default defineSchema({
     .index("by_UserID", ["UserID"])
     .index("by_ClassID", ["ClassID"])
     .index("by_UserID_ClassID", ["UserID", "ClassID"]),
+
+
+
 
 });

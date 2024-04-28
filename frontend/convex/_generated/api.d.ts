@@ -15,10 +15,16 @@ import type {
   FunctionReference,
 } from "convex/server";
 import type * as ai_anyscale from "../ai/anyscale.js";
+import type * as ai_together from "../ai/together.js";
+import type * as crons from "../crons.js";
 import type * as functions_classes from "../functions/classes.js";
 import type * as functions_courses from "../functions/courses.js";
 import type * as functions_lessons from "../functions/lessons.js";
 import type * as functions_users from "../functions/users.js";
+import type * as helpers from "../helpers.js";
+import type * as ingest_document from "../ingest/document.js";
+import type * as ingest_embed from "../ingest/embed.js";
+import type * as ingest_load from "../ingest/load.js";
 
 /**
  * A utility for referencing Convex functions in your app's API.
@@ -30,10 +36,16 @@ import type * as functions_users from "../functions/users.js";
  */
 declare const fullApi: ApiFromModules<{
   "ai/anyscale": typeof ai_anyscale;
+  "ai/together": typeof ai_together;
+  crons: typeof crons;
   "functions/classes": typeof functions_classes;
   "functions/courses": typeof functions_courses;
   "functions/lessons": typeof functions_lessons;
   "functions/users": typeof functions_users;
+  helpers: typeof helpers;
+  "ingest/document": typeof ingest_document;
+  "ingest/embed": typeof ingest_embed;
+  "ingest/load": typeof ingest_load;
 }>;
 export declare const api: FilterApi<
   typeof fullApi,

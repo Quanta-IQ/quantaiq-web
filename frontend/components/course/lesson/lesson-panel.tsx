@@ -34,7 +34,7 @@ export default function LessonPanel(
     return (
         <>
             <ResizablePanelGroup direction="horizontal">
-                <ResizablePanel className="min-w-60"  >
+                <ResizablePanel className="min-w-60" defaultSize={15}  >
                     <div className="pt-2">
                         <p className="text-2xl font-extrabold">
                             Lessons
@@ -52,11 +52,11 @@ export default function LessonPanel(
                     
                 </ResizablePanel>
             <ResizableHandle withHandle  />
-                <ResizablePanel className="min-w-96">
+                <ResizablePanel className="min-w-96" defaultSize={75}>
                     <Chat />
                 </ResizablePanel>
             <ResizableHandle withHandle  />
-                <ResizablePanel className="min-w-96" >
+                <ResizablePanel className="min-w-96" defaultSize={10} >
                     {
                         !selectedLesson && 
                         <>

@@ -311,7 +311,7 @@ export default function EditLesson(
                                         <Input 
                                             className="placeholder-slight" 
                                             type="file" 
-                                            accept="image/*, .pdf" 
+                                            accept=".pdf" 
                                             onChange={(e) => handleFile(e)} 
                                             disabled={processingFiles}
                                         />

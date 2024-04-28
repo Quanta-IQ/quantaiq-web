@@ -64,11 +64,13 @@ export default function CreateLesson(
     const courseLessons = useQuery(api.functions.lessons.getLessonsByCourseID, {
         CourseID: courseID as Id<"Courses">
     });
+
+    const createDocument = useMutation(api.functions.ingest.createDocument);
+
     //Added handling for ai convex
     const anyscaleOneshot = useAction(api.ai.anyscale.CompletionOneshot);
 
 
-    console.log(courseLessons?.length);
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
         defaultValues:{
@@ -140,33 +142,39 @@ export default function CreateLesson(
     const onSubmit = async (values: z.infer<typeof formSchema>) => {
         //TODO: Add File Logic
         //Process files into Content Array
-        const contentArray = files.map((fileUrl) => {
+        const contentArray = await Promise.all(files.map(async (fileUrl) => {
             const url = new URL(fileUrl);
             const pathname = url.pathname;
             const filename = pathname.split('/').pop();
-            return {
-                label: filename as string,
-                url: fileUrl,
-            };
-        });
-        
-        console.log("Content Array", contentArray);
+            try {
+            const doc = await createDocument({
+                Label: filename as string,
+                URL: fileUrl,
+                Course: courseID as Id<"Courses">
+            }) as Id<"Documents">;
+            return doc
+            } catch (error) {
+            console.error(error);
+            }
+        }));
 
 
         console.log("Form", values);
         const Number = (courseLessons?.length || 0) + 1;
 
         try {
-            if (contentArray){
+            if (contentArray) {
+                console.log(contentArray);
+                const filteredContentArray = contentArray.filter((content) => content !== undefined) as Id<"Documents">[];
                 const createdLesson = await createLesson({
                     CourseID: courseID as Id<"Courses">,
                     Name: values.Name,
                     Number,
                     Description: values.Description,
                     Objective: values.Objectives,
-                    Content: contentArray
+                    Content: filteredContentArray
                 });
-            } else{
+            } else {
                 const createdLesson = await createLesson({
                     CourseID: courseID as Id<"Courses">,
                     Name: values.Name,
@@ -210,7 +218,6 @@ export default function CreateLesson(
     }
     }, [form.getValues()]);
 
-    console.log("Prompt", prompt);
 
 
     const handleAutoFill = async () => {

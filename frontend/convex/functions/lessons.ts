@@ -11,10 +11,7 @@ export const createLesson = mutation({
         Description: v.string(),
         Objective: v.string(),
         Content: v.optional(v.array(
-            v.object({
-                label: v.string(),
-                url: v.string()
-            })
+            v.id("Documents")
         ))
     },
     handler: async (ctx, args) => {
@@ -49,10 +46,7 @@ export const updateLesson = mutation({
             Description: v.optional(v.string()),
             Objective: v.optional(v.string()),
             Content: v.optional(v.array(
-                v.object({
-                    label: v.string(),
-                    url: v.string()
-                })  
+                v.id("Documents") 
             )),
         })
     },
@@ -82,6 +76,9 @@ export const deleteLesson = mutation({
         return deletedLesson;
     }
 });
+
+
+
 
 
 //Return all lessons for a course

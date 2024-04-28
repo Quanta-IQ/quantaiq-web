@@ -36,7 +36,7 @@ export const embedList = internalAction({
         )
       ).flat();
 
-      const embeddings = await embedTexts(
+      const embeddings = await embedTextsTogether(
         chunks.map( (chunk: any) => chunk.Text)
         );
 
@@ -76,12 +76,27 @@ export const embedList = internalAction({
     }
   );
   
-  export async function embedTexts(texts: string[]) {
+  export async function embedTextsOpenAI(texts: string[]) {
     if (texts.length === 0) return [];
     const openai = new OpenAI();
     const { data } = await openai.embeddings.create({
       input: texts,
       model: "text-embedding-3-small",
+    });
+    console.log({data});
+    return data.map(({ embedding }) => embedding);
+  }
+
+  //Much higher benchmark compared to OpenAI and a lot cheaper
+  export async function embedTextsTogether(texts: string[]) {
+    if (texts.length === 0) return [];
+    const together = new OpenAI({
+        baseURL: "https://api.together.xyz/v1",
+        apiKey: process.env.TOGETHER_API_KEY
+    });
+    const { data } = await together.embeddings.create({
+      input: texts,
+      model: "WhereIsAI/UAE-Large-V1",
     });
     console.log({data});
     return data.map(({ embedding }) => embedding);

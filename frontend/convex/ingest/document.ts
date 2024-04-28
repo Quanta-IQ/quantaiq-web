@@ -5,7 +5,7 @@ import { v } from "convex/values";
 import { URLDetailContent } from "@/types/ingestion-types";
 import { RecursiveCharacterTextSplitter } from "langchain/text_splitter";
 import { asyncMap } from 'modern-async';
-
+import { internal } from "../_generated/api";
 export const updateDocument = internalMutation(
     async (ctx, { url, text }: { url: string; text: string }) => {
       const latestVersion = await ctx.db
@@ -36,6 +36,7 @@ export const updateDocument = internalMutation(
               EmbeddingID: null,
             });
           });
+        await ctx.scheduler.runAfter(500, internal.ingest.embed.embedAll)
       }
     }
   );

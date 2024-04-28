@@ -1,5 +1,6 @@
 import { Id } from "../_generated/dataModel"; 
-import { query, mutation } from "../_generated/server";
+import { internal } from "../_generated/api";
+import { query, mutation, internalMutation  } from "../_generated/server";
 import { v } from "convex/values";
 
 // Create
@@ -112,7 +113,11 @@ export const createDocument = mutation({
         Course: v.id("Courses")
     },
     handler: async (ctx, args) => {
-        return await ctx.db.insert("Documents",args)
+        const docID = await ctx.db.insert("Documents",args)
+        await ctx.scheduler.runAfter(500, internal.ingest.load.fetchContentFromUrl,{
+            url: args.URL
+        })
+        return docID
     }
 })
 

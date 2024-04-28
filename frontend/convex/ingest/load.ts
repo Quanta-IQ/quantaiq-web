@@ -5,8 +5,7 @@ import { query, mutation, internalAction, internalMutation } from "../_generated
 import { v } from "convex/values";
 import { URLDetailContent } from "@/types/ingestion-types";
 import pdf2md from '@opendocsg/pdf2md';
-const pdf= require( 'pdf-parse');
-const fs = require("fs");
+
 const axios = require("axios");
 
 
@@ -32,11 +31,12 @@ export const fetchContentFromUrl = internalAction({
                 const response = await axios.get(url, {
                     responseType: "arraybuffer",
                 })
-                const pdfText = await pdf(response.data);
+                let callbacks = {};
+                const pdfText = await pdf2md(response.data, callbacks);
                 const result = {
                     url,
-                    content: pdfText.text,
-                    size: pdfText.text.length,
+                    content: pdfText,
+                    size: pdfText.length,
                     type: "application/pdf"
                 } as URLDetailContent
                 return result;

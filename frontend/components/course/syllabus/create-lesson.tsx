@@ -268,7 +268,7 @@ export default function CreateLesson(
                 </CardHeader>
                 <CardContent>
                 <Form {...form}>
-                    <form className="flex flex-col justify-start gap-5 pr-5 pl-5" onSubmit={form.handleSubmit(onSubmit)}>
+                    <form className="flex flex-col justify-start gap-5 " onSubmit={form.handleSubmit(onSubmit)}>
                         <FormField
                             control={form.control}
                             name="Name"
@@ -292,7 +292,8 @@ export default function CreateLesson(
                             <FormItem className="flex flex-col ">
                                 <FormLabel >Lesson Description</FormLabel>
                                 <FormControl>
-                                <Textarea  {...field} />
+                                <Textarea  {...field} 
+                                className="max-h-20"/>
                                 </FormControl>
                                 <FormMessage />
                             </FormItem>
@@ -315,7 +316,8 @@ export default function CreateLesson(
                                         }
                                     </div>
                                     <FormControl>
-                                    <Textarea  {...field} />
+                                    <Textarea  {...field} 
+                                    className="max-h-24"/>
                                     </FormControl>
                                     <FormMessage />
                                 </FormItem>

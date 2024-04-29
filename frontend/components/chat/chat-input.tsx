@@ -52,9 +52,10 @@ export default function ChatInput(props: ChatInputProps) {
             
             <div className="grid w-full gap-2">
                 <Textarea
-                    className="ring-inset focus-visible:ring-offset-0 pr-28 md:pr-40 min-h-[56px]"
+                    className="ring-inset focus-visible:ring-offset-0 pr-28 md:pr-40 min-h-[56px] max-h-60"
                     value={inputValue}
                     onChange={handleInputChange}
+                  
                 />
                 <div className="flex flex-row gap-3 justify-end"> 
                     <Button onClick={handleClear}>

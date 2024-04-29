@@ -40,13 +40,21 @@ function LeftSidebar() {
                         <Link
                             href={link.route}
                             key={link.label}
-                            className={`leftsidebar_link  ${isActive && "bg-primary text-white text-light-1 font-bold"} text-gray-700`}
+                            className={`leftsidebar_link  ${isActive && "bg-primary dark:text-black text-white  text-light-1 font-bold"} text-gray-700`}
                             >
                             <Image
                                 src={isActive ? link.imgURL.replace(".svg", "-white.svg") : link.imgURL}
                                 alt = {link.label}
                                 width = {24}
                                 height = {24}
+                                className="dark:hidden block"
+                            /> 
+                            <Image
+                                src={isActive ? link.imgURL : link.imgURL.replace(".svg", "-white.svg")  }
+                                alt = {link.label}
+                                width = {24}
+                                height = {24}
+                                className="dark:block hidden"
                             /> 
                             {!isHidden && <p>
                                 {link.label}

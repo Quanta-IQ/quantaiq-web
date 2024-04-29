@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "../globals.css";
-
+import { ThemeProvider } from "@/providers/ThemeProvider"
 const inter = Inter({ subsets: ["latin"] });
 import AuthProvider from '@/providers/AuthProvider';
 import ConvexClientProvider from "@/providers/ConvexClientProvider";
@@ -22,8 +22,15 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={inter.className}>
+      <ThemeProvider
+            attribute="class"
+            defaultTheme="system"
+            enableSystem
+            disableTransitionOnChange
+          >
       <AuthProvider>
         <ConvexClientProvider>
+          
           <NavBar />
           <div className="flex flex-row ">
             <LeftSidebar />
@@ -33,8 +40,10 @@ export default function RootLayout({
             </div>
           </div>
           <Toaster />
+          
         </ConvexClientProvider>
       </AuthProvider>
+      </ThemeProvider>
       </body>
     </html>
   );

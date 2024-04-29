@@ -29,7 +29,7 @@ export default function CourseHead(
 
     return (
       <>
-      {courseInfo && <div className="pt-4  bg-white">
+      {courseInfo && <div className="pt-4  bg-background">
         
           {!hideTitle && 
           <div className="flex flex-row justify-between pb-2 pl-4">

@@ -234,7 +234,7 @@ export default function EditLesson(
 
     return (
         <>
-            <Card className="w-full">
+            <Card className="w-full max-h-full">
                 <CardHeader>
                     <CardTitle>
                         Edit Lesson
@@ -245,7 +245,7 @@ export default function EditLesson(
                 </CardHeader>
                 <CardContent>
                 {lessonInfo && <Form {...form}>
-                    <form onSubmit={form.handleSubmit(onSubmit)} className="flex flex-col justify-start gap-5 pr-5 pl-5">
+                    <form onSubmit={form.handleSubmit(onSubmit)} className="flex flex-col justify-start gap-5 ">
                         <FormField
                             control={form.control}
                             name="Name"
@@ -273,6 +273,7 @@ export default function EditLesson(
                                 <FormControl>
                                 <Textarea  {...field} 
                                 placeholder={lessonInfo.Description}
+                                className="max-h-20"
                                 value={field.value || lessonInfo.Description}
                                 />
                                 </FormControl>
@@ -291,6 +292,7 @@ export default function EditLesson(
                                 <Textarea  {...field} 
                                 placeholder={lessonInfo.Objective}
                                 value={field.value || lessonInfo.Objective}
+                                className="max-h-40"
                                 />
                                 </FormControl>
                                 <FormMessage />

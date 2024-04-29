@@ -35,6 +35,8 @@ export const answer = internalAction({
       embeddingIds: searchResults.map(({ _id }) => _id),
     });
 
+    console.log(lastUserMessage, relevantDocuments);
+
     const messageId = await ctx.runMutation(internal.serve.lessonbot.addBotMessage, {
       sessionId,
       lessonId
@@ -78,6 +80,8 @@ export const answer = internalAction({
           });
         }
       }
+
+
     } catch (error: any) {
       await ctx.runMutation(internal.serve.lessonbot.updateBotMessage, {
         messageId,

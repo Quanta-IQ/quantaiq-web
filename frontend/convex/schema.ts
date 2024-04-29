@@ -91,8 +91,16 @@ export default defineSchema({
     .index("byChunkID", ["ChunkID"])
     .vectorIndex("byEmbedding",{
         vectorField: "Embedding",
-        dimensions: 1536,
+        dimensions: 1024,
     }),
+
+    //Lesson Chat Messages
+    LessonBotMessages: defineTable({
+        IsViewer: v.boolean(),
+        SessionID: v.string(),
+        Text: v.string(),
+        LessonID: v.id("Lessons")
+      }).index("bySessionId", ["SessionID"]),
 
     //Class (Classroom for a course)
     Classes: defineTable({

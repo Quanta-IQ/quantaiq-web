@@ -25,6 +25,7 @@ import type * as helpers from "../helpers.js";
 import type * as ingest_document from "../ingest/document.js";
 import type * as ingest_embed from "../ingest/embed.js";
 import type * as ingest_load from "../ingest/load.js";
+import type * as serve_lessonbot from "../serve/lessonbot.js";
 
 /**
  * A utility for referencing Convex functions in your app's API.
@@ -46,6 +47,7 @@ declare const fullApi: ApiFromModules<{
   "ingest/document": typeof ingest_document;
   "ingest/embed": typeof ingest_embed;
   "ingest/load": typeof ingest_load;
+  "serve/lessonbot": typeof serve_lessonbot;
 }>;
 export declare const api: FilterApi<
   typeof fullApi,

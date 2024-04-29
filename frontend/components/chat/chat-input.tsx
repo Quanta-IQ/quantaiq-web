@@ -1,6 +1,6 @@
 import React, { useState, ChangeEvent } from 'react';
 import {Textarea} from "@/components/ui/textarea"
-import { Send } from "lucide-react";
+import { Send, Trash } from "lucide-react";
 import {Button} from "@/components/ui/button";
 import { toast } from "@/components/ui/use-toast";
 import {  useQuery, useMutation, useAction } from "convex/react"
@@ -19,6 +19,7 @@ export default function ChatInput(props: ChatInputProps) {
 
     const [inputValue, setInputValue] = useState("");
     const sendMessage = useMutation(api.messages.lessonbot.send);
+    const clearThread = useMutation(api.messages.lessonbot.clear);
 
     const handleInputChange = (event: ChangeEvent<HTMLTextAreaElement>) => {
         setInputValue(event.target.value);
@@ -37,20 +38,35 @@ export default function ChatInput(props: ChatInputProps) {
         }
     };
 
+    const handleClear = async() => {
+        if (props.sessionID != null){
+            await clearThread({
+                sessionId: props.sessionID
+            })
+        }
+    }
+
+
     return (
         <>
-            <div className= "flex flex-1 items-end relative">
+            
+            <div className="grid w-full gap-2">
                 <Textarea
                     className="ring-inset focus-visible:ring-offset-0 pr-28 md:pr-40 min-h-[56px]"
                     value={inputValue}
                     onChange={handleInputChange}
                 />
-                <div className="my-2 flex items-center gap-2.5 absolute right-[15px]">
+                <div className="flex flex-row gap-3 justify-end"> 
+                    <Button onClick={handleClear}>
+                            <Trash className="h-4 w-4 mr-2" />
+                            Clear
+                    </Button>
                     <Button onClick={handleSend}>
-                        <Send className="h-4 w-4 mr-2" />
-                        Send
+                            <Send className="h-4 w-4 mr-2" />
+                            Send
                     </Button>
                 </div>
+                
             </div>
         </>
     );

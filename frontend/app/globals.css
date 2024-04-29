@@ -111,7 +111,7 @@
   }
 
   .leftsidebar {
-    @apply flex h-dvh flex-col justify-between  text-gray-700 font-semibold border-r  pb-5 pt-24 max-md:hidden;
+    @apply flex h-screen flex-col justify-between  text-gray-700 font-semibold border-r  pb-5 pt-24 max-md:hidden;
   }
 
   .leftsidebar_link {

@@ -42,9 +42,9 @@ export default function LessonPanel(
     
 
     return (
-        <div className=" h-full">
+        <div className=" h-[800px]">
             <ResizablePanelGroup direction="horizontal"
-            className="max-w-full max-h-screen">
+            className="max-w-full h-full">
                 <ResizablePanel className="min-w-60" defaultSize={15}  >
                     <div className="pt-2">
                         <p className="text-2xl font-extrabold">

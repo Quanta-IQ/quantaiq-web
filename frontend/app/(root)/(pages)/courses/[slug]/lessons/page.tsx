@@ -10,10 +10,10 @@ export default function Page({params} : {params: {slug: string}}) {
     
     
     return (
-      <div className="h-svh">
+      <div className="h-screen">
      
         <CourseHead courseID={params.slug} />
-        <div className="pl-4 h-svh ">
+        <div className="pl-4  ">
           <LessonPanel courseID={params.slug} />
 
         </div>

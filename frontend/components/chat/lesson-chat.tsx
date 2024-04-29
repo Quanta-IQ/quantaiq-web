@@ -47,7 +47,7 @@ export default function Chat({ lessonID, sessionID }: LessonSession) {
             <ChatHeader/>
        
 
-            <div className="h-4/6 flex flex-col space-y-4 p-3 overflow-y-auto"
+            <div className="h-5/6 flex flex-col space-y-4 p-3 overflow-y-auto"
                 ref={listRef}
                 onWheel={() => {
                   setScrolled(true);

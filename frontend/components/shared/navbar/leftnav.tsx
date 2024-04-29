@@ -27,10 +27,10 @@ function LeftSidebar() {
  
 
     if (user.isLogin) {return (
-        <>
+      
         
-        <div className={`custom-scrollbar leftsidebar ${isHidden ? 'w-[80px]' : 'w-[190px]'}`}>
-            <div className="flex w-full flex-1 flex-col gap-3 px-3">
+        <div className={` custom-scrollbar leftsidebar  ${isHidden ? 'w-[80px]' : 'w-[190px]'} gap-8  content-between `}>
+            <div className="flex w-full flex-1 flex-col gap-3 px-3 ">
                 {sidebarLinks.map((link) => {
                     const isActive = 
                     (pathname?.startsWith(link.route) && link.route.length > 1) ||
@@ -59,7 +59,7 @@ function LeftSidebar() {
             </div>
             
 
-            <div>
+            <div className="object-bottom">
                 
                         <div className="flex cursor-pointer gap-4 p-4 pl-6" onClick={hideLeftBar}>
                             {!isHidden && <Image
@@ -82,7 +82,7 @@ function LeftSidebar() {
             </div>
             
         </div>
-        </>
+       
     )}
 }
 

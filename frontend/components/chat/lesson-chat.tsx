@@ -15,6 +15,7 @@ interface LessonSession {
 
 export default function Chat({ lessonID, sessionID }: LessonSession) {
     const remoteMessages = useQuery(api.messages.lessonbot.list, { sessionId: sessionID });
+    const [isScrolled, setScrolled] = useState(false);
     const messages = useMemo(
         () =>
           [{ IsViewer: false, Text: "Hey there! You can chat with the Lesson", _id: "0" }].concat(
@@ -26,15 +27,32 @@ export default function Chat({ lessonID, sessionID }: LessonSession) {
           ),
         [remoteMessages]
       );
-    return (
-        <div className="flex flex-col relative h-full max-w-full">
-            <ChatHeader/>
-            <ScrollArea 
-                className="flex-1 overflow-auto overflow-x-hidden relative overscroll-none pb-10 p-5 max-w-full"
-                
-            >
+    const listRef = useRef<HTMLDivElement>(null);
+    useEffect(() => {
+        if (isScrolled) {
+          return;
+        }
+        // Using `setTimeout` to make sure scrollTo works on button click in Chrome
+        setTimeout(() => {
+          listRef.current?.scrollTo({
+            top: listRef.current.scrollHeight,
+            behavior: "smooth",
+          });
+        }, 0);
+      }, [messages, isScrolled]);
 
-            <div className="space-y-5">
+
+    return (
+        <div className="flex flex-col relative h-full max-w-full ">
+            <ChatHeader/>
+       
+
+            <div className="h-4/6 flex flex-col space-y-4 p-3 overflow-y-auto"
+                ref={listRef}
+                onWheel={() => {
+                  setScrolled(true);
+                }}
+            >
                 {remoteMessages === undefined ? (
                 <>
                     <div className="animate-pulse rounded-md bg-black/10 h-5" />
@@ -73,7 +91,6 @@ export default function Chat({ lessonID, sessionID }: LessonSession) {
                 )}
             </div>
 
-            </ScrollArea>
             <Separator />
 
             <div className="relative w-full box-border flex-col pt-2.5 p-5 space-y-2">
@@ -83,3 +100,4 @@ export default function Chat({ lessonID, sessionID }: LessonSession) {
         </div>
     );
 }
+

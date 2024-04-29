@@ -1,7 +1,7 @@
 "use client"
 import {useQuery} from "convex/react";
 import Image from "next/image";
-import React from "react";
+import React, { useEffect } from "react";
 import {Button} from "@/components/ui/button";
 import Link from "next/link";
 import { api } from "@/convex/_generated/api"
@@ -21,17 +21,8 @@ export default function LessonPanel(
 ){
     
 
-    const generateRandomCode = () => {
-        const characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-        let code = "";
-        for (let i = 0; i < 6; i++) {
-            const randomIndex = Math.floor(Math.random() * characters.length);
-            code += characters[randomIndex];
-        }
-        return code;
-    };
-
-    const randomCode = generateRandomCode();
+    
+    const randomCode = useSessionId();
 
     // Rest of the code...
 
@@ -51,8 +42,9 @@ export default function LessonPanel(
     
 
     return (
-        <>
-            <ResizablePanelGroup direction="horizontal">
+        <div className=" h-full">
+            <ResizablePanelGroup direction="horizontal"
+            className="max-w-full max-h-screen">
                 <ResizablePanel className="min-w-60" defaultSize={15}  >
                     <div className="pt-2">
                         <p className="text-2xl font-extrabold">
@@ -71,11 +63,11 @@ export default function LessonPanel(
                     
                 </ResizablePanel>
             <ResizableHandle withHandle  />
-                <ResizablePanel className="min-w-96" defaultSize={75}>
+                <ResizablePanel className="min-w-96  " defaultSize={75}>
                     <Chat lessonID={selectedLesson} sessionID={randomCode}/>
                 </ResizablePanel>
             <ResizableHandle withHandle  />
-                <ResizablePanel className="min-w-96" defaultSize={10} >
+                <ResizablePanel className="min-w-96 " defaultSize={10} >
                     {
                         !selectedLesson && 
                         <>
@@ -93,6 +85,23 @@ export default function LessonPanel(
                      }
                 </ResizablePanel>
             </ResizablePanelGroup>
-        </>
+        </div>
     )
+}
+
+
+const STORE = (typeof window === "undefined" ? null : window)?.sessionStorage;
+const STORE_KEY = "LessonBotSession";
+
+function useSessionId() {
+  const [sessionId] = useState(
+    () => STORE?.getItem(STORE_KEY) ?? crypto.randomUUID()
+  );
+
+  // Get or set the ID from our desired storage location, whenever it changes.
+  useEffect(() => {
+    STORE?.setItem(STORE_KEY, sessionId);
+  }, [sessionId]);
+
+  return sessionId;
 }

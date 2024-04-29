@@ -33,6 +33,7 @@ export default function ChatInput(props: ChatInputProps) {
                 sessionId: props.sessionID,
                 lessonId: props.lessonID
             })
+            setInputValue("");
         }
     };
 

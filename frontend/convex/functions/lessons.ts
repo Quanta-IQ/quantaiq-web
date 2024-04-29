@@ -28,10 +28,13 @@ export const getLessonByID = query({
     handler: async (ctx, args) => {
         if (!args.LessonID) {
             return null;
-        } else {
-            const lesson = await ctx.db
-                .get(args.LessonID as Id<"Lessons">);
+        
+        }
+        try {
+            const lesson = await ctx.db.get(args.LessonID as Id<"Lessons">);
             return lesson;
+        } catch (error) {
+            throw error;
         }
     }
 });

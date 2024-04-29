@@ -16,7 +16,7 @@ interface LessonSession {
 
 export default function Chat({ lessonID, sessionID }: LessonSession) {
     const remoteMessages = useQuery(api.messages.lessonbot.list, { sessionId: sessionID });
-    const lessonInfo = useQuery(api.functions.lessons.getLessonByID, {LessonID: lessonID ?? "test" });
+    const lessonInfo = useQuery(api.functions.lessons.getLessonByID, {LessonID: lessonID || undefined});
 
     const firstMessage = `Hey there! I can assist you on Lesson ${lessonInfo?.Number} - ${lessonInfo?.Name} with the following tasks:`
     + `

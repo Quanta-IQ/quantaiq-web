@@ -171,5 +171,70 @@ export const createUser = mutation({
     }
   });
 
-  
-  
+
+  // Creates a new session
+  export const createSession = mutation({
+    args: {
+      userId: v.string(),
+      sessionId: v.string(),
+      type: v.string(),
+      metadata: v.optional(v.any())
+    },
+    handler: async (ctx, args) => {
+      try {
+        if (args.metadata) {
+          return await ctx.db.insert("Sessions", {
+            UserID: args.userId as Id<"Users">,
+            SessionID: args.sessionId,
+            Type: args.type,
+            Metadata: args.metadata
+          });
+        } else {
+          return await ctx.db.insert("Sessions", {
+            UserID: args.userId as Id<"Users">,
+            SessionID: args.sessionId,
+            Type: args.type
+          });
+        }
+      } catch (error) {
+        console.error(error);
+        throw new Error("Failed to create session");
+      }
+    }
+  });
+
+  // Delete a session by its session ID
+  export const deleteSession = mutation({
+    args: { sessionId: v.string() },
+    handler: async (ctx, args) => {
+      // First, get the session by its session ID
+      const session = await ctx.db
+        .query("Sessions")
+        .withIndex("bySessionID", q => q.eq("SessionID", args.sessionId))
+        .unique();
+
+      if (session) {
+        // Then delete the session using delete() and the Convex ID
+        await ctx.db.delete(session._id);
+      } else {
+        throw new Error("Session not found");
+      }
+    }
+  });
+
+  //Get all user Sessions
+  export const getUserSessions = query({
+    args: { userId: v.optional(v.string()) },
+    handler: async (ctx, args) => {
+      if (!args.userId) {
+        return null;
+      }
+
+      const sessions = await ctx.db
+        .query("Sessions")
+        .withIndex("byUserID", q => q.eq("UserID", args.userId as Id<"Users">))
+        .collect();
+
+      return sessions;
+    }
+  });

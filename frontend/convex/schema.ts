@@ -23,6 +23,7 @@ export default defineSchema({
         Type: v.string(),
         Metadata: v.optional(v.any())
     }).index("byUserID", ["UserID"])
+    .index("bySessionID", ["SessionID"])
     .index("byType", ["Type"] ),
 
     // Courses

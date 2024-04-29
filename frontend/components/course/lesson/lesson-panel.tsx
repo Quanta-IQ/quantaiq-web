@@ -20,8 +20,6 @@ export default function LessonPanel(
     {courseID} : {courseID: string}
 ){
     
-
-    
     const randomCode = useSessionId();
 
     // Rest of the code...
@@ -39,13 +37,28 @@ export default function LessonPanel(
     const selectedLesson = useSearchParams().get("select");
     console.log(selectedLesson);
 
+
+    //Function when selectedLesson Changes
+    const handleSelectedLessonChange = (lessonId: string) => {
+        // Do something with the selected lesson ID
+        console.log("Selected Lesson:", lessonId);
+        // Additional logic...
+    };
+
+    useEffect(() => {
+        if (selectedLesson) {
+            handleSelectedLessonChange(selectedLesson);
+        }
+    }, [selectedLesson]);
+        
+
     
 
     return (
         <div className=" h-[800px]">
             <ResizablePanelGroup direction="horizontal"
             className="max-w-full h-full">
-                <ResizablePanel className="min-w-60" defaultSize={15}  >
+                <ResizablePanel className="min-w-60 flex flex-col gap-4" defaultSize={15}  >
                     <div className="pt-2">
                         <p className="text-2xl font-extrabold">
                             Lessons
@@ -59,6 +72,13 @@ export default function LessonPanel(
                                 </Link>
                             ))}
                         </div>
+                    </div>
+
+                    <div>
+                        <p className="text-2xl font-extrabold">
+                            Sessions
+                        </p>
+
                     </div>
                     
                 </ResizablePanel>

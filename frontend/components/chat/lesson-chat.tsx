@@ -7,6 +7,7 @@ import {ScrollArea} from "@/components/ui/scroll-area"
 import {Separator} from "@/components/ui/separator"
 import { api } from "@/convex/_generated/api";
 import { Id } from "@/convex/_generated/dataModel";
+import Markdown from 'react-markdown'
 
 interface LessonSession {
     lessonID: string | null;
@@ -15,10 +16,29 @@ interface LessonSession {
 
 export default function Chat({ lessonID, sessionID }: LessonSession) {
     const remoteMessages = useQuery(api.messages.lessonbot.list, { sessionId: sessionID });
+    const lessonInfo = useQuery(api.functions.lessons.getLessonByID, {LessonID: lessonID ?? "test" });
+
+    const firstMessage = `Hey there! I can assist you on Lesson ${lessonInfo?.Number} - ${lessonInfo?.Name} with the following tasks:`
+    + `
+     1. **Learning the material**: I can help you understand the concepts of ${lessonInfo?.Name}. 
+    I can also provide explanations and examples to supplement your learning.`
+    +`
+    2. **Modifying the lesson objective**: Based on the lesson description, I can suggest modifications to the
+     lesson objectives to make them more specific, measurable, achievable, relevant, and time-bound (SMART). 
+    `
+    +`3.  **Analyzing texts and attached documents**: I can analyze the provided texts and attached documents.
+    I can also consider the vector representations of the documents to identify key concepts and relationships.
+    `+`4. **Creating examination questions**: I can help you create examination questions
+     that assess  the students' understanding of the concepts covered in the lesson. 
+    `+`5. **Creating a comprehensive lesson plan and teaching strategies**: I can help you develop 
+     a comprehensive lesson plan that incorporates the learning objectives, teaching strategies,
+      and assessment methods.`;
+
+
     const [isScrolled, setScrolled] = useState(false);
     const messages = useMemo(
         () =>
-          [{ IsViewer: false, Text: "Hey there! You can chat with the Lesson", _id: "0" }].concat(
+          [{ IsViewer: false, Text: firstMessage, _id: "0" }].concat(
             (remoteMessages ?? []) as {
               IsViewer: boolean;
               Text: string;
@@ -83,7 +103,7 @@ export default function Chat({ lessonID, sessionID }: LessonSession) {
                             : "rounded-tl-none")
                         }
                         >
-                        {message.Text}
+                        <Markdown className="w-full rounded-xl px-3 py-2 whitespace-pre-wrap ">{message.Text}</Markdown>
                         </div>
                     )}
                     </div>

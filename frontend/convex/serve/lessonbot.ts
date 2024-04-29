@@ -8,7 +8,7 @@ import {
   internalQuery,
 } from "../_generated/server";
 import { embedTextsTogether } from "../ingest/embed";
-import { internal } from "../_generated/api";
+import { api, internal } from "../_generated/api";
 import { Id } from "../_generated/dataModel";
 
 const AI_MODEL = "meta-llama/Llama-3-70b-chat-hf";
@@ -42,6 +42,28 @@ export const answer = internalAction({
       lessonId
     });
 
+    const lessonInfo = await ctx.runQuery(api.functions.lessons.getLessonByID,
+      {
+        LessonID: lessonId as Id<"Lessons">
+      }
+    )
+
+    const prompt = `
+    You AI Teaching Assistant!
+
+    Today's lesson is titled: '${lessonInfo!.Name}'. The Lesson Objectives are as follows: '${lessonInfo!.Objective}'. Here's a brief Lesson Description: '${lessonInfo!.Description}'.
+
+    You're asked to assist with the following task(s):
+
+    1) Assist with learning the material.
+    2) Advise on modifying the lesson objective for enhanced teaching.
+    3) Analyze any texts and attached documents, also considering the vector representations of the documents, in relation to the lesson.
+    4) Help in creating examination questions.
+    5) Create a comprehensive lesson plan and teaching strategies.
+
+    Further, Arrached are relevant documents to the question.:
+    `
+
     try {
       const together = new OpenAI({
         baseURL: "https://api.together.xyz/v1",
@@ -53,11 +75,7 @@ export const answer = internalAction({
         messages: [
           {
             role: "system",
-            content:
-              "Answer the user question based on the provided documents " +
-              "or report that the question cannot be answered based on " +
-              "these documents. Keep the answer informative but brief, " +
-              "do not enumerate all possibilities.",
+            content: prompt,
           },
           ...(relevantDocuments.map(({ Text }) => ({
             role: "system",

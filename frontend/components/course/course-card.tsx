@@ -22,7 +22,7 @@ export default function CourseCard(
     }: CourseCardProps
 ){
     return (
-        <Card className="max-w-3xl p-3">
+        <Card className="w-96 p-3">
             <div className="flex flex-col justify-between">
                 <div>
                     <h1 className="text-3xl font-bold">{courseName}</h1>

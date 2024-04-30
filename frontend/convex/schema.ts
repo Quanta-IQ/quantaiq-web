@@ -142,7 +142,14 @@ export default defineSchema({
     .index("by_ClassID", ["ClassID"])
     .index("by_UserID_ClassID", ["UserID", "ClassID"]),
 
-
-
-
+    //Test table
+    Tests: defineTable({
+        TestID: v.string(),
+        CreatorID: v.id("Users"),
+        TestContent: v.string(),
+        Metadata: v.optional(v.any())
+    }).index("byTestID", ["TestID"]) 
+    .index("byCreatorID", ["CreatorID"])
+    .index("by_TestID_CreatorID", ["TestID","CreatorID"]),
+ 
 });

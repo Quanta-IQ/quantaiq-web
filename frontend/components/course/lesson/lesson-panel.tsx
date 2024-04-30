@@ -95,6 +95,13 @@ export default function LessonPanel(
     }
 
 
+    
+
+
+    const filteredSessions = userSessions?.filter((session: any) => {
+        return courseLessons?.some((courseLesson: any) => courseLesson._id === session.Metadata.lessonId);
+    });
+    
     //Handle delete session
 
     const handleSessionDelete =  async (sessionId: string) => {
@@ -105,16 +112,16 @@ export default function LessonPanel(
         await deleteSession({
             sessionId: sessionId
         })
+
+        if(filteredSessions != null ){
+            setSession(filteredSessions[0].SessionID)
+
+        }else{
+            const router = useRouter();
+            router.push(`/courses/${courseID}/lessons?`)
+        }
     }
-
-
-    const filteredSessions = userSessions?.filter((session: any) => {
-        return courseLessons?.some((courseLesson: any) => courseLesson._id === session.Metadata.lessonId);
-    });
     
-        
-    console.log(filteredSessions)
-
     return (
         <div className=" h-[800px]">
             <ResizablePanelGroup direction="horizontal"
@@ -198,7 +205,7 @@ export default function LessonPanel(
             <ResizableHandle withHandle  />
                 <ResizablePanel className="min-w-96 " defaultSize={10} >
                     {
-                        !selectedLesson && 
+                        (!selectedLesson) && 
                         <>
                             <div className="w-full h-full flex items-center justify-center">
                                 <p className="text-2xl font-extrabold">

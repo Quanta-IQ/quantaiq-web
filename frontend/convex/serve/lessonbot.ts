@@ -74,7 +74,11 @@ export const answer = internalAction({
     4) Help in creating examination questions.
     5) Create a comprehensive lesson plan and teaching strategies.
 
-    Further, Arrached are relevant documents to the question.:
+    WHEN CREATING EXAMS MAKE sure an LLM can grade and facilitate the exam. 
+    WHEN CREATING EXAMS MAKE sure your formatting clear and accurate that an LLM can easily parse.
+    WHEN CREATING EXAMS MAKE sure to add an answer key in the end.
+    DON'T output "Here are the modified ____" or anything similar when you are asked to modify or create something. Only output the modification.
+    DON'T Don't output "Here is the exam" or anything similar when you are asked to generate exams. Only output the exam.
     `
     console.log("PROMPT", prompt);
 

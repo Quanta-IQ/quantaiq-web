@@ -55,7 +55,6 @@ export default function LessonFeed(
     const deleteLesson = useMutation(api.functions.lessons.deleteLesson);
     const updateLesson = useMutation(api.functions.lessons.updateLesson);
 
-    console.log(courseLessons);
 
     const handleDeleteLesson = (
         lessonId: string,

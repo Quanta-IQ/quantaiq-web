@@ -11,7 +11,7 @@ import {
     ResizablePanel,
     ResizablePanelGroup,
   } from "@/components/ui/resizable"
-import { useRouter, useSearchParams } from "next/navigation";
+  import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import EditLesson from "../syllabus/edit-lesson";
 import Chat from "@/components/chat/lesson-chat";
 import { useState } from "react";
@@ -38,34 +38,22 @@ export default function LessonPanel(
     const courseLessons = useQuery(api.functions.lessons.getLessonsByCourseID, {
         CourseID: courseID as Id<"Courses">
     });
+    const pathname = usePathname();
+    const searchParams = useSearchParams();
 
-    const changeParam = useSearchParams().get("change");
     //url pathname
-    const selectedLesson = useSearchParams().get("select");
-    // Function to handle URL parameter changes
-    const selectedSession = useSearchParams().get("session");
-        
-
-    useEffect(() => {
-        if (selectedLesson && changeParam != null) {
-            console.log("Click on lesson change")
-            handleSelectedLessonChange(selectedLesson);
-             
-         }
-        if (selectedSession != null){
-            
-            const sessionDetails = userSessions?.find((session: any) => session.sessionID === selectedSession);
-            // Do something with sessionDetails
-            if(sessionDetails){
-                setSession(selectedSession)
-            }
-        }
-    }, [selectedLesson, selectedSession, changeParam]);
+    const selectedLesson = searchParams.get("select");
+    // select a session
+    const selectedSession = searchParams.get("session");
    
+    
+    console.log(selectedLesson, selectedSession, session)
+
     console.log(userSessions);
 
     //Function when selectedLesson Changes
     const handleSelectedLessonChange = async (lessonId: string) => {
+        console.log("Triggered New Session with New Lesson")
         const sessionId = crypto.randomUUID()
         
         // Do something with the selected lesson ID
@@ -82,12 +70,17 @@ export default function LessonPanel(
             });
             setSession(sessionId)
         }
-        
-
     };
+
+    //Handle session change
+
+    const handleSessionChange = (sessionId: string) => {
+        setSession(sessionId)
+    }
+
+    
     
         
-    console.log("Selected", selectedLesson, changeParam, session, selectedSession)
     
 
     return (
@@ -100,15 +93,17 @@ export default function LessonPanel(
                             Lessons
                         </p>
                         <ScrollArea className="h-96">
-                        <div className=" flex flex-col space-y-3 pr-2 pt-4">
-                            {courseLessons?.map((lesson: any) => (
-                                <Link key={lesson._id} href={`/courses/${courseID}/lessons?select=${lesson._id}&change=${lesson._id}`}>
-                                    <p className={`flex items-center space-x-2 ${lesson._id === selectedLesson ? 'font-extrabold' : ''}`}>
-                                        {lesson.Number} - {lesson.Name}
-                                    </p>
-                                </Link>
-                            ))}
-                        </div>
+                            <div className=" flex flex-col space-y-3 pr-2 pt-4">
+                                {courseLessons?.map((lesson: any) => (
+                                    <Link key={lesson._id} href={`/courses/${courseID}/lessons?select=${lesson._id}`} >
+                                        <div className={`flex items-center space-x-2 ${lesson._id === selectedLesson ? 'font-extrabold' : ''}`} onClick={() => {
+                                            handleSelectedLessonChange(lesson._id);
+                                        }} >
+                                            {lesson.Number} - {lesson.Name}
+                                        </div>
+                                    </Link>
+                                ))}
+                            </div>
                         </ScrollArea>
                         
                     </div>
@@ -120,8 +115,8 @@ export default function LessonPanel(
                         <ScrollArea className="h-60">
                             <div className=" flex flex-col space-y-3 pr-2 pt-4">
                                 {userSessions?.map((session: any) => (
-                                    <Link key={session._id} href={`/courses/${courseID}/lessons?session=${session._id}&select=${session.Metadata.lessonId}&change=null`}>
-                                        <p className={`flex items-center space-x-2 ${session.sessionID === selectedSession ? 'font-extrabold' : ''}`}>
+                                    <Link key={session._id} href={`/courses/${courseID}/lessons?session=${session.sessionID}&select=${session.Metadata.lessonId}`}>
+                                        <p className={`flex items-center space-x-2 ${session.sessionID === selectedSession ? 'font-extrabold' : ''}`} onClick={() => handleSessionChange(session.SessionID)}>
                                             {session.SessionID}
                                         </p>
                                     </Link>

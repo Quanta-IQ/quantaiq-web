@@ -78,7 +78,6 @@ export default function EditLesson(
         Docs: lessonInfo?.Content
     })
 
-    console.log("Lesson Docs", lessonDocs);
 
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
@@ -99,8 +98,6 @@ export default function EditLesson(
             setFiles(lessonDocs.filter(Boolean).map((document) => document.URL));
         }
     }, [lessonDocs]);
-
-    console.log("Files", files)
 
 
     //File Handlers
@@ -127,7 +124,7 @@ export default function EditLesson(
               
                 try {
                     const uploadedFile = await handleFileUpload(file.name, dataFile, courseID, "dump", file.type);
-                    console.log("Uploaded File", uploadedFile);
+              
                     // Add to Files Array
                     setFiles([...files, uploadedFile!.toString()]);
                 } catch (error) {
@@ -162,7 +159,7 @@ export default function EditLesson(
     const createDocument = useMutation(api.functions.lessons.createDocument);
     
     const onSubmit = async (values: z.infer<typeof formSchema>) => {
-        console.log("Form", values);
+    
         const contentArray = await Promise.all(files.map(async (fileUrl) => {
             const url = new URL(fileUrl);
             const pathname = url.pathname;
@@ -179,7 +176,6 @@ export default function EditLesson(
             }
         }));
         
-        console.log("Content Array", contentArray);
 
         try {
             if (!contentArray){

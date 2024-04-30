@@ -120,8 +120,6 @@ export default function CreateLesson(
     };
 
 
-    console.log("Files", files)
-
     //Handle File Delete
     const fileDelete = (fileUrl: string) => {
         const newFiles = files.filter((file) => file !== fileUrl);

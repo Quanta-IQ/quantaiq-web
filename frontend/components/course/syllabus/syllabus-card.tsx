@@ -21,7 +21,6 @@ export default function SyllabusCard(
     const courseInfo = useQuery(api.functions.courses.getCourseByCourseID, {
         CourseID: courseID as Id<"Courses">
     })
-    console.log(courseInfo)
 
 
     return (

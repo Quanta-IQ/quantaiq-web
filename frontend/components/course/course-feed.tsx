@@ -17,7 +17,6 @@ export default function CourseFeed() {
         UserID: userConvex?._id 
     })
 
-    console.log(getCoursesCreated);
 
 
     return (

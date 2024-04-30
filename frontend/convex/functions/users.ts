@@ -212,7 +212,7 @@ export const createUser = mutation({
         .query("Sessions")
         .withIndex("bySessionID", q => q.eq("SessionID", args.sessionId))
         .unique();
-
+      
       if (session) {
         // Then delete the session using delete() and the Convex ID
         await ctx.db.delete(session._id);

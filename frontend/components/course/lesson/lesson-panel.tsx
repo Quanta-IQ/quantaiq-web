@@ -19,17 +19,32 @@ import useUserConvexData from "@/hooks/useUserConvexData";
 import {
     ScrollArea
 } from "@/components/ui/scroll-area"
+import {  TrashIcon } from "lucide-react";
+import {
+    AlertDialog,
+    AlertDialogAction,
+    AlertDialogCancel,
+    AlertDialogContent,
+    AlertDialogDescription,
+    AlertDialogFooter,
+    AlertDialogHeader,
+    AlertDialogTitle,
+    AlertDialogTrigger,
+  } from "@/components/ui/alert-dialog"
 
 export default function LessonPanel(
     {courseID} : {courseID: string}
 ){  
-
+    
     const userConvex = useUserConvexData()
     const [session, setSession] = useState(crypto.randomUUID())
     const userSessions = useQuery(api.functions.users.getUserSessions,{
       userId: userConvex?._id  
     })
+    const deleteSession = useMutation(api.functions.users.deleteSession);
     const createSession = useMutation(api.functions.users.createSession);
+    
+    const clearThread = useMutation(api.messages.lessonbot.clear);
     const courseInfo = useQuery(api.functions.courses.getCourseByCourseID, {
         CourseID: courseID as Id<"Courses">
     }) 
@@ -45,7 +60,8 @@ export default function LessonPanel(
     const selectedLesson = searchParams.get("select");
     // select a session
     const selectedSession = searchParams.get("session");
-   
+    
+
     
     console.log(selectedLesson, selectedSession, session)
 
@@ -76,6 +92,19 @@ export default function LessonPanel(
 
     const handleSessionChange = (sessionId: string) => {
         setSession(sessionId)
+    }
+
+
+    //Handle delete session
+
+    const handleSessionDelete =  async (sessionId: string) => {
+        await clearThread({
+            sessionId: sessionId
+        })
+
+        await deleteSession({
+            sessionId: sessionId
+        })
     }
 
     
@@ -112,13 +141,39 @@ export default function LessonPanel(
                         <p className="text-2xl font-extrabold">
                             Sessions
                         </p>
-                        <ScrollArea className="h-60">
-                            <div className=" flex flex-col space-y-3 pr-2 pt-4">
-                                {userSessions?.map((session: any) => (
-                                    <Link key={session._id} href={`/courses/${courseID}/lessons?session=${session.sessionID}&select=${session.Metadata.lessonId}`}>
-                                        <p className={`flex items-center space-x-2 ${session.sessionID === selectedSession ? 'font-extrabold' : ''}`} onClick={() => handleSessionChange(session.SessionID)}>
-                                            {session.SessionID}
-                                        </p>
+                        <ScrollArea className="h-64">
+                            <div className=" flex flex-col space-y-3 pr-2 pt-4 w-full">
+                                {userSessions?.map((Session: any) => (
+                                    <Link key={Session._id} href={`/courses/${courseID}/lessons?session=${Session.sessionID}&select=${Session.Metadata.lessonId}`}>
+                                        <div className={`w-full flex flex-row items-center space-x-2 ${Session.SessionID === session ? 'font-extrabold' : ''}`} onClick={() => handleSessionChange(Session.SessionID)}>
+                                            <p className="w-48 truncate text-xs">{Session.SessionID}</p>
+                                            <p>
+                                                <AlertDialog>
+                                                <AlertDialogTrigger>
+                                                        <TrashIcon className="hover:text-destructive h-4 w-4 mr-2" />                                                  
+                                                </AlertDialogTrigger>
+                                                <AlertDialogContent>
+                                                    <AlertDialogHeader>
+                                                    <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+                                                    <AlertDialogDescription>
+                                                        This action cannot be undone. This will permanently delete the conversation
+                                                        and from our servers.
+                                                    </AlertDialogDescription>
+                                                    </AlertDialogHeader>
+                                                    <AlertDialogFooter>
+                                                    <AlertDialogCancel>Cancel</AlertDialogCancel>
+                                                    <AlertDialogAction
+                                                    onClick = {
+                                                        () => handleSessionDelete(
+                                                            session
+                                                        )
+                                                    }
+                                                    >Continue</AlertDialogAction>
+                                                    </AlertDialogFooter>
+                                                </AlertDialogContent>
+                                                </AlertDialog>
+                                            </p>
+                                        </div>
                                     </Link>
                                 ))}
                             </div>

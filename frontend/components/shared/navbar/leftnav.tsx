@@ -8,8 +8,8 @@ import Image from "next/image";
 import Link from "next/link";
 import { usePathname, useRouter} from 'next/navigation'
 import React from "react";
-import { useEffect } from "react";
-
+import { useEffect, useContext, useState } from "react";
+import {SidebarContext} from "@/providers/SidebarProvider";
 
 
 function LeftSidebar() {
@@ -17,19 +17,21 @@ function LeftSidebar() {
     const pathname = usePathname();
 
     const {user}:any = AuthContext();
-    const [isHidden, setIsHidden] = React.useState(false);
-
-
+    
+    let {collapsed, setCollapsed}:any = SidebarContext();
+    const [isHidden, setIsHidden] = useState(collapsed);
+    console.log(collapsed);
 
     const hideLeftBar = () => {
         setIsHidden(!isHidden);
+        setCollapsed(isHidden);
     }
- 
+    
 
     if (user.isLogin) {return (
       
         
-        <div className={`min-w-20 custom-scrollbar leftsidebar  ${isHidden ? 'w-[80px]' : 'w-[190px]'} gap-8  content-between `}>
+        <div className={`fixed min-w-20 custom-scrollbar leftsidebar  ${isHidden ? 'w-[80px]' : 'w-[190px]'} gap-8  content-between `}>
             <div className="flex w-full flex-1 flex-col gap-3 px-3 ">
                 {sidebarLinks.map((link) => {
                     const isActive = 

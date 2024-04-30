@@ -23,15 +23,18 @@ export const createLesson = mutation({
 // Get Lesson by ID
 export const getLessonByID = query({
     args: {
-        LessonID: v.optional(v.id("Lessons"))
+        LessonID: v.optional(v.string())
     },
     handler: async (ctx, args) => {
         if (!args.LessonID) {
             return null;
-        } else {
-            const lesson = await ctx.db
-                .get(args.LessonID);
+        
+        }
+        try {
+            const lesson = await ctx.db.get(args.LessonID as Id<"Lessons">);
             return lesson;
+        } catch (error) {
+            throw error;
         }
     }
 });

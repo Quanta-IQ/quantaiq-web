@@ -58,7 +58,7 @@ interface Props {
 const defaultAvatar = "/assets/avatar/avatar.png";
 export default function OnboardingForm({user} : Props) {
     const [isLoading, setIsLoading] = useState(false);
-    //console.log("Form", user);
+    
     const router = useRouter();
     const createUser = useMutation(api.functions.users.createUser);
    

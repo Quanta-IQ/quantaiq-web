@@ -16,6 +16,16 @@ export default defineSchema({
     }).index("by_UserID", ["UserID"])
     .index("by_Username", ["Username"]),
 
+    //Sessions for User
+    Sessions: defineTable({
+        UserID: v.id("Users"),
+        SessionID: v.string(),
+        Type: v.string(),
+        Metadata: v.optional(v.any())
+    }).index("byUserID", ["UserID"])
+    .index("bySessionID", ["SessionID"])
+    .index("byType", ["Type"] ),
+
     // Courses
     Courses: defineTable({
         CreatorID: v.id("Users"), //User ID of the creator

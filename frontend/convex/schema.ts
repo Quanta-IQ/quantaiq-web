@@ -149,6 +149,5 @@ export default defineSchema({
         Metadata: v.optional(v.any())
     }) 
     .index("byCreatorID", ["CreatorID"])
-    
  
 });

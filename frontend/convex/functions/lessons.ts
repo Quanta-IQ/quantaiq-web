@@ -30,6 +30,9 @@ export const getLessonByID = query({
             return null;
         
         }
+        if(args.LessonID == "null"){
+            return null;
+        }
         try {
             const lesson = await ctx.db.get(args.LessonID as Id<"Lessons">);
             return lesson;

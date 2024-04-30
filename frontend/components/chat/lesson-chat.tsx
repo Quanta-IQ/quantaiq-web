@@ -1,6 +1,6 @@
 "use client"
 import React, {useEffect,useMemo,useRef,useState} from "react";
-import {useQuery} from "convex/react";
+import {useQuery, useMutation} from "convex/react";
 import ChatHeader from "./chat-header";
 import ChatInput from "./chat-input";
 import {ScrollArea} from "@/components/ui/scroll-area"
@@ -8,13 +8,25 @@ import {Separator} from "@/components/ui/separator"
 import { api } from "@/convex/_generated/api";
 import { Id } from "@/convex/_generated/dataModel";
 import Markdown from 'react-markdown'
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip"
+import { Button } from "@/components/ui/button";
+import { toast } from "@/components/ui/use-toast";
+import {
+  Sparkles, WandSparkles
+} from "lucide-react"
 
 interface LessonSession {
     lessonID: string | null;
     sessionID: string;
+    userID : string | null;
 }
 
-export default function Chat({ lessonID, sessionID }: LessonSession) {
+export default function Chat({ lessonID, sessionID, userID }: LessonSession) {
     const remoteMessages = useQuery(api.messages.lessonbot.list, { sessionId: sessionID });
     const lessonInfo = useQuery(api.functions.lessons.getLessonByID, {LessonID: lessonID || undefined});
 
@@ -36,6 +48,28 @@ export default function Chat({ lessonID, sessionID }: LessonSession) {
 
 
     const [isScrolled, setScrolled] = useState(false);
+    const createTest = useMutation(api.functions.tests.createTest);
+    const handleTestCreate =  async (message: string) => {
+      if (userID){
+        try {
+          const newTest =  await createTest({
+            CreatorID: userID,
+            TestContent: message
+          })
+
+          if (newTest){
+            toast({
+              title: `Created Test!`,
+              description: `Added this exam to your lesson plan`,
+          })
+          }
+        }
+        catch {
+
+        }
+      }
+    }
+
     const messages = useMemo(
         () =>
           [{ IsViewer: false, Text: firstMessage, _id: "0" }].concat(
@@ -103,7 +137,33 @@ export default function Chat({ lessonID, sessionID }: LessonSession) {
                             : "rounded-tl-none")
                         }
                         >
-                        <Markdown className="w-full rounded-xl px-3 py-2 whitespace-pre-wrap ">{message.Text}</Markdown>
+                        {
+                          !message.IsViewer && 
+                          <TooltipProvider>
+                            <Tooltip>
+                              <TooltipTrigger className="text-left">
+                                <Markdown className="w-full rounded-xl px-3 py-2 whitespace-pre-wrap ">
+                                  {message.Text}
+                                </Markdown>
+                              </TooltipTrigger>
+                              <TooltipContent>
+                                <div className="flex flex-row gap-3">
+                                  <p className="text-sm hover:font-extrabold flex flex-row items-center " onClick={() => handleTestCreate(
+                                    message.Text
+                                  )} >
+                                    <Sparkles className="h-4 w-4 mr-2  "/> Create a test from the AI message
+                                  </p>
+                                </div>
+                              </TooltipContent>
+                            </Tooltip>
+                            
+                          </TooltipProvider>
+                        }
+                        {
+                          message.IsViewer &&
+                          <Markdown className="w-full rounded-xl px-3 py-2 whitespace-pre-wrap ">{message.Text}</Markdown>
+                        }
+
                         </div>
                     )}
                     </div>

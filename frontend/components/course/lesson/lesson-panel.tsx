@@ -185,7 +185,7 @@ export default function LessonPanel(
                 </ResizablePanel>
             <ResizableHandle withHandle  />
                 <ResizablePanel className="min-w-96  " defaultSize={75}>
-                    {selectedLesson && <Chat key={session} lessonID={selectedLesson} sessionID={session}/>}
+                    {selectedLesson && <Chat key={session} lessonID={selectedLesson} sessionID={session} userID={userConvex?._id as string}/>}
                     {!selectedLesson && <div className="w-full h-full flex items-center justify-center">
                                 <p className="text-2xl font-extrabold">
                                     Select A Lesson

@@ -29,7 +29,7 @@ function LeftSidebar() {
     if (user.isLogin) {return (
       
         
-        <div className={` custom-scrollbar leftsidebar  ${isHidden ? 'w-[80px]' : 'w-[190px]'} gap-8  content-between `}>
+        <div className={`min-w-20 custom-scrollbar leftsidebar  ${isHidden ? 'w-[80px]' : 'w-[190px]'} gap-8  content-between `}>
             <div className="flex w-full flex-1 flex-col gap-3 px-3 ">
                 {sidebarLinks.map((link) => {
                     const isActive = 

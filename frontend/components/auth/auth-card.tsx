@@ -44,7 +44,7 @@ export default function AuthCard(){
             }
           }
         } 
-      }, [user]); 
+      }, [user,user_convex, router]); 
     useEffect(() => {
         if (user_convex) {
           toast({
@@ -53,7 +53,7 @@ export default function AuthCard(){
           })
           router.push("/");
         }
-    }, [user_convex]);
+    }, [user_convex, router]);
    
     
     

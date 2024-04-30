@@ -44,7 +44,7 @@ export default function OnboardingCard(){
           });
           setStartedOnboarding(true);
         }
-    }, [userConvex]);
+    }, [userConvex, router, toast]);
     return(
         <>
             <Card className="w-80 p-5">

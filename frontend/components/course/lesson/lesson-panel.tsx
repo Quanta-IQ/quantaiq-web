@@ -116,9 +116,6 @@ export default function LessonPanel(
         if(filteredSessions != null ){
             setSession(filteredSessions[0].SessionID)
 
-        }else{
-            const router = useRouter();
-            router.push(`/courses/${courseID}/lessons?`)
         }
     }
     

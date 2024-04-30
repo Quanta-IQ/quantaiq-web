@@ -128,7 +128,7 @@ export default function Chat({ lessonID, sessionID, userID }: LessonSession) {
               _id: string;
             }[]
           ),
-        [remoteMessages]
+        [remoteMessages, firstMessage]
       );
     const listRef = useRef<HTMLDivElement>(null);
     useEffect(() => {

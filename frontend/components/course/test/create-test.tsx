@@ -229,7 +229,7 @@ export default function CreateTest(
             setPrompt(`
         [INSTRUCTIONS] Output should only be the numbered list of lesson objectives [CONTEXT]Create a list of lesson objectives bullet format. COURSE: ${courseName}; LESSONNAME: ${form.getValues().Name} LESSONDESCRIPTION: ${form.getValues().Description}[END CONTEXT]`);
         }
-    }, [form.getValues()]);
+    }, [form, courseName]);
 
 
 

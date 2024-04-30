@@ -107,10 +107,13 @@ export default function LessonPanel(
         })
     }
 
-    
+
+    const filteredSessions = userSessions?.filter((session: any) => {
+        return courseLessons?.some((courseLesson: any) => courseLesson._id === session.Metadata.lessonId);
+    });
     
         
-    
+    console.log(filteredSessions)
 
     return (
         <div className=" h-[800px]">
@@ -143,7 +146,7 @@ export default function LessonPanel(
                         </p>
                         <ScrollArea className="h-64">
                             <div className=" flex flex-col space-y-3 pr-2 pt-4 w-full">
-                                {userSessions?.map((Session: any) => (
+                                {filteredSessions?.map((Session: any) => (
                                     <Link key={Session._id} href={`/courses/${courseID}/lessons?session=${Session.sessionID}&select=${Session.Metadata.lessonId}`}>
                                         <div className={`w-full flex flex-row items-center space-x-2 ${Session.SessionID === session ? 'font-extrabold' : ''}`} onClick={() => handleSessionChange(Session.SessionID)}>
                                             <p className="w-48 truncate text-xs">{Session.SessionID}</p>

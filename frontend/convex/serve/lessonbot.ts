@@ -24,6 +24,19 @@ export const answer = internalAction({
     });
     const lastUserMessage = messages.at(-1)!.Text;
 
+    const lessonInfo = await ctx.runQuery(api.functions.lessons.getLessonByID,
+      {
+        LessonID: lessonId as Id<"Lessons">
+      }
+    )
+
+    console.log(lessonInfo)
+    const documentIds = lessonInfo?.Content
+    console.log("Current: ", documentIds)
+  
+
+
+
     const [embedding] = await embedTextsTogether([lastUserMessage]);
 
     const searchResults = await ctx.vectorSearch("Embeddings", "byEmbedding", {
@@ -31,9 +44,13 @@ export const answer = internalAction({
       limit: 8,
     });
 
-    const relevantDocuments = await ctx.runQuery(internal.serve.lessonbot.getChunks, {
+
+    const chunkFromSearch = await ctx.runQuery(internal.serve.lessonbot.getChunks, {
       embeddingIds: searchResults.map(({ _id }) => _id),
     });
+
+    //Filter to current lesson
+    const relevantDocuments = chunkFromSearch.filter(({ DocumentID }) => documentIds!.includes(DocumentID));
 
     console.log(lastUserMessage, relevantDocuments);
 
@@ -42,11 +59,7 @@ export const answer = internalAction({
       lessonId
     });
 
-    const lessonInfo = await ctx.runQuery(api.functions.lessons.getLessonByID,
-      {
-        LessonID: lessonId as Id<"Lessons">
-      }
-    )
+    
 
     const prompt = `
     You AI Teaching Assistant!
@@ -63,6 +76,7 @@ export const answer = internalAction({
 
     Further, Arrached are relevant documents to the question.:
     `
+    console.log("PROMPT", prompt);
 
     try {
       const together = new OpenAI({
@@ -149,5 +163,20 @@ export const updateBotMessage = internalMutation(
     { messageId, text }: { messageId: Id<"LessonBotMessages">; text: string }
   ) => {
     await ctx.db.patch(messageId, { Text: text });
+  }
+);
+
+
+//Retrieve chunkIds of document
+export const retreiveChunkIDs = internalQuery(
+   async (
+    ctx,
+    { documentId }: { documentId: Id<"Documents"> }
+  ) => {
+    const result = await  ctx.db.query("Chunks")
+    .withIndex("byDocumentID", (q) => q.eq("DocumentID", documentId))
+    .collect();
+    console.log("Length", result.length)
+    return result.map(({ _id }) => _id);
   }
 );

@@ -120,9 +120,10 @@ export default defineSchema({
         Code: v.string(), //to join the class
         ImageURL: v.optional(v.string()),
         Visibility: v.string(), //Public or Private
-
+        Creator: v.id("Users")
     })
-    .index("by_CourseID", ["CourseID"]),
+    .index("by_CourseID", ["CourseID"])
+    .index("by_Creator", ["Creator"]),
     
     //Teacher table for each class
     Teachers: defineTable({

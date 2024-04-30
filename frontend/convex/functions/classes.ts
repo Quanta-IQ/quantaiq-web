@@ -12,9 +12,11 @@ export const createClass = mutation({
         Code: v.string(),
         ImageURL: v.optional(v.string()),
         Visibility: v.string(),
+        Creator: v.id("Users")
     },
     handler: async (ctx, args) => {
-        return await ctx.db.insert("Classes", args);
+        return await ctx.db.insert("Classes", args)
+        
     },
 });
 
@@ -141,3 +143,18 @@ export const removeStudentFromClass = mutation({
         await ctx.db.delete(studentInClass._id);
     },
 });
+
+
+//Fetch all students 
+export const fetchStudentFromClass = query({
+    args: {
+        ClassID: v.id("Classes")
+    },
+    handler: async (ctx,args) => {
+        const students = await ctx.db
+            .query("Students")
+            .withIndex("by_ClassID", q => q.eq("ClassID", args.ClassID))
+            .collect();
+        return students
+    }
+})

@@ -9,15 +9,17 @@ import { api } from "@/convex/_generated/api";
 import { Id } from "@/convex/_generated/dataModel";
 import Markdown from 'react-markdown'
 import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from "@/components/ui/tooltip"
+  ContextMenu,
+  ContextMenuContent,
+  ContextMenuItem,
+  ContextMenuTrigger,
+} from "@/components/ui/context-menu"
+
 import { Button } from "@/components/ui/button";
 import { toast } from "@/components/ui/use-toast";
 import {
-  Sparkles, WandSparkles
+  Sparkles, SquareDashedMousePointer,
+  Target
 } from "lucide-react"
 
 interface LessonSession {
@@ -49,6 +51,50 @@ export default function Chat({ lessonID, sessionID, userID }: LessonSession) {
 
     const [isScrolled, setScrolled] = useState(false);
     const createTest = useMutation(api.functions.tests.createTest);
+    const updateLesson = useMutation(api.functions.lessons.updateLesson);
+    const handleUpdateLesson = async (
+      type: string,
+      message: string
+    ) => {
+      if (lessonID) {
+        try {
+          if(type === "objectives"){
+            const lesson = await updateLesson({
+              LessonID: lessonID,
+              data: {
+                Objective: message
+              }
+            })
+            
+              toast({
+              title: "Updated Lesson Objectives",
+              description: "We have added the AI message to your objectives"
+            })
+            
+          }
+          if(type === "description"){
+            const lesson = await updateLesson({
+              LessonID: lessonID,
+              data: {
+                Description: message
+              }
+            })
+            toast({
+              title: "Updated Lesson Description",
+              description: "We have added the AI message to your description"
+            })
+            
+          }
+        }catch {
+          
+          toast({
+            title:"Uh-oh we messed up!",
+            description:"Something went wrong please try again"
+          })
+          throw new Error("");
+        }
+      }
+    }
     const handleTestCreate =  async (message: string) => {
       if (userID){
         try {
@@ -65,7 +111,10 @@ export default function Chat({ lessonID, sessionID, userID }: LessonSession) {
           }
         }
         catch {
-
+          toast({
+            title:"Uh-oh we messed up!",
+            description:"Something went wrong please try again"
+          })
         }
       }
     }
@@ -139,25 +188,38 @@ export default function Chat({ lessonID, sessionID, userID }: LessonSession) {
                         >
                         {
                           !message.IsViewer && 
-                          <TooltipProvider>
-                            <Tooltip>
-                              <TooltipTrigger className="text-left">
-                                <Markdown className="w-full rounded-xl px-3 py-2 whitespace-pre-wrap ">
-                                  {message.Text}
-                                </Markdown>
-                              </TooltipTrigger>
-                              <TooltipContent>
-                                <div className="flex flex-row gap-3">
-                                  <p className="text-sm hover:font-extrabold flex flex-row items-center " onClick={() => handleTestCreate(
+                          <ContextMenu>
+                            <ContextMenuTrigger>
+                              <Markdown className="w-full rounded-xl px-3 py-2 whitespace-pre-wrap ">
+                                {message.Text}
+                              </Markdown>
+                            </ContextMenuTrigger>
+                            <ContextMenuContent>
+                              <ContextMenuItem onClick={() => handleTestCreate(
                                     message.Text
-                                  )} >
-                                    <Sparkles className="h-4 w-4 mr-2  "/> Create a test from the AI message
-                                  </p>
-                                </div>
-                              </TooltipContent>
-                            </Tooltip>
+                                  )} 
+                              > <Sparkles className="h-4 w-4 mr-2"/> Create Test
+                              </ContextMenuItem>
+                              <ContextMenuItem
+                                onClick={() => handleUpdateLesson(
+                                  "objectives",
+                                  message.Text
+                                )} 
+                              >
+                                  <Target className="h-4 w-4 mr-2"/> Add as Lesson Objectives 
+                              </ContextMenuItem>
+                              <ContextMenuItem
+                                onClick={() => handleUpdateLesson(
+                                  "description",
+                                  message.Text
+                                )} 
+                              >
+                                  <SquareDashedMousePointer className="h-4 w-4 mr-2"/> Add as Lesson Description 
+                              </ContextMenuItem>
+                            </ContextMenuContent>
                             
-                          </TooltipProvider>
+                          </ContextMenu>
+
                         }
                         {
                           message.IsViewer &&

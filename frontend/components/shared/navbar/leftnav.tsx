@@ -8,29 +8,83 @@ import Image from "next/image";
 import Link from "next/link";
 import { usePathname, useRouter} from 'next/navigation'
 import React from "react";
-import { useEffect } from "react";
+import { useEffect, useContext, useState } from "react";
+import {SidebarContext} from "@/providers/SidebarProvider";
+import { useQuery } from "convex/react";
+import { api } from "@/convex/_generated/api";
+import { Id } from "@/convex/_generated/dataModel";
+import CourseHead from "@/components/course/course-header";
 
-
+import {ModeToggle} from "@/components/shared/mode-toggle";
+import { ChevronLeft, ChevronRight, CircleUserRound } from "lucide-react";
+import { Separator } from "@radix-ui/react-separator";
 
 function LeftSidebar() {
 
     const pathname = usePathname();
-
+    const backRoute = pathname.substring(0, pathname.lastIndexOf("/")) || "/";
+    console.log(backRoute)
     const {user}:any = AuthContext();
-    const [isHidden, setIsHidden] = React.useState(false);
+    
+    let {collapsed,setCollapsed , params, setParams}:any = SidebarContext();
+    if(pathname==="/"){
+        setParams(null)
+    }
+    if(backRoute === "/"){
+        setParams(null)
+    }
 
-
+    const [isHidden, setIsHidden] = useState(collapsed);
+    console.log("params", params);
 
     const hideLeftBar = () => {
         setIsHidden(!isHidden);
+        setCollapsed(!isHidden);
     }
- 
+    const courseInfo = useQuery(api.functions.courses.getCourseByCourseID, {
+        CourseID: params as Id<"Courses">
+      }) 
 
+    
     if (user.isLogin) {return (
       
         
-        <div className={`min-w-20 custom-scrollbar leftsidebar  ${isHidden ? 'w-[80px]' : 'w-[190px]'} gap-8  content-between `}>
-            <div className="flex w-full flex-1 flex-col gap-3 px-3 ">
+        <div className={`fixed h-100vh min-w-20 custom-scrollbar leftsidebar  ${isHidden ? 'w-[80px]' : 'w-[190px]'} gap-8   `}>
+
+            <Link className="md:pb-2 w-full mt-2 pb-2 flex flex-row items-center gap-2 justify-center" href={backRoute} >
+                <Image src="/assets/atomic.png" className="w-8 h-auto block dark:hidden"  alt="logo" width={100} height={100} />
+                <Image src="/assets/atomic-white.png" className="w-8 h-auto hidden dark:block"  alt="logo" width={100} height={100} />
+                {!isHidden && <p className="text-xl font-bold text-black dark:text-white">
+                  quantaIQ
+                </p>}
+            </Link>
+           
+            {
+                (courseInfo && !isHidden) &&
+                <div className="flex w-full flex-1 flex-col gap-3 px-3 ">
+
+                <div className="flex flex-col  pb-2 pl-4">
+                    <h1 className="text-2xl font-bold text-black">{courseInfo.CourseName}</h1>
+                    <p className="text-gray-500 text-xs "> {courseInfo.CourseDescription}</p>
+                </div>
+                <div className="px-4">
+
+                    <CourseHead courseID={params} />
+                </div>
+                </div>
+
+            }
+            {
+                courseInfo && isHidden && 
+                <div className="flex w-full flex-1 flex-col gap-3  pt-20">
+                    <div className="px-4">
+                        <CourseHead courseID={params} />
+                    </div>
+                </div>
+            }
+
+
+             {!courseInfo && <div className="flex w-full flex-1 flex-col gap-3 px-3 ">
                 {sidebarLinks.map((link) => {
                     const isActive = 
                     (pathname?.startsWith(link.route) && link.route.length > 1) ||
@@ -64,29 +118,25 @@ function LeftSidebar() {
 
                     )}
                 )}
-            </div>
+            </div>}
             
 
-            <div className="object-bottom">
-                
-                        <div className="flex cursor-pointer gap-4 p-4 pl-6" onClick={hideLeftBar}>
-                            {!isHidden && <Image
-                                src="/assets/left.svg"
-                                alt="logout"
-                                width={24}
-                                height={24}
-                            />}
+            <div className="object-bottom pb-0">
+                <div className="flex flex-col">
+                        <ModeToggle />
+                        <div className="flex cursor-pointer gap-4 p-4 pl-6 items-center" onClick={hideLeftBar}>
+                            {!isHidden && <ChevronLeft className="text-gray-500 dark:text-gray-200"/>}
                             {
-                                isHidden && <Image
-                                src="/assets/right.svg"
-                                alt="logout"
-                                width={24}
-                                height={24}
-                            />
+                                isHidden && <ChevronRight className="text-gray-500 dark:text-gray-200" />
                             }
-                            {!isHidden && <p className="text-gray-300 "> Hide </p>}
+                            {!isHidden && <p className="text-gray-500 text-sm dark:text-gray-200"> Hide </p>}
                         </div>
-                
+                        <div className="flex cursor-pointer gap-4 p-4 pb-2 pl-6 items-center pt-12 h-10 text-black dark:text-white ">
+                            
+                            <CircleUserRound className="text-black dark:text-white"/>
+                            {!isHidden && <p>Profile</p>}
+                        </div>
+                </div>
             </div>
             
         </div>

@@ -20,16 +20,20 @@ export const createCourse = mutation({
 // Get Courses
 export const getCourseByCourseID = query({
     args: {
-        CourseID: v.optional(v.id("Courses")),
+        CourseID: v.optional(v.any()),
     },
     handler: async (ctx, args) => {
         if (!args.CourseID) {
           return null;
         } else {
+            try{
           const courses = await ctx.db
-            .get(args.CourseID);
+            .get(args.CourseID as Id<"Courses">);
 
-          return courses;
+          return courses;}
+          catch{
+            throw new Error
+          }
         }
     },
 });

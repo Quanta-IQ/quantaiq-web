@@ -154,6 +154,13 @@ export default defineSchema({
     }) 
     .index("byCreatorID", ["CreatorID"])
     .index("byMetadata", ["Metadata"])
-    .index("byCourseID", ["CourseID"])
- 
+    .index("byCourseID", ["CourseID"]),
+    
+    // interviewer agent
+    InterviewerMessages: defineTable({
+        IsViewer: v.boolean(),
+        SessionID: v.string(),
+        Text: v.string(),
+        TestID: v.id("Tests")
+      }).index("bySessionId", ["SessionID"])
 });

@@ -121,7 +121,7 @@ export const answer = internalAction({
     } catch (error: any) {
       await ctx.runMutation(internal.serve.lessonbot.updateBotMessage, {
         messageId,
-        text: "I cannot reply at this time. Reach out to the team on Discord",
+        text: "I cannot reply at this time.",
       });
       throw error;
     }

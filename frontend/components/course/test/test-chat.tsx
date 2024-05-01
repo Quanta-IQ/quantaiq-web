@@ -1,12 +1,11 @@
 "use client"
 import React, {useEffect,useMemo,useRef,useState} from "react";
 import {useQuery, useMutation} from "convex/react";
-import ChatHeader from "@/components/chat/chat-header";
-import ChatInput from "@/components/chat/chat-input";
+import TestHeader from "./test-header";
+import TestInput from "./test-input";
 import {ScrollArea} from "@/components/ui/scroll-area"
 import {Separator} from "@/components/ui/separator"
 import { api } from "@/convex/_generated/api";
-import { Id } from "@/convex/_generated/dataModel";
 import Markdown from 'react-markdown'
 import {
   ContextMenu,
@@ -15,39 +14,17 @@ import {
   ContextMenuTrigger,
 } from "@/components/ui/context-menu"
 
-import { Button } from "@/components/ui/button";
-import { toast } from "@/components/ui/use-toast";
-import {
-  Sparkles, SquareDashedMousePointer,
-  Target
-} from "lucide-react"
-
+import { Id } from "@/convex/_generated/dataModel";
 interface TestSession {
-    testID: string | null;
+    testID: Id<"Tests">| null;
     sessionID: string;
-    userID : string | null;
 }
 
-export default function TestChat({ testID, sessionID, userID }: TestSession) {
-    const remoteMessages = useQuery(api.messages.lessonbot.list, { sessionId: sessionID });
-    const testInfo = useQuery(api.functions.lessons.getLessonByID, {testID: testID || undefined});
+export default function TestChat({ testID, sessionID }: TestSession) {
+    const remoteMessages = useQuery(api.messages.interviewer.list, { sessionId: sessionID });
+    const testInfo = useQuery(api.functions.tests.getTestByTestID, {TestID: testID || undefined});
 
-    const firstMessage = `Hey there! I can assist you on Lesson ${lessonInfo?.Number} - ${lessonInfo?.Name} with the following tasks:`
-    + `
-     1. **Learning the material**: I can help you understand the concepts of ${lessonInfo?.Name}. 
-    I can also provide explanations and examples to supplement your learning.`
-    +`
-    2. **Modifying the lesson objective**: Based on the lesson description, I can suggest modifications to the
-     lesson objectives to make them more specific, measurable, achievable, relevant, and time-bound (SMART). 
-    `
-    +`3.  **Analyzing texts and attached documents**: I can analyze the provided texts and attached documents.
-    I can also consider the vector representations of the documents to identify key concepts and relationships.
-    `+`4. **Creating examination questions**: I can help you create examination questions
-     that assess  the students' understanding of the concepts covered in the lesson. 
-    `+`5. **Creating a comprehensive lesson plan and teaching strategies**: I can help you develop 
-     a comprehensive lesson plan that incorporates the learning objectives, teaching strategies,
-      and assessment methods.`;
-
+    const firstMessage = `Hey there! I will administer ${testInfo?.Metadata.TestName}. Let me know when you are ready to begin!`;
 
     const [isScrolled, setScrolled] = useState(false);
 
@@ -79,7 +56,7 @@ export default function TestChat({ testID, sessionID, userID }: TestSession) {
 
     return (
         <div className="flex flex-col relative h-full max-w-full ">
-            <ChatHeader/>
+            <TestHeader/>
        
 
             <div className="h-5/6 flex flex-col space-y-4 p-3 overflow-y-auto"
@@ -144,7 +121,7 @@ export default function TestChat({ testID, sessionID, userID }: TestSession) {
             <Separator />
 
             <div className="relative w-full box-border flex-col pt-2.5 p-5 space-y-2">
-                <ChatInput type="lesson-bot" sessionID={sessionID} lessonID={testID}/>
+                <TestInput type="interview" sessionID={sessionID} testID={testID}/>
             </div>
 
         </div>

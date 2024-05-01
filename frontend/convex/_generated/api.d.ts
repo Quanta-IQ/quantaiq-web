@@ -27,7 +27,9 @@ import type * as helpers from "../helpers.js";
 import type * as ingest_document from "../ingest/document.js";
 import type * as ingest_embed from "../ingest/embed.js";
 import type * as ingest_load from "../ingest/load.js";
+import type * as messages_interviewer from "../messages/interviewer.js";
 import type * as messages_lessonbot from "../messages/lessonbot.js";
+import type * as serve_interviewer from "../serve/interviewer.js";
 import type * as serve_lessonbot from "../serve/lessonbot.js";
 
 /**
@@ -52,7 +54,9 @@ declare const fullApi: ApiFromModules<{
   "ingest/document": typeof ingest_document;
   "ingest/embed": typeof ingest_embed;
   "ingest/load": typeof ingest_load;
+  "messages/interviewer": typeof messages_interviewer;
   "messages/lessonbot": typeof messages_lessonbot;
+  "serve/interviewer": typeof serve_interviewer;
   "serve/lessonbot": typeof serve_lessonbot;
 }>;
 export declare const api: FilterApi<

@@ -21,6 +21,7 @@ import {
   Sparkles, SquareDashedMousePointer,
   Target
 } from "lucide-react"
+import { SidebarContext } from "@/providers/SidebarProvider";
 
 interface LessonSession {
     lessonID: string | null;
@@ -52,6 +53,8 @@ export default function Chat({ lessonID, sessionID, userID }: LessonSession) {
     const [isScrolled, setScrolled] = useState(false);
     const createTest = useMutation(api.functions.tests.createTest);
     const updateLesson = useMutation(api.functions.lessons.updateLesson);
+    let { params}:any = SidebarContext();
+
     const handleUpdateLesson = async (
       type: string,
       message: string
@@ -98,17 +101,34 @@ export default function Chat({ lessonID, sessionID, userID }: LessonSession) {
     const handleTestCreate =  async (message: string) => {
       if (userID){
         try {
-          const newTest =  await createTest({
-            CreatorID: userID,
-            TestContent: message
-          })
+          if (params){
+            const newTest =  await createTest({
+              CreatorID: userID,
+              TestContent: message,
+              CourseID: params
+            })
+  
+            if (newTest){
+              toast({
+                title: `Created Test!`,
+                description: `Added this exam to your lesson plan`,
+            })
+            }
 
-          if (newTest){
-            toast({
-              title: `Created Test!`,
-              description: `Added this exam to your lesson plan`,
-          })
+          }else{
+            const newTest =  await createTest({
+              CreatorID: userID,
+              TestContent: message,
+            })
+  
+            if (newTest){
+              toast({
+                title: `Created Test!`,
+                description: `Added this exam to your lesson plan`,
+            })
+            }
           }
+          
         }
         catch {
           toast({

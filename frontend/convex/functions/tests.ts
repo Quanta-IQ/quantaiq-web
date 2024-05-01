@@ -13,16 +13,18 @@ export const createTest = mutation({
 
     handler: async (ctx, args) => {
         try{
+            console.log(args)
             const test = await ctx.db.insert("Tests", {
                 CreatorID: args.CreatorID as Id<"Users">,
                 TestContent: args.TestContent,
                 CourseID: args?.CourseID as Id<"Courses">,
                 Metadata: args?.Metadata,
             });
-
+            console.log(test)
             return test;
             
         } catch{
+            console.log(Error)
             throw new Error("Error")
         }
     }

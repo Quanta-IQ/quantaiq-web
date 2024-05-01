@@ -36,9 +36,7 @@ export default function RootLayout({
         <ConvexClientProvider>
           <SidebarProvider>
 
-          
-          {/*           
-                    <NavBar /> */}
+            <NavBar/>
           
             <LeftSidebar />
               <CollapseLayout>

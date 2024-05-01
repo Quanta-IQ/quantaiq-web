@@ -16,15 +16,26 @@ import { Id } from "@/convex/_generated/dataModel";
 import CourseHead from "@/components/course/course-header";
 
 import {ModeToggle} from "@/components/shared/mode-toggle";
-import { ChevronLeft, ChevronRight, CircleUserRound } from "lucide-react";
+import { ChevronLeft, ChevronRight, CircleUserRound, LogOutIcon } from "lucide-react";
 import { Separator } from "@radix-ui/react-separator";
 
 function LeftSidebar() {
+    const auth = getAuth();
+    const {user}:any = AuthContext();
+    const router = useRouter();
+    const logout = async () => {
+        try {
+          signOut(auth)
+        } catch (error) {
+          
+        } finally {
+          router.push("/")
 
+        }
+      };
     const pathname = usePathname();
     const backRoute = pathname.substring(0, pathname.lastIndexOf("/")) || "/";
     console.log(backRoute)
-    const {user}:any = AuthContext();
     
     let {collapsed,setCollapsed , params, setParams}:any = SidebarContext();
     if(pathname==="/"){
@@ -119,6 +130,7 @@ function LeftSidebar() {
                     )}
                 )}
             </div>}
+
             
 
             <div className="object-bottom pb-0">
@@ -131,6 +143,16 @@ function LeftSidebar() {
                             }
                             {!isHidden && <p className="text-gray-500 text-sm dark:text-gray-200"> Hide </p>}
                         </div>
+
+                        
+                        {user.isLogin && (
+                              <>
+                                    <button className=" flex cursor-pointer gap-4 p-4 pl-6 items-center" onClick={logout}>
+                                            <LogOutIcon className="text-gray-500 dark:text-gray-200"/>
+                                            <p className="text-gray-500 text-sm dark:text-gray-200"> Sign Out </p>
+                                    </button>
+                              </>
+                        )}
                         <div className="flex cursor-pointer gap-4 p-4 pb-2 pl-6 items-center pt-12 h-10 text-black dark:text-white ">
                             
                             <CircleUserRound className="text-black dark:text-white"/>

@@ -23,7 +23,7 @@ export default function NavBar(){
       };
     
 return ( <>
-      <div className="navbar ">
+      {!user.isLogin && <div className="navbar ">
             <nav className="navbar-container">
                  <div className="md:pb-2 w-full mt-2 pb-2 flex flex-row items-center gap-2">
                       <Image src="/assets/atomic.png" className="w-8 h-auto block dark:hidden"  alt="logo" width={100} height={100} />
@@ -47,18 +47,11 @@ return ( <>
                               </>
                               )
                         }
-                        {user.isLogin && (
-                              <>
-                                    <Button className="primary-button h-8 max-md:h-8" onClick={logout}>
-                                                Sign Out
-                                    </Button>
-                              </>
-                        )}
                   </div>
                   </div>
                  
 
             </nav>
-      </div>
+      </div>}
  </>)
 }

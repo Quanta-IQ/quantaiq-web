@@ -164,7 +164,6 @@ export default function CreateTest(
         }));
         
         const metadata = {
-            ...(courseID && { courseID }),
             Lessons: values.LessonSelection,
             TestName: values.Name,
             Description: values.Description,
@@ -173,12 +172,21 @@ export default function CreateTest(
         };
         
         try {
-            await createTest({
-                CreatorID: userInfo!._id,
-                TestContent: "placeholder",
-                Metadata: metadata
-            });
-    
+            if (courseID && { courseID }) {
+                await createTest({
+                    CreatorID: userInfo!._id,
+                    TestContent: "placeholder",
+                    Metadata: metadata,
+                    CourseID: courseID
+                });
+            } else {
+                await createTest({
+                    CreatorID: userInfo!._id,
+                    TestContent: "placeholder",
+                    Metadata: metadata,
+                });
+            }
+           
             toast({
                 title: "Test Created!",
                 variant: "default"

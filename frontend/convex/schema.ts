@@ -149,8 +149,11 @@ export default defineSchema({
     Tests: defineTable({
         CreatorID: v.id("Users"),
         TestContent: v.string(),
+        CourseID: v.id("Courses"),
         Metadata: v.optional(v.any())
     }) 
     .index("byCreatorID", ["CreatorID"])
+    .index("byMetadata", ["Metadata"])
+    .index("byCourseID", ["CourseID"])
  
 });

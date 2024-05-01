@@ -7,6 +7,7 @@ export const createTest = mutation({
     args: {
         CreatorID: v.string(),
         TestContent: v.string(),
+        CourseID: v.optional(v.string()),
         Metadata: v.optional(v.any())
     },
 
@@ -15,6 +16,7 @@ export const createTest = mutation({
             const test = await ctx.db.insert("Tests", {
                 CreatorID: args.CreatorID as Id<"Users">,
                 TestContent: args.TestContent,
+                CourseID: args?.CourseID as Id<"Courses">,
                 Metadata: args?.Metadata,
             });
 
@@ -39,3 +41,36 @@ export const deleteTest = mutation({
     },
 }) 
 
+export const fetchTests = query({
+    args: {
+        ClassID: v.optional(v.id("Classes")),
+    },
+    handler: async (ctx, args) => {
+        if (!args.ClassID) {
+            return null;
+        }
+        try {
+            // we know courseID
+            // classID -> courseID
+            const classObject = await ctx.db
+                .get(args.ClassID!);
+
+            if (!classObject || !classObject.CourseID!) {
+                    return [];
+            }
+            
+
+            // courseID -> test
+            const tests = await ctx.db
+            .query("Tests")
+            .withIndex("byCourseID", q => q.eq("CourseID", classObject.CourseID!))
+            .collect()
+            
+            return tests.length > 0 ? tests : [];
+
+        } catch (e) {
+            console.error(e);
+            return null;
+        }
+    }
+});

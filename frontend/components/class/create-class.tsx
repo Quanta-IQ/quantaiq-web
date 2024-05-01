@@ -33,7 +33,7 @@ import { Router } from "next/router";
 
 
 const formSchema = z.object({
-    ClassName: z.string().min(3).max(30),
+    ClassName: z.string().min(2).max(30),
     CourseCode: z.string().min(3),
     CourseDescription: z.string().min(3).max(250),
     Visibility: z.enum(["Public", "Private"]),
@@ -74,13 +74,11 @@ export default function CreateClassForm({ user }: Props) {
                 variant: "destructive"
             });
         }
-    }, [courseId, courseCode]); // React to changes in courseId and courseCode
-
+    }, [courseId, courseCode]);
     const onSubmit = async (values: z.infer<typeof formSchema>) => {
         const newCourseCode = values.CourseCode;
-        setCourseCode(newCourseCode); // This change will trigger the useEffect above.
+        setCourseCode(newCourseCode);
 
-        // Delay creating the class until courseId is confirmed in the useEffect.
         if (courseId) {
             try {
                 const ClassCode = Math.random().toString(36).substring(2, 8);
@@ -94,8 +92,8 @@ export default function CreateClassForm({ user }: Props) {
                     Code: ClassCode
                 });
                 toast({
-                    title: `${values.ClassName} Created`,
-                    description: `Course ${values.ClassName} created successfully`,
+                    title: `Class Created`,
+                    description: `Class ${values.ClassName} created successfully`,
                     variant: "default"
                 });
             } catch (error) {

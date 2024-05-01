@@ -20,6 +20,7 @@ import type * as crons from "../crons.js";
 import type * as functions_classes from "../functions/classes.js";
 import type * as functions_courses from "../functions/courses.js";
 import type * as functions_lessons from "../functions/lessons.js";
+import type * as functions_students from "../functions/students.js";
 import type * as functions_tests from "../functions/tests.js";
 import type * as functions_users from "../functions/users.js";
 import type * as helpers from "../helpers.js";
@@ -44,6 +45,7 @@ declare const fullApi: ApiFromModules<{
   "functions/classes": typeof functions_classes;
   "functions/courses": typeof functions_courses;
   "functions/lessons": typeof functions_lessons;
+  "functions/students": typeof functions_students;
   "functions/tests": typeof functions_tests;
   "functions/users": typeof functions_users;
   helpers: typeof helpers;

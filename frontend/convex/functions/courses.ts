@@ -13,7 +13,7 @@ export const createCourse = mutation({
         CourseCode: v.string()
     },
     handler: async (ctx, args) => {
-      return await ctx.db.insert("Courses", args);
+        return await ctx.db.insert("Courses", args);
     },
 });
 
@@ -24,7 +24,7 @@ export const getCourseByCourseID = query({
     },
     handler: async (ctx, args) => {
         if (!args.CourseID) {
-          return null;
+            return null;
         } else {
             try{
           const courses = await ctx.db
@@ -107,19 +107,19 @@ export const getCoursesCreatedByUser = query({
         UserID: v.optional(v.id("Users")),
     },
     handler: async (ctx, args) => {
-        try{
-        if (args.UserID) {
-            const courses = await ctx.db
-                .query("Courses")
-                .withIndex("by_CreatorID", q => q.eq("CreatorID", args.UserID!))
-                .collect();
-            return courses;
-        } else {
-            return null;
-        }
+        try {
+            if (args.UserID) {
+                const courses = await ctx.db
+                    .query("Courses")
+                    .withIndex("by_CreatorID", q => q.eq("CreatorID", args.UserID!))
+                    .collect();
+                return courses;
+            } else {
+                return null;
+            }
         }
 
-        catch(e){
+        catch (e) {
             console.error(e);
             return null;
         }
@@ -129,18 +129,46 @@ export const getCoursesCreatedByUser = query({
 //Retrieve all Public courses
 export const getPublicCourses = query({
     handler: async (ctx) => {
-        try{
-        const courses = await ctx.db
-            .query("Courses")
-            .withIndex("by_Visibility", q => q.eq("Visibility", "Public"))
-            .collect();
-        return courses;
+        try {
+            const courses = await ctx.db
+                .query("Courses")
+                .withIndex("by_Visibility", q => q.eq("Visibility", "Public"))
+                .collect();
+            return courses;
         }
 
-        catch(e){
+        catch (e) {
             console.error(e);
             return null;
         }
     },
 });
 
+export const getCourseByCourseCode = query({
+    args: {
+        CourseCode: v.string(),
+    },
+    handler: async (ctx, args) => {
+        try {
+            if (args.CourseCode) {
+                const course = await ctx.db
+                    .query("Courses")
+                    .withIndex("by_CourseCode", q => q.eq("CourseCode", args.CourseCode!))
+                    .unique()
+                    if (course) {
+                        return course._id;
+                    } else {
+                        return null; // Course not found
+                    }
+
+            } else {
+                return null;
+            }
+        }
+
+        catch (e) {
+            console.error(e);
+            return null;
+        }
+    }
+});

@@ -7,12 +7,12 @@ import { v } from "convex/values";
 export const createClass = mutation({
     args: {
         CourseID: v.id("Courses"),
+        CreatorID: v.id("Users"),
         Name: v.string(),
         Description: v.string(),
         Code: v.string(),
         ImageURL: v.optional(v.string()),
         Visibility: v.string(),
-        Creator: v.id("Users")
     },
     handler: async (ctx, args) => {
         return await ctx.db.insert("Classes", args)
@@ -73,8 +73,6 @@ export const deleteClass = mutation({
         return deletedClass;
     }
 });
-
-
 
 //Add Teacher to Class
 export const addTeacherToClass = mutation({
@@ -143,6 +141,60 @@ export const removeStudentFromClass = mutation({
         await ctx.db.delete(studentInClass._id);
     },
 });
+
+export const getClassByClassCode = query({
+    args: {
+        ClassCode: v.string(),
+    },
+    handler: async (ctx, args) => {
+        try {
+            if (args.ClassCode) {
+                const classes = await ctx.db
+                    .query("Classes")
+                    .withIndex("by_Code", q => q.eq("Code", args.ClassCode!))
+                    .unique()
+                    if (classes) {
+                        return classes._id;
+                    } else {
+                        return null; // Course not found
+                    }
+
+            } else {
+                return null;
+            }
+        }
+
+        catch (e) {
+            console.error(e);
+            return null;
+        }
+    }
+});
+
+export const getClassesCreatedByUser = query({
+    args: {
+        UserID: v.optional(v.id("Users")),
+    },
+    handler: async (ctx, args) => {
+        try {
+            if (args.UserID) {
+                const classes = await ctx.db
+                    .query("Classes")
+                    .withIndex("by_CreatorID", q => q.eq("CreatorID", args.UserID!))
+                    .collect();
+                return classes;
+            } else {
+                return null;
+            }
+        }
+
+        catch (e) {
+            console.error(e);
+            return null;
+        }
+    },
+});
+
 
 
 //Fetch all students 

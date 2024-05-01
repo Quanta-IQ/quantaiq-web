@@ -29,7 +29,7 @@ import { useQuery, useMutation, useAction } from "convex/react"
 import { ChangeEvent, useEffect, useState } from "react";
 import { handleFileUpload, handleFileDelete } from "@/lib/actions/lesson.aws.actions";
 import { ScrollArea } from "@/components/ui/scroll-area";
-
+import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 
 
 const formSchema = z.object({
@@ -40,12 +40,11 @@ const formSchema = z.object({
     Files: z.any().optional()
 });
 
-// Specify the type for the form data based on the schema
 interface FormData {
     Name: string;
     Description: string;
     Objectives: string;
-    Files: any;  // Specify a more precise type if possible
+    Files: any;
     LessonSelection: string[];
 }
 
@@ -148,8 +147,6 @@ export default function CreateTest(
     }
 
     const onSubmit = async (values: z.infer<typeof formSchema>) => {
-        //TODO: Add File Logic
-        //Process files into Content Array
         const contentArray = await Promise.all(files.map(async (fileUrl) => {
             const url = new URL(fileUrl);
             const pathname = url.pathname;
@@ -160,69 +157,45 @@ export default function CreateTest(
                     URL: fileUrl,
                     Course: courseID as Id<"Courses">
                 }) as Id<"Documents">;
-                return doc
+                return doc;
             } catch (error) {
-                console.error(error);
+                console.error("Document creation failed:", error);
             }
         }));
-
-
-        console.log("Form", values);
-        const Number = (courseLessons?.length || 0) + 1;
-
+        
+        const metadata = {
+            ...(courseID && { courseID }),
+            Lessons: values.LessonSelection,
+            TestName: values.Name,
+            Description: values.Description,
+            Objectives: values.Objectives,
+            Documents: contentArray.filter((content) => content !== undefined) as Id<"Documents">[]
+        };
+        
         try {
-            if (contentArray) {
-                console.log(contentArray);
-                const filteredContentArray = contentArray.filter((content) => content !== undefined) as Id<"Documents">[];
-                const metadata = {
-                    Lessons: values.LessonSelection, 
-                    Description: values.Description,
-                    Objectives: values.Objectives,
-                    Documents: filteredContentArray
-                };
-                const createdTest = await createTest({
-                    CreatorID: userInfo!._id,
-                    TestContent: "placeholder", //v.string(), // make ai call
-                    Metadata: metadata
-                });
-            } else {
-                const metadata = {
-                    Lessons: values.LessonSelection, 
-                    Description: values.Description,
-                    Objectives: values.Objectives,
-                };
-                const createdTest = await createTest({
-                    CreatorID: userInfo!._id,
-                    TestContent: "placeholder", // v.string(), // make ai call
-                    Metadata: metadata
-                });
-            }
-
+            await createTest({
+                CreatorID: userInfo!._id,
+                TestContent: "placeholder",
+                Metadata: metadata
+            });
+    
             toast({
-                title: "Test created",
-                description: `Finish test creation with the Test Bot!`,
+                title: "Test Created!",
                 variant: "default"
             });
-
+    
             form.reset();
             setFiles([]);
             setPrompt("");
-
-        }
-
-        catch (error: any) {
-            const regex = /Uncaught Error:\s*(.*)/;
-            const matches = error.message.match(regex);
-
+        } catch (error) {
+            console.error("Error fetching data: ", error);
             toast({
                 title: "Uh Oh! Error creating test",
-                description: matches ? matches[1] : error.message,
                 variant: "destructive"
-            })
-
+            });
         }
-
     };
+    
 
     useEffect(() => {
         if (form.getValues().Name && form.getValues().Description) {

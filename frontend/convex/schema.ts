@@ -115,15 +115,17 @@ export default defineSchema({
     //Class (Classroom for a course)
     Classes: defineTable({
         CourseID: v.id("Courses"),
+        CreatorID: v.id("Users"), 
         Name: v.string(),
         Description: v.string(),
         Code: v.string(), //to join the class
         ImageURL: v.optional(v.string()),
         Visibility: v.string(), //Public or Private
-        Creator: v.id("Users")
     })
     .index("by_CourseID", ["CourseID"])
-    .index("by_Creator", ["Creator"]),
+    .index("by_Code", ["Code"])
+    .index("by_CreatorID", ["CreatorID"])
+    .index("by_Visibility", ["Visibility"]),
     
     //Teacher table for each class
     Teachers: defineTable({

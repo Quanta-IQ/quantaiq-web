@@ -28,7 +28,7 @@ export default function TestCard(
                 </div>
                 <div className="flex items-center pt-4 gap-4">
                     <Button variant="secondary">
-                        <Link href={`/classes/${testID}`}>
+                        <Link href={`/tests/${testID}`}>
                             Take Test
                         </Link>
                     </Button>

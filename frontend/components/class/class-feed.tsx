@@ -17,8 +17,7 @@ export default function ClassFeed() {
     }) 
     
     return (
-        <>
-            
+        <>  
             <div className="mt-3 flex flex-wrap gap-4">
                 {getClassesJoined?.map((course: any) => {
                     return <ClassCard 

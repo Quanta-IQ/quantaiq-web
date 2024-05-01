@@ -110,26 +110,18 @@ export const answer = internalAction({
         ],
       });
       let text = "";
-      
-      const updateBuffer = [];
-      //Added buffer of 300 characters. Updating per character is smooth but DAMN its expensive
-      const bufferThreshold = 300; // characters
+
 
       for await (const { choices } of stream) {
         const replyDelta = choices[0].delta.content;
         if (typeof replyDelta === "string" && replyDelta.length > 0) {
-          updateBuffer.push(replyDelta);
-          if (updateBuffer.join('').length >= bufferThreshold) {
-            text += updateBuffer.join('');
-            updateBuffer.length = 0; // reset the buffer
-            await ctx.runMutation(internal.serve.lessonbot.updateBotMessage, {
-              messageId,
-              text,
-            });
-          }
+          text += replyDelta;
+          await ctx.runMutation(internal.serve.lessonbot.updateBotMessage, {
+            messageId,
+            text,
+          });
         }
       }
-
 
 
     } catch (error: any) {

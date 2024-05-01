@@ -111,17 +111,31 @@ export const answer = internalAction({
       });
       let text = "";
 
+      // REMOVE BUFFER DURING DEMO!!!
+      const updateBuffer = [];
+      const bufferThreshold = 40; // number of choices to buffer
 
       for await (const { choices } of stream) {
-        const replyDelta = choices[0].delta.content;
-        if (typeof replyDelta === "string" && replyDelta.length > 0) {
-          text += replyDelta;
+        updateBuffer.push(choices[0].delta.content);
+        if (updateBuffer.length >= bufferThreshold) {
+          text += updateBuffer.join('');
+          updateBuffer.length = 0; // reset the buffer
           await ctx.runMutation(internal.serve.lessonbot.updateBotMessage, {
             messageId,
             text,
           });
         }
       }
+
+      // Process any remaining items in the buffer
+      if (updateBuffer.length > 0) {
+        text += updateBuffer.join('');
+        await ctx.runMutation(internal.serve.lessonbot.updateBotMessage, {
+          messageId,
+          text,
+        });
+      }
+
 
 
     } catch (error: any) {

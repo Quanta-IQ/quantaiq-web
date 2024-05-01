@@ -149,7 +149,7 @@ function LeftSidebar() {
                               <>
                                     <button className=" flex cursor-pointer gap-4 p-4 pl-6 items-center" onClick={logout}>
                                             <LogOutIcon className="text-gray-500 dark:text-gray-200"/>
-                                            <p className="text-gray-500 text-sm dark:text-gray-200"> Sign Out </p>
+                                            {!isHidden && <p className="text-gray-500 text-sm dark:text-gray-200"> Sign Out </p>}
                                     </button>
                               </>
                         )}

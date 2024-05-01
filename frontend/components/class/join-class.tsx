@@ -47,6 +47,8 @@ export default function JoinClassForm({ user }: Props) {
     const [classCode, setClassCode] = useState<string>("");
     const joinClass = useMutation(api.functions.classes.addStudentToClass)
     const classId = useQuery(api.functions.classes.getClassByClassCode, { ClassCode: classCode });
+    //TODO FIX THIS
+    //AGAIN THIS IS REDUNDANT YOU COULD HAVE JUST USED THE RIGHT HOOKS FROM THE HOC
     const userInfo = useQuery(api.functions.users.getUser, {
         userId: user.user_id
     });

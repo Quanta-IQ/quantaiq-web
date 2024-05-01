@@ -1,18 +1,18 @@
 "use client";
-import React, { useEffect } from "react";
+import React from "react";
 import { useState, ChangeEvent } from "react";
-import { z } from "zod"
+import {z } from "zod"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
 import { Button } from "@/components/ui/button"
 import {
-    Form,
-    FormControl,
-    FormDescription,
-    FormField,
-    FormItem,
-    FormLabel,
-    FormMessage,
+  Form,
+  FormControl,
+  FormDescription,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
 } from "@/components/ui/form";
 import {
     Select,
@@ -20,7 +20,7 @@ import {
     SelectItem,
     SelectTrigger,
     SelectValue,
-} from "@/components/ui/select";
+  } from "@/components/ui/select";
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
 import { api } from "@/convex/_generated/api";
@@ -30,152 +30,164 @@ import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { toast } from "@/components/ui/use-toast";
 import { Id } from "@/convex/_generated/dataModel";
 import { Router } from "next/router";
+import useUserConvexData from "@/hooks/useUserConvexData";
 
 
-const formSchema = z.object({
-    ClassName: z.string().min(2).max(30),
-    CourseCode: z.string().min(3),
-    CourseDescription: z.string().min(3).max(250),
-    Visibility: z.enum(["Public", "Private"]),
-    CourseImageURL: z.string().optional(),
-});
+
 
 interface Props {
     user: {
         user_id: string,
     };
 }
-
+const formSchema = z.object({
+    ClassName: z.string().min(3).max(30),
+    ClassDescription: z.string().min(3).max(250),
+    Visibility: z.enum(["Public", "Private"]),
+    CourseImageURL: z.string().optional(),
+    CourseID:z.string()
+});
 
 export default function CreateClassForm({ user }: Props) {
     const createClass = useMutation(api.functions.classes.createClass);
-    const [courseCode, setCourseCode] = useState<string>("");
-    const courseId = useQuery(api.functions.courses.getCourseByCourseCode, { CourseCode: courseCode });
-    const userInfo = useQuery(api.functions.users.getUser, {
-        userId: user.user_id
-    });
+    
+    //creted by user for now
+    const courseOptions = useQuery(api.functions.courses.getCoursesCreatedByUser, { UserID: user.user_id as Id<"Users">});
+
+    console.log(courseOptions);
 
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
-        defaultValues: {
+        defaultValues:{
             ClassName: "",
-            CourseCode: "",
-            CourseDescription: "",
+            ClassDescription: "",
             Visibility: "Public",
             CourseImageURL: "/assets/atomic.png",
         }
     });
 
-    useEffect(() => {
-        if (!courseId && courseCode) {
-            toast({
-                title: "Invalid Course Code",
-                description: "No course found with that code.",
-                variant: "destructive"
-            });
-        }
-    }, [courseId, courseCode]);
     const onSubmit = async (values: z.infer<typeof formSchema>) => {
-        const newCourseCode = values.CourseCode;
-        setCourseCode(newCourseCode);
+        console.log("Form", values);
+        //Add Logic
 
-        if (courseId) {
-            try {
-                const ClassCode = Math.random().toString(36).substring(2, 8);
-                const classCreated = await createClass({
-                    CourseID: courseId,
-                    CreatorID: userInfo!._id,
-                    Name: values.ClassName,
-                    Description: values.CourseDescription,
-                    Visibility: values.Visibility,
-                    ImageURL: values.CourseImageURL,
-                    Code: ClassCode
-                });
-                toast({
-                    title: `Class Created`,
-                    description: `Class ${values.ClassName} created successfully`,
-                    variant: "default"
-                });
-            } catch (error) {
-               
-                toast({
-                    title: "Uh Oh! Error creating course",
-                    variant: "destructive"
-                });
-            }
+        try {
+            //create 6 string random code
+            const CourseCode = Math.random().toString(36).substring(2, 8);
+            const courseCreated = await createClass({
+                CourseID: values.CourseID as Id<"Courses">,
+                Name: values.ClassName,
+                Description: values.ClassDescription,
+                Visibility: values.Visibility,                
+                Code: CourseCode,
+                ImageURL: values.CourseImageURL,
+                CreatorID: user.user_id as Id<"Users">,
+            })
+            toast({
+                title: `${values.ClassName} Created`,
+                description: `Course ${values.ClassName} created successfully`,
+                variant: "default"
+            })
         }
+        catch (error: any) {
+            const regex = /Uncaught Error:\s*(.*)/;
+            const matches = error.message.match(regex);
+            
+            toast({
+              title: "Uh Oh! Error creating course",
+              description: matches ? matches[1] : error.message,
+              variant: "destructive"
+            })
+  
+          }
+
     };
+
+    return (
+        <>
+            <Form {...form}>
+                <form onSubmit = {form.handleSubmit(onSubmit)} className="flex flex-col justify-start gap-5 pr-5 pl-5">
+                
+                <FormField
+                    control={form.control}
+                    name="ClassName"
+                    render={({ field }) => (
+                      <FormItem className="flex w-full flex-col gap-2 ">
+                        <FormLabel >Course Name</FormLabel>
+                        <FormControl>
+                          <Input  {...field} />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                />
+
+                <FormField
+                    control={form.control}
+                    name="ClassDescription"
+                    render={({ field }) => (
+                    <FormItem className="flex flex-col ">
+                        <FormLabel >Course Description</FormLabel>
+                        <FormControl>
+                        <Textarea  {...field} />
+                        </FormControl>
+                        <FormMessage />
+                    </FormItem>
+                    )}
+                />
+
+                    <FormField
+                        control={form.control}
+                        name="CourseID"
+                        render={({ field }) => (<FormItem>
+                            <FormLabel>Course</FormLabel>
+                            <Select onValueChange={field.onChange} defaultValue={field.value}>
+                                <FormControl>
+                                <SelectTrigger>
+                                    <SelectValue placeholder="Select Course" />
+                                </SelectTrigger>
+                                </FormControl>
+                                <SelectContent className="bg-white">
+                                  <SelectItem value="none" key="none">None</SelectItem>
+                                {
+                                
+                                courseOptions?.map((option) => (
+                                    <SelectItem key={option._id} value={option._id}>
+                                    {option.CourseName}
+                                    </SelectItem>
+                                ))}
+                                </SelectContent>
+                            </Select>
+                            <FormMessage />
+                        </FormItem>)}
+                    />
+
+                <FormField
+                    control={form.control}
+                    name="Visibility"
+                    render={({ field }) => (
+                    <FormItem>
+                    <FormLabel>Visibility</FormLabel>
+                    <Select onValueChange={field.onChange} defaultValue={field.value}>
+                        <FormControl>
+                        <SelectTrigger>
+                            <SelectValue placeholder="Select your visibility" />
+                        </SelectTrigger>
+                        </FormControl>
+                        <SelectContent>
+                        <SelectItem value="Public">Public</SelectItem>
+                        <SelectItem value="Private">Private</SelectItem>
+                        </SelectContent>
+                    </Select>
     
-            return (
-                <>
-                    <Form {...form}>
-                        <form onSubmit={form.handleSubmit(onSubmit)} className="flex flex-col justify-start gap-5 pr-5 pl-5">
-                            <FormField
-                                control={form.control}
-                                name="CourseCode"
-                                render={({ field }) => (
-                                    <FormItem>
-                                        <FormLabel>Course Code</FormLabel>
-                                        <Input {...field} />
-                                    </FormItem>
-                                )}
-                            />
+                    <FormMessage />
+                    </FormItem>
+                    )}
+                />
 
-                            <FormField
-                                control={form.control}
-                                name="ClassName"
-                                render={({ field }) => (
-                                    <FormItem className="flex w-full flex-col gap-2 ">
-                                        <FormLabel >Class Name</FormLabel>
-                                        <FormControl>
-                                            <Input  {...field} />
-                                        </FormControl>
-                                        <FormMessage />
-                                    </FormItem>
-                                )}
-                            />
+                <Button type="submit" >Submit</Button>
+                </form>
+            </Form>
+        </>
+    )
 
-                            <FormField
-                                control={form.control}
-                                name="CourseDescription"
-                                render={({ field }) => (
-                                    <FormItem className="flex flex-col ">
-                                        <FormLabel >Class Description</FormLabel>
-                                        <FormControl>
-                                            <Textarea  {...field} />
-                                        </FormControl>
-                                        <FormMessage />
-                                    </FormItem>
-                                )}
-                            />
-
-                            <FormField
-                                control={form.control}
-                                name="Visibility"
-                                render={({ field }) => (
-                                    <FormItem>
-                                        <FormLabel>Visibility</FormLabel>
-                                        <Select onValueChange={field.onChange} defaultValue={field.value}>
-                                            <FormControl>
-                                                <SelectTrigger>
-                                                    <SelectValue placeholder="Select your visibility" />
-                                                </SelectTrigger>
-                                            </FormControl>
-                                            <SelectContent>
-                                                <SelectItem value="Public">Public</SelectItem>
-                                                <SelectItem value="Private">Private</SelectItem>
-                                            </SelectContent>
-                                        </Select>
-
-                                        <FormMessage />
-                                    </FormItem>
-                                )}
-                            />
-
-                            <Button type="submit" >Submit</Button>
-                        </form>
-                    </Form>
-                </>
-            )
-
-        }
+}

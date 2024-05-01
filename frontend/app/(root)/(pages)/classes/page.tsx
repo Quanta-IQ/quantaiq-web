@@ -22,11 +22,12 @@ import JoinClassForm from "@/components/class/join-class";
 import JoinClassTabs from "@/components/class/join-class-tabs";
 import ClassAdminFeed from "@/components/class/class-admin-feed";
 import ClassFeed from "@/components/class/class-feed";
+import useUserConvexData from "@/hooks/useUserConvexData";
 
 
 export default function Home() {
   const { user }: any = AuthContext();
-
+  const userConvex = useUserConvexData();
   return (
     <div className="mb-4 mt-4 ml-4">
       <div className="flex flex-row justify-between">
@@ -46,7 +47,7 @@ export default function Home() {
                 Create a new class
               </DialogDescription>
               <Separator />
-              <CreateClassForm user={{ user_id: user.user?.uid }} />
+              {userConvex && <CreateClassForm user={{ user_id: userConvex._id }}/>}
             </DialogContent>
           </Dialog>
           <Dialog>

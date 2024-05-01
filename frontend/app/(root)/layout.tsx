@@ -31,6 +31,8 @@ export default function RootLayout({
             disableTransitionOnChange
           >
       <AuthProvider>
+
+        
         <ConvexClientProvider>
           <SidebarProvider>
 
@@ -39,12 +41,10 @@ export default function RootLayout({
                     <NavBar /> */}
           
             <LeftSidebar />
-            <div className="w-full">
               <CollapseLayout>
               {children}
               </CollapseLayout>
               
-            </div>
             </SidebarProvider>
           <Toaster />
           

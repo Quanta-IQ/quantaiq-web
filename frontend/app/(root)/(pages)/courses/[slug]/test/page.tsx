@@ -8,7 +8,6 @@ export default function Page({params} : {params: {slug: string}}) {
     return (
       <>
      
-        <CourseHead courseID={params.slug} />
         <div className="w-full pt-2">
           <TestCard
           courseID={params.slug}

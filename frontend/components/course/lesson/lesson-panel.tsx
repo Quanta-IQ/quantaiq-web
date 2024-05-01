@@ -120,10 +120,11 @@ export default function LessonPanel(
     }
     
     return (
-        <div className=" h-[800px]">
+        <div className="fixed h-screen">
             <ResizablePanelGroup direction="horizontal"
             className="max-w-full h-full">
-                <ResizablePanel className="min-w-60 flex flex-col gap-2" defaultSize={15}  >
+                <ResizablePanel className=" flex flex-col gap-2" defaultSize={15}  >
+                    <div className="place-content-between">
                     <div className="pt-2">
                         <p className="text-2xl font-extrabold">
                             Lessons
@@ -188,10 +189,10 @@ export default function LessonPanel(
                         
 
                     </div>
-                    
+                    </div>
                 </ResizablePanel>
             <ResizableHandle withHandle  />
-                <ResizablePanel className="min-w-96  " defaultSize={75}>
+                <ResizablePanel className="min-w-96 " defaultSize={75}>
                     {selectedLesson && <Chat key={session} lessonID={selectedLesson} sessionID={session} userID={userConvex?._id as string}/>}
                     {!selectedLesson && <div className="w-full h-full flex items-center justify-center">
                                 <p className="text-2xl font-extrabold">

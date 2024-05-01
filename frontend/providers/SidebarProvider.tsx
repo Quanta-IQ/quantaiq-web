@@ -5,15 +5,17 @@ import React from "react";
 const Context = createContext({});
 
 const SidebarProvider = ({children}:any) =>{
-   
+    
+
     const initialState = false
+    const initialNone = null
     const [collapsed, setCollapsed] = useState(initialState);
+    const [params, setParams] = useState(null)
+    
 
-
-    console.log("Collapsed State ",collapsed)
-
+    
     return (
-        <Context.Provider value={{collapsed,setCollapsed}}>
+        <Context.Provider value={{collapsed,setCollapsed, params, setParams}}>
             { children}
         </Context.Provider>
     )

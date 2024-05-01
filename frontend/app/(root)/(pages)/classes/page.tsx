@@ -29,7 +29,7 @@ export default function Home() {
   const { user }: any = AuthContext();
   const userConvex = useUserConvexData();
   return (
-    <div className="mb-4 mt-4 ml-4">
+    <div className="mb-4 mt-4 ml-8 mr-4">
       <div className="flex flex-row justify-between">
         <div>
           <h1 className="text-4xl font-bold">Classes</h1>

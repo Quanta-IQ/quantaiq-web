@@ -123,8 +123,10 @@ export default function LessonPanel(
         <div className="relative h-screen">
             <ResizablePanelGroup direction="horizontal"
             className="max-w-full h-screen">
-                <ResizablePanel className=" flex flex-col justify-between h-full" defaultSize={15}  >
-                   
+                <ResizablePanel className=" " defaultSize={15}  >
+                    <div className="w-full h-full pl-4">
+
+                    
                     <div className="pt-8 h-[50%]">
                         <p className="text-2xl font-extrabold">
                             Lessons
@@ -186,6 +188,7 @@ export default function LessonPanel(
                                 ))}
                             </div>
                         </ScrollArea>
+                    </div>
                     </div>
                 </ResizablePanel>
             <ResizableHandle withHandle  />

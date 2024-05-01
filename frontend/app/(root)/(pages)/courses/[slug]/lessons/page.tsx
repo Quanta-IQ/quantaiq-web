@@ -11,7 +11,7 @@ export default function Page({params} : {params: {slug: string}}) {
   setParams(params.slug);
     
     return (
-      <div className="h-screen">
+      <div className="h-screen ">
      
         <div className="pl-4  ">
           <LessonPanel courseID={params.slug} />

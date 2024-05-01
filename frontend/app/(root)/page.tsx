@@ -5,7 +5,7 @@ import {SidebarContext} from "@/providers/SidebarProvider";
 export default function Home() {
   const {collapsed, setCollapsed}:any = SidebarContext();
   return (
-    <div >
+    <div className="pl-4" >
       Home
     </div>
   );

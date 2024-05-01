@@ -10,9 +10,11 @@ export default function Page({params} : {params: {slug: string}}) {
   let { setParams}:any = SidebarContext();
   setParams(params.slug);
     return (
-      <>
+      <div className="h-screen ">
      
+        <div className="pl-4  ">
         Class Settings
-      </>
+        </div>
+        </div>
     );
 }

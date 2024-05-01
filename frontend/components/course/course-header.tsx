@@ -66,7 +66,7 @@ export default function CourseHead(
           </Button>
           </Link>
           <Link href={`/courses/${courseID}/edit`}>
-          <Button className="w-full" variant={pathname.includes('/ai') ? 'default' : 'secondary'}>
+          <Button className="w-full" variant={pathname.includes('/edit') ? 'default' : 'secondary'}>
             <Settings className="h-4 w-4 " />
             {!collapsed && <p>Edit Details</p>}
             

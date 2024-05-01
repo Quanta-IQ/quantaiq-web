@@ -16,7 +16,8 @@ import { Id } from "@/convex/_generated/dataModel";
 import CourseHead from "@/components/course/course-header";
 
 import {ModeToggle} from "@/components/shared/mode-toggle";
-import { ChevronLeft, ChevronRight } from "lucide-react";
+import { ChevronLeft, ChevronRight, CircleUserRound } from "lucide-react";
+import { Separator } from "@radix-ui/react-separator";
 
 function LeftSidebar() {
 
@@ -120,7 +121,7 @@ function LeftSidebar() {
             </div>}
             
 
-            <div className="object-bottom">
+            <div className="object-bottom pb-0">
                 <div className="flex flex-col">
                         <ModeToggle />
                         <div className="flex cursor-pointer gap-4 p-4 pl-6 items-center" onClick={hideLeftBar}>
@@ -130,7 +131,11 @@ function LeftSidebar() {
                             }
                             {!isHidden && <p className="text-gray-500 text-sm dark:text-gray-200"> Hide </p>}
                         </div>
-                        
+                        <div className="flex cursor-pointer gap-4 p-4 pb-2 pl-6 items-center pt-12 h-10 text-black dark:text-white ">
+                            
+                            <CircleUserRound className="text-black dark:text-white"/>
+                            {!isHidden && <p>Profile</p>}
+                        </div>
                 </div>
             </div>
             

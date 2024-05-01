@@ -120,16 +120,16 @@ export default function LessonPanel(
     }
     
     return (
-        <div className="fixed h-screen">
+        <div className="relative h-screen">
             <ResizablePanelGroup direction="horizontal"
-            className="max-w-full h-full">
-                <ResizablePanel className=" flex flex-col gap-2" defaultSize={15}  >
-                    <div className="place-content-between">
-                    <div className="pt-2">
+            className="max-w-full h-screen">
+                <ResizablePanel className=" flex flex-col justify-between h-full" defaultSize={15}  >
+                   
+                    <div className="pt-8 h-[50%]">
                         <p className="text-2xl font-extrabold">
                             Lessons
                         </p>
-                        <ScrollArea className="h-96">
+                        <ScrollArea className="h-full" >
                             <div className=" flex flex-col space-y-3 pr-2 pt-4">
                                 {courseLessons?.map((lesson: any) => (
                                     <Link key={lesson._id} href={`/courses/${courseID}/lessons?select=${lesson._id}`} >
@@ -145,11 +145,11 @@ export default function LessonPanel(
                         
                     </div>
 
-                    <div>
+                    <div className="pb-8 h-[50%]">
                         <p className="text-2xl font-extrabold">
                             Sessions
                         </p>
-                        <ScrollArea className="h-64">
+                        <ScrollArea className="h-full" >
                             <div className=" flex flex-col space-y-3 pr-2 pt-4 w-full">
                                 {filteredSessions?.map((Session: any) => (
                                     <Link key={Session._id} href={`/courses/${courseID}/lessons?session=${Session.sessionID}&select=${Session.Metadata.lessonId}`}>
@@ -186,13 +186,10 @@ export default function LessonPanel(
                                 ))}
                             </div>
                         </ScrollArea>
-                        
-
-                    </div>
                     </div>
                 </ResizablePanel>
             <ResizableHandle withHandle  />
-                <ResizablePanel className="min-w-96 " defaultSize={75}>
+                <ResizablePanel className=" " defaultSize={65}>
                     {selectedLesson && <Chat key={session} lessonID={selectedLesson} sessionID={session} userID={userConvex?._id as string}/>}
                     {!selectedLesson && <div className="w-full h-full flex items-center justify-center">
                                 <p className="text-2xl font-extrabold">
@@ -201,7 +198,7 @@ export default function LessonPanel(
                             </div>}
                 </ResizablePanel>
             <ResizableHandle withHandle  />
-                <ResizablePanel className="min-w-96 " defaultSize={10} >
+                <ResizablePanel className="" defaultSize={20} >
                     {
                         (!selectedLesson) && 
                         <>
@@ -213,7 +210,7 @@ export default function LessonPanel(
                         </>
                     }
                     { selectedLesson && 
-                        <div>
+                        <div className="w-full h-full">
                             <EditLesson lessonID={selectedLesson} courseID={courseID}/>
                         </div>
                      }

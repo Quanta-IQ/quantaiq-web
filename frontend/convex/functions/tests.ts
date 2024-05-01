@@ -74,3 +74,18 @@ export const fetchTests = query({
         }
     }
 });
+
+export const getTestByTestID = query({
+    args: {
+        TestID: v.optional(v.id("Tests")),
+    },
+    handler: async (ctx, args) => {
+        if (!args.TestID) {
+            return null;
+        } else {
+            const test = await ctx.db
+                .get(args.TestID);
+            return test;
+        }
+    },
+});

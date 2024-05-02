@@ -75,7 +75,7 @@ function LeftSidebar() {
                 <div className=" leftsidebar_link flex w-full flex-1 flex-col gap-3 px-3 ">
 
                 <div className="flex flex-col  pb-2 pl-4">
-                    <h1 className="text-2xl font-bold text-black">{courseInfo.CourseName}</h1>
+                    <h1 className="text-2xl font-bold text-black dark:text-white">{courseInfo.CourseName}</h1>
                     <p className="text-gray-500 text-xs "> {courseInfo.CourseDescription}</p>
                 </div>
                 <div className="px-4">

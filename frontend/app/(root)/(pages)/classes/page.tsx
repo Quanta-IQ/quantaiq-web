@@ -23,7 +23,12 @@ import JoinClassTabs from "@/components/class/join-class-tabs";
 import ClassAdminFeed from "@/components/class/class-admin-feed";
 import ClassFeed from "@/components/class/class-feed";
 import useUserConvexData from "@/hooks/useUserConvexData";
+import { Metadata } from "next";
 
+export const metadata: Metadata = {
+  title: "Quanta IQ",
+  description: "AI powered classes",
+};
 
 export default function Home() {
   const { user }: any = AuthContext();

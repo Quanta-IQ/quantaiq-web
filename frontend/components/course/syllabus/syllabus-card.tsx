@@ -25,7 +25,7 @@ export default function SyllabusCard(
 
     return (
         <>
-            <div className="grid grid-cols-3 gap-2">
+            <div className="grid grid-cols-3 gap-2 h-screen">
                 {courseInfo && !editLesson &&  <CreateLesson courseID={courseID} courseName={courseInfo!.CourseName}/>}
                 {courseInfo && editLesson &&  <EditLesson courseID={courseID} lessonID={editLesson}/>}
                 <div className="col-span-2" >

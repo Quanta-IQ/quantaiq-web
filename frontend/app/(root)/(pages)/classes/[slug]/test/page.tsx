@@ -9,9 +9,9 @@ export default function Page({params} : {params: {slug: string}}) {
 
     
     return (
-      <>
+      <div className="ml-4">
         <ClassHead classID={params.slug} />
         <TestFeed classID={params.slug}/>
-      </>
+      </div>
     );
 }

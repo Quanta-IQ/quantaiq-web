@@ -118,7 +118,9 @@ export default function LessonPanel(
 
         }
     }
-    
+    console.log(session)
+
+
     return (
         <div className="relative h-screen">
             <ResizablePanelGroup direction="horizontal"

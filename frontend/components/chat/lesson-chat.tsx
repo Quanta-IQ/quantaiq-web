@@ -169,6 +169,8 @@ export default function Chat({ lessonID, sessionID, userID }: LessonSession) {
         <div className="flex flex-col relative h-full max-w-full ">
             <ChatHeader/>
        
+          {lessonInfo &&
+          <>
 
             <div className="h-5/6 flex flex-col space-y-4 p-3 overflow-y-auto"
                 ref={listRef}
@@ -258,6 +260,7 @@ export default function Chat({ lessonID, sessionID, userID }: LessonSession) {
             <div className="relative w-full box-border flex-col pt-2.5 p-5 space-y-2">
                 <ChatInput type="lesson-bot" sessionID={sessionID} lessonID={lessonID}/>
             </div>
+            </>}
 
         </div>
     );

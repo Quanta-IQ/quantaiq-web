@@ -37,7 +37,7 @@ export const getLessonByID = query({
             const lesson = await ctx.db.get(args.LessonID as Id<"Lessons">);
             return lesson;
         } catch (error) {
-            throw error;
+            return null;
         }
     }
 });

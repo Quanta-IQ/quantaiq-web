@@ -38,6 +38,7 @@ export default function LessonPanel(
     
     const userConvex = useUserConvexData()
     const [session, setSession] = useState(crypto.randomUUID())
+    
     const userSessions = useQuery(api.functions.users.getUserSessions,{
       userId: userConvex?._id  
     })
@@ -61,10 +62,8 @@ export default function LessonPanel(
     // select a session
     const selectedSession = searchParams.get("session");
     
-
+    const [lesson, setLesson] = useState(selectedLesson);
     
-    console.log(selectedLesson, selectedSession, session)
-
     console.log(userSessions);
 
     //Function when selectedLesson Changes
@@ -90,8 +89,9 @@ export default function LessonPanel(
 
     //Handle session change
 
-    const handleSessionChange = (sessionId: string) => {
+    const handleSessionChange = (sessionId: string, lesson: string) => {
         setSession(sessionId)
+        setLesson(lesson)
     }
 
 
@@ -118,8 +118,8 @@ export default function LessonPanel(
 
         }
     }
-    console.log(session)
 
+    console.log(selectedLesson, selectedSession, session, lesson)
 
     return (
         <div className="relative h-screen">
@@ -157,7 +157,9 @@ export default function LessonPanel(
                             <div className=" flex flex-col space-y-3 pr-2 pt-4 w-full">
                                 {filteredSessions?.map((Session: any) => (
                                     <Link key={Session._id} href={`/courses/${courseID}/lessons?session=${Session.sessionID}&select=${Session.Metadata.lessonId}`}>
-                                        <div className={`w-full flex flex-row items-center space-x-2 ${Session.SessionID === session ? 'font-extrabold' : ''}`} onClick={() => handleSessionChange(Session.SessionID)}>
+                                        <div className={`w-full flex flex-row items-center space-x-2 ${Session.SessionID === session ? 'font-extrabold' : ''}`} onClick={() => handleSessionChange(Session.SessionID, 
+                                            Session.Metadata.lessonId
+                                        )}>
                                             <p className="w-48 truncate text-xs">{Session.SessionID}</p>
                                             <p>
                                                 <AlertDialog>

@@ -11,9 +11,9 @@ export default function Page({params} : {params: {slug: string}}) {
     setParams(params.slug);
     
     return (
-      <>
+      <div className="ml-4">
      
         Home
-      </>
+      </div>
     );
 }

@@ -27,7 +27,7 @@ export default function CourseHead(
     let {collapsed}:any = SidebarContext();
     return (
       <>
-       <div className="pt-4  bg-background">
+       <div className="  bg-background">
         
          
           <div className="flex flex-col items-left  gap-4 pb-4">

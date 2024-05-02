@@ -20,7 +20,7 @@ export default function ClassCard(
         classDescription,
         creator
     }: ClassCardProps
-){
+) {
     return (
         <Card className="max-w-3xl p-3">
             <div className="flex flex-col justify-between">
@@ -29,11 +29,11 @@ export default function ClassCard(
                     <p className="text-gray-500 ">{classDescription}</p>
                 </div>
                 <div className="flex items-center pt-4 gap-4">
-                    <Button variant="secondary">
-                        <Link href={`/classes/${classID}`}>
+                    <Link href={`/classes/${classID}`}>
+                        <Button variant="secondary">
                             View Class
-                        </Link>
-                    </Button>
+                        </Button>
+                    </Link>
                     {/* <Button variant="secondary">
                         <Link href={`/courses/${classID}/edit`}>
                             Edit Class

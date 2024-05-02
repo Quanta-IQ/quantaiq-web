@@ -18,7 +18,7 @@ export default function TestCard(
         testName,
         testDescription,
     }: TestCardProps
-){
+) {
     return (
         <Card className="max-w-3xl p-3">
             <div className="flex flex-col justify-between">
@@ -27,11 +27,11 @@ export default function TestCard(
                     <p className="text-gray-500 ">{testDescription}</p>
                 </div>
                 <div className="flex items-center pt-4 gap-4">
-                    <Button variant="secondary">
-                        <Link href={`/tests/${testID}`}>
+                    <Link href={`/tests/${testID}`}>
+                        <Button variant="secondary">
                             Take Test
-                        </Link>
-                    </Button>
+                        </Button>
+                    </Link>
                     {/* <Button variant="secondary">
                         <Link href={`/courses/${classID}/edit`}>
                             Edit Class

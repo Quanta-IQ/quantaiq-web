@@ -29,16 +29,16 @@ export default function CourseCard(
                     <p className="text-gray-500 ">{courseDescription}</p>
                 </div>
                 <div className="flex items-center pt-4 gap-4">
+                <Link href={`/courses/${courseID}`}>
                     <Button variant="secondary">
-                        <Link href={`/courses/${courseID}`}>
                             View Course
-                        </Link>
                     </Button>
+                    </Link>
+                    <Link href={`/courses/${courseID}/edit`}>
                     <Button variant="secondary">
-                        <Link href={`/courses/${courseID}/edit`}>
                             Edit Course
-                        </Link>
                     </Button>
+                    </Link>
                 </div>
             </div>
         </Card>

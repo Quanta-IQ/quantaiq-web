@@ -20,7 +20,7 @@ export default function ClassCardAdmin(
         classDescription,
         creator
     }: ClassCardProps
-){
+) {
     return (
         <Card className="max-w-3xl p-3">
             <div className="flex flex-col justify-between">
@@ -29,16 +29,16 @@ export default function ClassCardAdmin(
                     <p className="text-gray-500 ">{classDescription}</p>
                 </div>
                 <div className="flex items-center pt-4 gap-4">
-                    <Button variant="secondary">
-                        <Link href={`/classes/${classID}`}>
+                    <Link href={`/classes/${classID}`}>
+                        <Button variant="secondary">
                             View Class
-                        </Link>
-                    </Button>
-                    <Button variant="secondary">
-                        <Link href={`/classes/${classID}/edit`}>
+                        </Button>
+                    </Link>
+                    <Link href={`/classes/${classID}/edit`}>
+                        <Button variant="secondary">
                             Edit Class
-                        </Link>
-                    </Button>
+                        </Button>
+                    </Link>
                 </div>
             </div>
         </Card>

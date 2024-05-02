@@ -40,24 +40,24 @@ export default function ClassHead(
           }
           
           <div className="flex flex-row items-center  gap-4 pb-4 pl-4">
+          <Link href={`/classes/${classInfo._id}/syllabus`}>
           <Button variant={window.location.pathname.includes('/syllabus') ? 'default' : 'secondary'}>
             <NotebookPen className="h-4 w-4 mr-2" />
-            <Link href={`/classes/${classInfo._id}/syllabus`}>
             Syllabus
-            </Link>
           </Button>
+          </Link>
+          <Link href={`/classes/${classInfo._id}/lessons`}>
           <Button variant={window.location.pathname.includes('/lessons') ? 'default' : 'secondary'}>
             <BookType className="h-4 w-4 mr-2" />
-            <Link href={`/classes/${classInfo._id}/lessons`}>
             Lessons
-            </Link>
           </Button>
+          </Link>
+          <Link href={`/classes/${classInfo._id}/test`}>
           <Button variant={window.location.pathname.includes('/test') ? 'default' : 'secondary'}>
             <FilePenLine className="h-4 w-4 mr-2" />
-            <Link href={`/classes/${classInfo._id}/test`}>
             Tests
-            </Link>
           </Button>
+          </Link>
           {/* <Button variant={window.location.pathname.includes('/ai') ? 'default' : 'secondary'}>
             <Bot className="h-4 w-4 mr-2" />
             <Link href={`/courses/${classInfo._id}/ai`}>

@@ -23,7 +23,7 @@ export default function TestCard(
 
     return (
         <>
-            <div className="grid grid-cols-3 gap-2">
+            <div className="grid grid-cols-1 gap-2">
                 {courseInfo &&  <CreateTest user={{ user_id: user.user?.uid }} courseID={courseID} courseName={courseInfo!.CourseName}/>}
             </div>
         </>

@@ -135,9 +135,9 @@ export default function LessonFeed(
                                         </Button>
                                     </Link>
                                     <Link href={`${window.location.pathname}?edit=${lessons._id}`}>
-                                    <Button variant="outline">
+                                        <Button variant="outline">
                                             Edit
-                                    </Button>
+                                        </Button>
                                     </Link>
 
 

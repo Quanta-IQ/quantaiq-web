@@ -72,7 +72,7 @@ function LeftSidebar() {
            
             {
                 (courseInfo && !isHidden) &&
-                <div className=" leftsidebar_link flex w-full flex-1 flex-col gap-3 px-3 ">
+                <div className="  flex w-full flex-1 flex-col gap-3 px-3 ">
 
                 <div className="flex flex-col  pb-2 pl-4">
                     <h1 className="text-2xl font-bold text-black dark:text-white">{courseInfo.CourseName}</h1>
@@ -87,7 +87,7 @@ function LeftSidebar() {
             }
             {
                 courseInfo && isHidden && 
-                <div className="  flex w-full flex-1 flex-col gap-3  pt-28">
+                <div className="  flex w-full flex-1 flex-col gap-3  ">
                     <div className="px-4">
                         <CourseHead courseID={params} />
                     </div>
@@ -136,7 +136,7 @@ function LeftSidebar() {
             <div className="object-bottom pb-0">
                 <div className="flex flex-col">
                         <ModeToggle />
-                        <div className="flex cursor-pointer gap-4 p-4 pl-6 items-center" onClick={hideLeftBar}>
+                        <div className="flex cursor-pointer gap-4 p-4 pl-6 items-center " onClick={hideLeftBar}>
                             {!isHidden && <ChevronLeft className="text-gray-500 dark:text-gray-200"/>}
                             {
                                 isHidden && <ChevronRight className="text-gray-500 dark:text-gray-200" />

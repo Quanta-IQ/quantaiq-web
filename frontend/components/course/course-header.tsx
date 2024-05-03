@@ -31,7 +31,7 @@ export default function CourseHead(
         
          
           <div className="flex flex-col items-left  gap-4 pb-4">
-          <Link href={`/courses/${courseID}/syllabus`}>
+          <Link href={`/courses/${courseID}/syllabus`} >
             <Button className="w-full" variant={pathname.includes('/syllabus') ? 'default' : 'secondary'}>
               <NotebookPen className="h-4 w-4 " />
               {!collapsed && <p>Syllabus</p>}

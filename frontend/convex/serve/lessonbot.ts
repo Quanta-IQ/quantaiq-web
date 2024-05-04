@@ -50,9 +50,12 @@ export const answer = internalAction({
     const chunkFromSearch = await ctx.runQuery(internal.serve.lessonbot.getChunks, {
       embeddingIds: searchResults.map(({ _id }) => _id),
     });
+    console.log(chunkFromSearch);
+
+    const flattenedChunks = chunkFromSearch.filter(x => x !== null);
 
     //Filter to current lesson
-    const relevantDocuments = chunkFromSearch.filter(({ DocumentID }) => documentIds!.includes(DocumentID));
+    const relevantDocuments = flattenedChunks.filter(({ DocumentID }) => documentIds?.includes(DocumentID));
 
     console.log(lastUserMessage, relevantDocuments);
 

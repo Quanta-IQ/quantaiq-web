@@ -126,13 +126,11 @@ function LeftSidebar() {
             }
             {
                 (classInfo?.Name && isHidden) &&
-                <div className="  flex w-full flex-1 flex-col gap-3 px-3 ">
-                        
+                <div className="  flex w-full flex-1 flex-col gap-3  ">
                 <div className="px-4">
-
-                    <ClassHead classID={classInfo._id}/>
+                <ClassHead classID={classInfo._id}/>
                 </div>
-                 </div>
+                </div>
                 
             }
            

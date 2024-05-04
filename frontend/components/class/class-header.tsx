@@ -32,12 +32,7 @@ export default function ClassHead(
         
          
           <div className="flex flex-col items-left  gap-4 pb-4">
-          <Link href={`/classes/${classID}/syllabus`} >
-            <Button className="w-full" variant={pathname.includes('/syllabus') ? 'default' : 'secondary'}>
-              <NotebookPen className="h-4 w-4 " />
-              {!collapsed && <p>Syllabus</p>}
-            </Button>
-          </Link>
+         
           <Link href={`/classes/${classID}/lessons`}>
           <Button className="w-full" variant={pathname.includes('/lessons') ? 'default' : 'secondary'}>
             <BookType className="h-4 w-4 " />

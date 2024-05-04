@@ -151,3 +151,26 @@ export const getDocsByLesson = query({
                 }
     }
 })
+
+// Get Lesson by ID
+export const getMultiLessonByID = query({
+    args: {
+        selectedLessonIDs: v.optional(v.array(v.string()))
+    },
+    handler: async (ctx, args) => {
+        if (!args.selectedLessonIDs || args.selectedLessonIDs.length === 0) {
+            return null;        
+        }
+        try {
+            const lessonsPromises = args.selectedLessonIDs.map(lessonId => 
+                ctx.db.get(lessonId as Id<"Lessons">)
+                    .catch(error => null)   
+            );
+            const lessons = await Promise.all(lessonsPromises);
+            return lessons.filter(lesson => lesson !== null);  
+        } catch (error) {
+            return [];  
+        }
+    }
+});
+

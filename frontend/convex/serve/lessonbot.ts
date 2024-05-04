@@ -51,7 +51,7 @@ export const answer = internalAction({
       embeddingIds: searchResults.map(({ _id }) => _id),
     });
     console.log(chunkFromSearch);
-
+    
     const flattenedChunks = chunkFromSearch.filter(x => x !== null);
 
     //Filter to current lesson
@@ -63,8 +63,6 @@ export const answer = internalAction({
       sessionId,
       lessonId
     });
-
-    
 
     const prompt = `
     You AI Teaching Assistant!

@@ -38,7 +38,7 @@ import useUserConvexData from "@/hooks/useUserConvexData";
 interface Props {
     user: {
         user_id: string,
-    };
+    },
 }
 const formSchema = z.object({
     ClassName: z.string().min(3).max(30),
@@ -112,7 +112,7 @@ export default function CreateClassForm({ user }: Props) {
                     name="ClassName"
                     render={({ field }) => (
                       <FormItem className="flex w-full flex-col gap-2 ">
-                        <FormLabel >Course Name</FormLabel>
+                        <FormLabel >Class Name</FormLabel>
                         <FormControl>
                           <Input  {...field} />
                         </FormControl>
@@ -126,7 +126,7 @@ export default function CreateClassForm({ user }: Props) {
                     name="ClassDescription"
                     render={({ field }) => (
                     <FormItem className="flex flex-col ">
-                        <FormLabel >Course Description</FormLabel>
+                        <FormLabel >Class Description</FormLabel>
                         <FormControl>
                         <Textarea  {...field} />
                         </FormControl>

@@ -1,6 +1,6 @@
 import { Id } from "../_generated/dataModel";
 import { query, mutation } from "../_generated/server";
-import { v } from "convex/values";
+import { ConvexError, v } from "convex/values";
 
 
 //Create a Class
@@ -122,7 +122,24 @@ export const addStudentToClass = mutation({
         ClassID: v.id("Classes"),
     },
     handler: async (ctx, args) => {
-        return await ctx.db.insert("Students", args);
+        //Retrieve class
+        const classInfo = await ctx.db.get(
+            args.ClassID
+        )
+        const studentList = await ctx.db
+            .query("Students")
+            .withIndex("by_UserID_ClassID", q => q.eq("UserID", args.UserID).eq("ClassID", args.ClassID))
+
+        if (args.UserID == classInfo?.CreatorID){
+            throw new ConvexError("You cannot add the class creator as a student");
+        }
+        if(studentList){
+            throw new ConvexError("You are already a student of the class!")
+        }
+        else{
+            return await ctx.db.insert("Students", args);
+        }
+        
     },
 });
 
@@ -240,3 +257,5 @@ export const fetchStudentFromClass = query({
         return students
     }
 })
+
+

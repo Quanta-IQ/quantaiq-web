@@ -3,14 +3,16 @@
 
 import React from "react";
 import ClassHead from "@/components/class/class-header";
+import { SidebarContext } from "@/providers/SidebarProvider";
 
 
 export default function Page({params} : {params: {slug: string}}) {
-
+    let { setParams}:any = SidebarContext();
+    setParams(params.slug);
+  
     
     return (
       <div className="ml-4">
-        <ClassHead classID={params.slug} />
         Class
       </div>
     );

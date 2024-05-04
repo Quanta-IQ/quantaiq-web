@@ -148,6 +148,7 @@ export default defineSchema({
     //Test table
     Tests: defineTable({
         CreatorID: v.id("Users"),
+        TestName: v.string(),
         TestContent: v.string(),
         CourseID: v.optional(v.id("Courses")),
         Metadata: v.optional(v.any())

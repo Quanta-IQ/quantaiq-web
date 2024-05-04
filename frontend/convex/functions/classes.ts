@@ -23,15 +23,45 @@ export const createClass = mutation({
 //Get Class by ID
 export const getClassByClassID = query({
     args: {
-        ClassID: v.optional(v.id("Classes")),
+        ClassID: v.optional(v.any()),
     },
     handler: async (ctx, args) => {
         if (!args.ClassID) {
             return null;
         } else {
-            const classObject = await ctx.db
-                .get(args.ClassID);
-            return classObject;
+            try{
+                const classInfo = await ctx.db
+                  .get(args.ClassID as Id<"Classes">);
+      
+                return classInfo;}
+                catch{
+                  throw new Error
+                }
+        }
+    },
+});
+
+//Retrieve all class under a course
+export const getClassesByCourse = query({
+    args: {
+        CourseID: v.optional(v.id("Courses")),
+    },
+    handler: async (ctx, args) => {
+        try {
+            if (args.CourseID) {
+                const classes = await ctx.db
+                    .query("Classes")
+                    .withIndex("by_CourseID", q => q.eq("CourseID", args.CourseID!))
+                    .collect();
+                return classes;
+            } else {
+                return null;
+            }
+        }
+
+        catch (e) {
+            console.error(e);
+            return null;
         }
     },
 });

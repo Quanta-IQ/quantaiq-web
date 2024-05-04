@@ -105,7 +105,10 @@ export default function Chat({ lessonID, sessionID, userID }: LessonSession) {
             const newTest =  await createTest({
               CreatorID: userID,
               TestContent: message,
-              CourseID: params
+              CourseID: params,
+              Metadata:{
+                TestName: lessonID
+              }
             })
   
             if (newTest){

@@ -1,6 +1,6 @@
 import { Id } from "../_generated/dataModel";
 import { query, mutation } from "../_generated/server";
-import { v } from "convex/values";
+import { ConvexError, v } from "convex/values";
 
 
 //Create a Class
@@ -23,15 +23,45 @@ export const createClass = mutation({
 //Get Class by ID
 export const getClassByClassID = query({
     args: {
-        ClassID: v.optional(v.id("Classes")),
+        ClassID: v.optional(v.any()),
     },
     handler: async (ctx, args) => {
         if (!args.ClassID) {
             return null;
         } else {
-            const classObject = await ctx.db
-                .get(args.ClassID);
-            return classObject;
+            try{
+                const classInfo = await ctx.db
+                  .get(args.ClassID as Id<"Classes">);
+      
+                return classInfo;}
+                catch{
+                  throw new Error
+                }
+        }
+    },
+});
+
+//Retrieve all class under a course
+export const getClassesByCourse = query({
+    args: {
+        CourseID: v.optional(v.id("Courses")),
+    },
+    handler: async (ctx, args) => {
+        try {
+            if (args.CourseID) {
+                const classes = await ctx.db
+                    .query("Classes")
+                    .withIndex("by_CourseID", q => q.eq("CourseID", args.CourseID!))
+                    .collect();
+                return classes;
+            } else {
+                return null;
+            }
+        }
+
+        catch (e) {
+            console.error(e);
+            return null;
         }
     },
 });
@@ -92,7 +122,24 @@ export const addStudentToClass = mutation({
         ClassID: v.id("Classes"),
     },
     handler: async (ctx, args) => {
-        return await ctx.db.insert("Students", args);
+        //Retrieve class
+        const classInfo = await ctx.db.get(
+            args.ClassID
+        )
+        const studentList = await ctx.db
+            .query("Students")
+            .withIndex("by_UserID_ClassID", q => q.eq("UserID", args.UserID).eq("ClassID", args.ClassID))
+
+        if (args.UserID == classInfo?.CreatorID){
+            throw new ConvexError("You cannot add the class creator as a student");
+        }
+        if(studentList){
+            throw new ConvexError("You are already a student of the class!")
+        }
+        else{
+            return await ctx.db.insert("Students", args);
+        }
+        
     },
 });
 
@@ -210,3 +257,5 @@ export const fetchStudentFromClass = query({
         return students
     }
 })
+
+

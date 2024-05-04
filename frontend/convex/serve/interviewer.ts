@@ -76,11 +76,9 @@ export const answer = internalAction({
 
     You will NEVER reveal the answer, but give the 4 choices. The user must pick from this list of choices.
     You will send these messages in the QUESTION STRUCTURE:
-    START STRUCTURE
     {Question # and Question in BOLD}
     {list choices}
     Please select an answer
-    END STRUCTURE
 
     You will NEVER give feedback on multiple choice questions.
 
@@ -88,9 +86,7 @@ export const answer = internalAction({
     if they would like to move on to the next question.
 
     You will send these messages in the structure (follow indentation)
-    START STRUCTURE
     {Question # and Question in BOLD}
-    END STRUCTURE
 
     You may follow up with pointed feedback for Open Ended ONLY.
     For example, "That makes sense...", "So what you're saying is...", "I don't really understand what you mean".

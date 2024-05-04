@@ -37,14 +37,12 @@ const formSchema = z.object({
     LessonSelection: z.array(z.string()).min(1, "Please select at least one lesson."),
     Description: z.string().min(3).max(1000),
     Objectives: z.string().min(3).max(1000),
-    Files: z.any().optional()
 });
 
 interface FormData {
     Name: string;
     Description: string;
     Objectives: string;
-    Files: any;
     LessonSelection: string[];
 }
 
@@ -71,11 +69,12 @@ export default function CreateTest(
     const courseLessons = useQuery(api.functions.lessons.getLessonsByCourseID, {
         CourseID: courseID as Id<"Courses">
     });
-
+    const sendRequest = useMutation(api.messages.testcreator.send)
     const createDocument = useMutation(api.functions.lessons.createDocument);
     const userInfo = useQuery(api.functions.users.getUser, {
         userId: user.user_id
     } );
+    
     //Added handling for ai convex
     const anyscaleOneshot = useAction(api.ai.anyscale.CompletionOneshot);
 
@@ -86,121 +85,33 @@ export default function CreateTest(
             Name: "",
             Description: "",
             Objectives: "",
-            Files: null
         }
     });
 
-    //File Handling
-    const handleFile = async (
-        e: ChangeEvent<HTMLInputElement>
-    ) => {
-        e.preventDefault();
-        setProcessingFiles(true);
-        const reader = new FileReader();
-
-        if (e.target.files && e.target.files.length > 0) {
-            const file = e.target.files[0];
-
-            if (!((file.type.includes("image") && file.type !== "image/svg+xml") ||
-                file.type.includes("pdf") ||
-                file.type.includes("text/plain"))) {
-                alert("Invalid file. Please select an image, PDF, or text file.");
-                return;
-            }
-            //TODO: Add Logic Upload to S3
-            reader.onload = async (event) => {
-                const dataFile = event.target?.result?.toString() || "";
-
-                try {
-                    const uploadedFile = await handleFileUpload(file.name, dataFile, courseID, "dump", file.type);
-                    console.log("Uploaded File", uploadedFile);
-                    // Add to Files Array
-                    setFiles([...files, uploadedFile!.toString()]);
-                } catch (error) {
-                    console.error(error);
-                }
-            };
-
-            reader.readAsDataURL(file);
-
-
-        }
-        setProcessingFiles(false);
-    };
-
-
-    //Handle File Delete
-    const fileDelete = (fileUrl: string) => {
-        const newFiles = files.filter((file) => file !== fileUrl);
-        setFiles(newFiles);
-
-        try {
-            handleFileDelete(fileUrl);
-            toast({
-                title: "Deleted File",
-                description: `File has been deleted`,
-                variant: "default"
-            });
-        } catch (error) {
-            console.error(error);
-        }
-    }
-
     const onSubmit = async (values: z.infer<typeof formSchema>) => {
-        const contentArray = await Promise.all(files.map(async (fileUrl) => {
-            const url = new URL(fileUrl);
-            const pathname = url.pathname;
-            const filename = pathname.split('/').pop();
-            try {
-                const doc = await createDocument({
-                    Label: filename as string,
-                    URL: fileUrl,
-                    Course: courseID as Id<"Courses">
-                }) as Id<"Documents">;
-                return doc;
-            } catch (error) {
-                console.error("Document creation failed:", error);
-            }
-        }));
-        
-        const metadata = {
-            Lessons: values.LessonSelection,
-            TestName: values.Name,
-            Description: values.Description,
-            Objectives: values.Objectives,
-            Documents: contentArray.filter((content) => content !== undefined) as Id<"Documents">[]
-        };
-        
+        // create test
         try {
-            if (courseID && { courseID }) {
-                await createTest({
-                    CreatorID: userInfo!._id,
-                    TestContent: "placeholder",
-                    Metadata: metadata,
-                    CourseID: courseID
-                });
-            } else {
-                await createTest({
-                    CreatorID: userInfo!._id,
-                    TestContent: "placeholder",
-                    Metadata: metadata,
-                });
-            }
-           
+            const testContent = await sendRequest({
+                courseId: courseID,
+                creatorId: userInfo!._id,
+                lessonIds: values.LessonSelection,
+                testName: values.Name,
+                testDescription: values.Description,
+                testObjectives: values.Objectives
+            })
             toast({
-                title: "Test Created!",
-                variant: "default"
-            });
-    
-            form.reset();
-            setFiles([]);
-            setPrompt("");
+                        title: "Test Created!",
+                        variant: "default"
+                    });
+            //form.reset();
+            
         } catch (error) {
             console.error("Error fetching data: ", error);
             toast({
                 title: "Uh Oh! Error creating test",
                 variant: "destructive"
             });
+            
         }
     };
     
@@ -345,62 +256,6 @@ export default function CreateTest(
 
                                 )}
                             />
-
-                            <FormField
-                                control={form.control}
-                                name="Files"
-                                render={({ field }) => (
-                                    <FormItem className="flex w-full flex-col gap-3">
-                                        <FormLabel className="text-base-semibold text-light-2">
-                                            Attach Files
-                                        </FormLabel>
-
-                                        <FormControl>
-                                            <Input
-                                                className="placeholder-slight"
-                                                type="file"
-                                                accept="image/*, .pdf"
-                                                onChange={(e) => handleFile(e)}
-                                                disabled={processingFiles}
-                                            />
-
-                                        </FormControl>
-
-                                        <FormLabel className="text-base-semibold text-light-2">
-                                            Current Files
-                                        </FormLabel>
-                                        <ScrollArea className="h-20 w-full ">
-
-                                            <div className="flex flex-col gap-3">
-
-
-                                                {files?.map((fileUrl) => {
-                                                    const url = new URL(fileUrl);
-                                                    const pathname = url.pathname;
-                                                    const filename = pathname.split('/').pop();
-
-                                                    return (
-                                                        <div key={fileUrl} className="flex flex-row justify-between">
-                                                            <span className="text-sm text-gray-400 mt-2">{filename}</span>
-                                                            <Button variant="destructive" className="text-xs h-8" onClick={() => fileDelete(fileUrl)}>
-                                                                Remove
-                                                            </Button>
-
-
-
-
-                                                        </div>
-                                                    );
-                                                })}
-                                            </div>
-                                        </ScrollArea>
-
-                                        <FormMessage />
-                                    </FormItem>
-                                )}
-                            />
-
-
                             <Button type="submit">{processState}</Button>
                         </form>
                     </Form>

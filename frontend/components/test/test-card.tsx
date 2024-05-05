@@ -20,11 +20,11 @@ export default function TestCard(
     }: TestCardProps
 ) {
     return (
-        <Card className="max-w-3xl p-3">
+        <Card className="max-w-3xl p-3 w-96">
             <div className="flex flex-col justify-between">
                 <div>
-                    <h1 className="text-3xl font-bold">{testName}</h1>
-                    <p className="text-gray-500 ">{testDescription}</p>
+                    <h1 className="text-3xl font-bold overflow-hidden text-ellipsis">{testName}</h1>
+                    <p className="text-gray-500 overflow-hidden text-ellipsis ">{testDescription}</p>
                 </div>
                 <div className="flex items-center pt-4 gap-4">
                     <Link href={`/tests/${testID}`}>

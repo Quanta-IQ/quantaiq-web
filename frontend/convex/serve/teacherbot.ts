@@ -21,7 +21,7 @@ export const answer = internalAction({
     lessonId: v.string()
   },
   handler: async (ctx, { sessionId, lessonId }) => {
-    const messages = await ctx.runQuery(internal.serve.lessonbot.getMessages, {
+    const messages = await ctx.runQuery(internal.serve.teacherbot.getMessages, {
       sessionId,
     });
     const lastUserMessage = messages.at(-1)!.Text;
@@ -47,7 +47,7 @@ export const answer = internalAction({
     });
 
 
-    const chunkFromSearch = await ctx.runQuery(internal.serve.lessonbot.getChunks, {
+    const chunkFromSearch = await ctx.runQuery(internal.serve.teacherbot.getChunks, {
       embeddingIds: searchResults.map(({ _id }) => _id),
     });
     console.log(chunkFromSearch);
@@ -59,7 +59,7 @@ export const answer = internalAction({
 
     console.log(lastUserMessage, relevantDocuments);
 
-    const messageId = await ctx.runMutation(internal.serve.lessonbot.addBotMessage, {
+    const messageId = await ctx.runMutation(internal.serve.teacherbot.addBotMessage, {
       sessionId,
       lessonId
     });
@@ -121,7 +121,7 @@ export const answer = internalAction({
         if (updateBuffer.length >= bufferThreshold) {
           text += updateBuffer.join('');
           updateBuffer.length = 0; // reset the buffer
-          await ctx.runMutation(internal.serve.lessonbot.updateBotMessage, {
+          await ctx.runMutation(internal.serve.teacherbot.updateBotMessage, {
             messageId,
             text,
           });
@@ -131,7 +131,7 @@ export const answer = internalAction({
       // Process any remaining items in the buffer
       if (updateBuffer.length > 0) {
         text += updateBuffer.join('');
-        await ctx.runMutation(internal.serve.lessonbot.updateBotMessage, {
+        await ctx.runMutation(internal.serve.teacherbot.updateBotMessage, {
           messageId,
           text,
         });
@@ -140,7 +140,7 @@ export const answer = internalAction({
 
 
     } catch (error: any) {
-      await ctx.runMutation(internal.serve.lessonbot.updateBotMessage, {
+      await ctx.runMutation(internal.serve.teacherbot.updateBotMessage, {
         messageId,
         text: "I cannot reply at this time.",
       });

@@ -29,7 +29,7 @@ export const send = mutation({
       Text: message,
       LessonID: lessonId as Id<"Lessons">
     });
-    await ctx.scheduler.runAfter(0, internal.serve.lessonbot.answer, {
+    await ctx.scheduler.runAfter(0, internal.serve.teacherbot.answer, {
       sessionId,
       lessonId
     });

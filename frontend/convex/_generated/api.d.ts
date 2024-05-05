@@ -33,7 +33,7 @@ import type * as messages_teacherbot from "../messages/teacherbot.js";
 import type * as messages_testcreator from "../messages/testcreator.js";
 import type * as serve_interviewer from "../serve/interviewer.js";
 import type * as serve_lessonbot from "../serve/lessonbot.js";
-import type * as serve_teachstudent from "../serve/teachstudent.js";
+import type * as serve_teacherbot from "../serve/teacherbot.js";
 import type * as serve_testcreator from "../serve/testcreator.js";
 
 /**
@@ -64,7 +64,7 @@ declare const fullApi: ApiFromModules<{
   "messages/testcreator": typeof messages_testcreator;
   "serve/interviewer": typeof serve_interviewer;
   "serve/lessonbot": typeof serve_lessonbot;
-  "serve/teachstudent": typeof serve_teachstudent;
+  "serve/teacherbot": typeof serve_teacherbot;
   "serve/testcreator": typeof serve_testcreator;
 }>;
 export declare const api: FilterApi<

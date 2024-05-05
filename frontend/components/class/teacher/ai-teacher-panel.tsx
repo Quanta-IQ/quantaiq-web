@@ -13,7 +13,7 @@ import {
   } from "@/components/ui/resizable"
   import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import EditLesson from "@/components/course/syllabus/edit-lesson";
-import Chat from "@/components/chat/lesson-chat";
+import Chat from "@/components/chat/teacher-chat";
 import { useState } from "react";
 import useUserConvexData from "@/hooks/useUserConvexData";
 import {
@@ -33,6 +33,8 @@ import {
   } from "@/components/ui/alert-dialog"
 
 import TemporaryPDF from "@/components/class/teacher/pdf-frame-temp"
+import Markdown from 'react-markdown'
+import { Separator } from "@/components/ui/separator";
 
 export default function AITeacherPanel(
     {classInfo} : {classInfo: any}
@@ -145,10 +147,10 @@ export default function AITeacherPanel(
             <ResizablePanelGroup direction="horizontal"
             className="max-w-full h-screen">
                 <ResizablePanel className=" " defaultSize={15}  >
-                    <div className="w-full h-full pl-4">
+                    <div className="w-full h-full pl-4 pr-4">
 
                     
-                    <div className="pt-8 h-[50%]">
+                    <div className="pt-8 h-[20%]">
                         <p className="text-2xl font-extrabold">
                             Lessons
                         </p>
@@ -167,11 +169,25 @@ export default function AITeacherPanel(
                         </ScrollArea>
                         
                     </div>
-                    <div className="pb-8 h-[20%]">
+                    <Separator />
+                    <div className="pb-8 h-[60%] flex flex-col gap-1 pt-4">
                         <p className="text-2xl font-extrabold">
-                            Files
+                            {lessonInfo?.Name}
                         </p>
-                        <ScrollArea className="h-full" >
+                        <p className="text-lg font-bold">
+                            Lesson Objectives
+                        </p>
+                        <ScrollArea className="h-[80%] pb-4" >
+                        <Markdown className="w-full rounded-xl  whitespace-pre-wrap ">
+                        {lessonInfo?.Objective}
+                            </Markdown>
+                                
+                        </ScrollArea>
+                        <Separator />
+                        <p className="text-lg font-bold pt-4">
+                            Lesson Files
+                        </p>
+                        <ScrollArea className="h-[20%]" >
                                 {lessonDocs?.map((doc: any) => (
                                     <Link key={doc._id} href={`/classes/${classInfo._id}/lessons?select=${selectedLesson}&file=${doc._id}`}onClick={() => {
                                         handleDocChange(doc);
@@ -183,12 +199,12 @@ export default function AITeacherPanel(
                                 ))}
                         </ScrollArea>
                     </div>
-
-                    <div className="pb-8 h-[30%]">
+                     <Separator />               
+                    <div className="pt-4 pb-8 h-[20%]">
                         <p className="text-2xl font-extrabold">
                             Sessions
                         </p>
-                        <ScrollArea className="h-full" >
+                        <ScrollArea className="h-full pb-8" >
                             <div className=" flex flex-col space-y-3 pr-2 pt-4 w-full">
                                 {filteredSessions?.map((Session: any) => (
                                     <Link key={Session._id} href={`/classes/${classInfo._id}/lessons?session=${Session.sessionID}&select=${Session.Metadata.lessonId}`}>

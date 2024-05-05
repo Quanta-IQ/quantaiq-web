@@ -32,7 +32,8 @@ export const getCourseByCourseID = query({
 
           return courses;}
           catch{
-            throw new Error
+            //Fix and use error boundary nextime
+            return null
           }
         }
     },

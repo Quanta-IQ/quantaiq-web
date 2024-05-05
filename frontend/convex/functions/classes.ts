@@ -35,6 +35,7 @@ export const getClassByClassID = query({
       
                 return classInfo;}
                 catch{
+                  return null
                   throw new Error
                 }
         }

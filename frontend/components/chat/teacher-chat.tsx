@@ -2,7 +2,7 @@
 import React, {useEffect,useMemo,useRef,useState} from "react";
 import {useQuery, useMutation} from "convex/react";
 import ChatHeader from "./chat-header";
-import ChatInput from "./chat-input";
+import ChatInput from "./teacher-input";
 import {ScrollArea} from "@/components/ui/scroll-area"
 import {Separator} from "@/components/ui/separator"
 import { api } from "@/convex/_generated/api";
@@ -30,7 +30,7 @@ interface LessonSession {
 }
 
 export default function Chat({ lessonID, sessionID, userID }: LessonSession) {
-    const remoteMessages = useQuery(api.messages.lessonbot.list, { sessionId: sessionID });
+    const remoteMessages = useQuery(api.messages.teacherbot.list, { sessionId: sessionID });
     const lessonInfo = useQuery(api.functions.lessons.getLessonByID, {LessonID: lessonID || undefined});
 
     const firstMessage = `Hey there! I can assist you on Lesson ${lessonInfo?.Number} - ${lessonInfo?.Name} with the following tasks:`
@@ -42,12 +42,7 @@ export default function Chat({ lessonID, sessionID, userID }: LessonSession) {
      lesson objectives to make them more specific, measurable, achievable, relevant, and time-bound (SMART). 
     `
     +`3.  **Analyzing texts and attached documents**: I can analyze the provided texts and attached documents.
-    I can also consider the vector representations of the documents to identify key concepts and relationships.
-    `+`4. **Creating examination questions**: I can help you create examination questions
-     that assess  the students' understanding of the concepts covered in the lesson. 
-    `+`5. **Creating a comprehensive lesson plan and teaching strategies**: I can help you develop 
-     a comprehensive lesson plan that incorporates the learning objectives, teaching strategies,
-      and assessment methods.`;
+    I can also consider the vector representations of the documents to identify key concepts and relationships.`;
 
 
     const [isScrolled, setScrolled] = useState(false);

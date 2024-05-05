@@ -30,6 +30,7 @@ import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { toast } from "@/components/ui/use-toast";
 import { Id } from "@/convex/_generated/dataModel";
 import { Router } from "next/router";
+import { ConvexError } from "convex/values";
 
 
 const formSchema = z.object({
@@ -76,19 +77,32 @@ export default function JoinClassForm({ user }: Props) {
         
         if (classId) {
             try {
-               joinClass({UserID: userInfo!._id, ClassID: classId})
-
+               const student = await joinClass({UserID: userInfo!._id, ClassID: classId})
+                if(student){
                 toast({
                     title: `Success!`,
                     description: `Class joined successfully`,
                     variant: "default"
-                });
+                })};
             } catch (error) {
-               
-                toast({
-                    title: "Uh Oh! Error joining the class",
-                    variant: "destructive"
-                });
+                if (error instanceof ConvexError) {
+                    // Access data and extract the message
+                    const errorMessage = (error.data as { message: string }).message
+                    // ...display the error message on the frontend
+                    toast({
+                        title: "Uh Oh! Error joining the class",
+                        description: error.data,
+                        variant: "destructive"
+                    });
+                  }
+                  else{
+                    toast({
+                        title: "Uh Oh! Error joining the class",
+                        description: "Please Try Again",
+                        variant: "destructive"
+                    });
+                  }
+                
             }
         }
     };

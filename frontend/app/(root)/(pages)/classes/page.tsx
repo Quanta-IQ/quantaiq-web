@@ -24,7 +24,6 @@ import ClassAdminFeed from "@/components/class/class-admin-feed";
 import ClassFeed from "@/components/class/class-feed";
 import useUserConvexData from "@/hooks/useUserConvexData";
 
-
 export default function Home() {
   const { user }: any = AuthContext();
   const userConvex = useUserConvexData();

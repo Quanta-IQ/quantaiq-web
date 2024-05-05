@@ -18,6 +18,7 @@ import CourseHead from "@/components/course/course-header";
 import {ModeToggle} from "@/components/shared/mode-toggle";
 import { ChevronLeft, ChevronRight, CircleUserRound, LogOutIcon } from "lucide-react";
 import { Separator } from "@radix-ui/react-separator";
+import ClassHead from "@/components/class/class-header";
 
 function LeftSidebar() {
     const auth = getAuth();
@@ -52,11 +53,25 @@ function LeftSidebar() {
         setIsHidden(!isHidden);
         setCollapsed(!isHidden);
     }
-    const courseInfo = useQuery(api.functions.courses.getCourseByCourseID, {
+    let courseInfo = useQuery(api.functions.courses.getCourseByCourseID, {
         CourseID: params as Id<"Courses">
       }) 
 
+
+    let classInfo = useQuery(api.functions.classes.getClassByClassID, {
+      ClassID: params as Id<"Classes">
+    }) 
+
     
+
+    useEffect(() => {
+        // Code to execute when params change
+        console.log("Change")
+    }, [params]);
+
+    console.log("CourseInfo", courseInfo);
+    console.log("LessonInfo", classInfo);
+
     if (user.isLogin) {return (
       
         
@@ -71,11 +86,11 @@ function LeftSidebar() {
             </Link>
            
             {
-                (courseInfo && !isHidden) &&
-                <div className=" leftsidebar_link flex w-full flex-1 flex-col gap-3 px-3 ">
+                (courseInfo?.CourseName && !isHidden ) &&
+                <div className="  flex w-full flex-1 flex-col gap-3 px-3 ">
 
                 <div className="flex flex-col  pb-2 pl-4">
-                    <h1 className="text-2xl font-bold text-black">{courseInfo.CourseName}</h1>
+                    <h1 className="text-2xl font-bold text-black dark:text-white">{courseInfo.CourseName}</h1>
                     <p className="text-gray-500 text-xs "> {courseInfo.CourseDescription}</p>
                 </div>
                 <div className="px-4">
@@ -85,17 +100,43 @@ function LeftSidebar() {
                 </div>
 
             }
+            
+            
             {
-                courseInfo && isHidden && 
-                <div className="  flex w-full flex-1 flex-col gap-3  pt-28">
+                courseInfo?.CourseName && isHidden && 
+                <div className="  flex w-full flex-1 flex-col gap-3  ">
                     <div className="px-4">
                         <CourseHead courseID={params} />
                     </div>
                 </div>
             }
+            
+            {
+                (classInfo?.Name && !isHidden) &&
+                <div className="  flex w-full flex-1 flex-col gap-3 px-3 ">
+                    <div className="flex flex-col  pb-2 pl-4">
+                    <h1 className="text-2xl font-bold text-black dark:text-white">{classInfo.Name}</h1>
+                    <p className="text-gray-500 text-xs "> {classInfo.Description}</p>
+                    </div>
+                    <div className="px-4">
+                        <ClassHead classID={classInfo._id}/>
+                    </div>
+                 </div>
+                
+            }
+            {
+                (classInfo?.Name && isHidden) &&
+                <div className="  flex w-full flex-1 flex-col gap-3  ">
+                <div className="px-4">
+                <ClassHead classID={classInfo._id}/>
+                </div>
+                </div>
+                
+            }
+           
 
 
-             {!courseInfo && <div className="flex w-full flex-1 flex-col gap-3 px-3 ">
+             {!courseInfo && !classInfo && <div className="flex w-full flex-1 flex-col gap-3 px-3 ">
                 {sidebarLinks.map((link) => {
                     const isActive = 
                     (pathname?.startsWith(link.route) && link.route.length > 1) ||
@@ -136,7 +177,7 @@ function LeftSidebar() {
             <div className="object-bottom pb-0">
                 <div className="flex flex-col">
                         <ModeToggle />
-                        <div className="flex cursor-pointer gap-4 p-4 pl-6 items-center" onClick={hideLeftBar}>
+                        <div className="flex cursor-pointer gap-4 p-4 pl-6 items-center " onClick={hideLeftBar}>
                             {!isHidden && <ChevronLeft className="text-gray-500 dark:text-gray-200"/>}
                             {
                                 isHidden && <ChevronRight className="text-gray-500 dark:text-gray-200" />

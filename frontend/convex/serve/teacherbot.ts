@@ -21,7 +21,7 @@ export const answer = internalAction({
     lessonId: v.string()
   },
   handler: async (ctx, { sessionId, lessonId }) => {
-    const messages = await ctx.runQuery(internal.serve.lessonbot.getMessages, {
+    const messages = await ctx.runQuery(internal.serve.teacherbot.getMessages, {
       sessionId,
     });
     const lastUserMessage = messages.at(-1)!.Text;
@@ -47,7 +47,7 @@ export const answer = internalAction({
     });
 
 
-    const chunkFromSearch = await ctx.runQuery(internal.serve.lessonbot.getChunks, {
+    const chunkFromSearch = await ctx.runQuery(internal.serve.teacherbot.getChunks, {
       embeddingIds: searchResults.map(({ _id }) => _id),
     });
     console.log(chunkFromSearch);
@@ -59,29 +59,29 @@ export const answer = internalAction({
 
     console.log(lastUserMessage, relevantDocuments);
 
-    const messageId = await ctx.runMutation(internal.serve.lessonbot.addBotMessage, {
+    const messageId = await ctx.runMutation(internal.serve.teacherbot.addBotMessage, {
       sessionId,
       lessonId
     });
 
+    const context = `
+        Lesson Name: ${lessonInfo!.Name}
+        Lesson Objectives: ${lessonInfo!.Objective}
+        Lesson Description: ${lessonInfo!.Description}
+    `
+
     const prompt = `
-    You AI Teaching Assistant!
+    You are an expert educator, and are responsible for walking the user through this lesson plan. You should make sure to guide them along, encouraging them to progress when appropriate. If they ask questions not related to this getting started guide, you should politely decline to answer and remind them to stay on topic.
+    Please limit any responses to only one concept or step at a time. Each step shown only be ~5 lines of code at MOST. Only include 1 code snippet per message - make sure they can run that before giving them any more. Make sure they fully understand that before moving on to the next. This is an interactive lesson - do not lecture them, but rather engage and guide them along!
 
-    Today's lesson is titled: '${lessonInfo!.Name}'. The Lesson Objectives are as follows: '${lessonInfo!.Objective}'. Here's a brief Lesson Description: '${lessonInfo!.Description}'.
+    -----------------
+    ${context}
 
-    You're asked to assist with the following task(s):
+    -----------------
+    End of Context.
 
-    1) Assist with learning the material.
-    2) Advise on modifying the lesson objective for enhanced teaching.
-    3) Analyze any texts and attached documents, also considering the vector representations of the documents, in relation to the lesson.
-    4) Help in creating examination questions.
-    5) Create a comprehensive lesson plan and teaching strategies.
+    Now remember if possible have short to medium responses.
 
-    WHEN CREATING EXAMS MAKE sure an LLM can grade and facilitate the exam. 
-    WHEN CREATING EXAMS MAKE sure your formatting clear and accurate that an LLM can easily parse.
-    WHEN CREATING EXAMS MAKE sure to add an answer key in the end.
-    DON'T output "Here are the modified ____" or anything similar when you are asked to modify or create something. Only output the modification.
-    DON'T Don't output "Here is the exam" or anything similar when you are asked to generate exams. Only output the exam.
     `
     console.log("PROMPT", prompt);
 
@@ -121,7 +121,7 @@ export const answer = internalAction({
         if (updateBuffer.length >= bufferThreshold) {
           text += updateBuffer.join('');
           updateBuffer.length = 0; // reset the buffer
-          await ctx.runMutation(internal.serve.lessonbot.updateBotMessage, {
+          await ctx.runMutation(internal.serve.teacherbot.updateBotMessage, {
             messageId,
             text,
           });
@@ -131,7 +131,7 @@ export const answer = internalAction({
       // Process any remaining items in the buffer
       if (updateBuffer.length > 0) {
         text += updateBuffer.join('');
-        await ctx.runMutation(internal.serve.lessonbot.updateBotMessage, {
+        await ctx.runMutation(internal.serve.teacherbot.updateBotMessage, {
           messageId,
           text,
         });
@@ -140,7 +140,7 @@ export const answer = internalAction({
 
 
     } catch (error: any) {
-      await ctx.runMutation(internal.serve.lessonbot.updateBotMessage, {
+      await ctx.runMutation(internal.serve.teacherbot.updateBotMessage, {
         messageId,
         text: "I cannot reply at this time.",
       });
@@ -152,7 +152,7 @@ export const answer = internalAction({
 export const getMessages = internalQuery(
   async (ctx, { sessionId }: { sessionId: string }) => {
     return await ctx.db
-      .query("LessonBotMessages")
+      .query("TeacherBotMessages")
       .withIndex("bySessionId", (q) => q.eq("SessionID", sessionId))
       .collect();
   }
@@ -173,7 +173,7 @@ export const getChunks = internalQuery(
 
 export const addBotMessage = internalMutation(
   async (ctx, { sessionId, lessonId }: { sessionId: string; lessonId: string }) => {
-    return await ctx.db.insert("LessonBotMessages", {
+    return await ctx.db.insert("TeacherBotMessages", {
       IsViewer: false,
       SessionID: sessionId,
       Text: "",
@@ -185,7 +185,7 @@ export const addBotMessage = internalMutation(
 export const updateBotMessage = internalMutation(
   async (
     ctx,
-    { messageId, text }: { messageId: Id<"LessonBotMessages">; text: string }
+    { messageId, text }: { messageId: Id<"TeacherBotMessages">; text: string }
   ) => {
     await ctx.db.patch(messageId, { Text: text });
   }

@@ -29,8 +29,12 @@ import type * as ingest_embed from "../ingest/embed.js";
 import type * as ingest_load from "../ingest/load.js";
 import type * as messages_interviewer from "../messages/interviewer.js";
 import type * as messages_lessonbot from "../messages/lessonbot.js";
+import type * as messages_teacherbot from "../messages/teacherbot.js";
+import type * as messages_testcreator from "../messages/testcreator.js";
 import type * as serve_interviewer from "../serve/interviewer.js";
 import type * as serve_lessonbot from "../serve/lessonbot.js";
+import type * as serve_teacherbot from "../serve/teacherbot.js";
+import type * as serve_testcreator from "../serve/testcreator.js";
 
 /**
  * A utility for referencing Convex functions in your app's API.
@@ -56,8 +60,12 @@ declare const fullApi: ApiFromModules<{
   "ingest/load": typeof ingest_load;
   "messages/interviewer": typeof messages_interviewer;
   "messages/lessonbot": typeof messages_lessonbot;
+  "messages/teacherbot": typeof messages_teacherbot;
+  "messages/testcreator": typeof messages_testcreator;
   "serve/interviewer": typeof serve_interviewer;
   "serve/lessonbot": typeof serve_lessonbot;
+  "serve/teacherbot": typeof serve_teacherbot;
+  "serve/testcreator": typeof serve_testcreator;
 }>;
 export declare const api: FilterApi<
   typeof fullApi,

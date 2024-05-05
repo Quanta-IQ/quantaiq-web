@@ -18,13 +18,14 @@ export const createTest = internalAction({
     args: {
         courseId: v.string(),
         creatorId: v.string(),
+        creationId: v.string(),
         lessonIds: v.array(v.string()),
         testName: v.string(),
         testObjectives: v.string(),
         testDescription: v.string()
     },
 
-    handler: async (ctx, { courseId, creatorId, lessonIds, testName, testObjectives, testDescription }) => {
+    handler: async (ctx, { courseId, creatorId, creationId, lessonIds, testName, testObjectives, testDescription }) => {
 
         const lessonInfo = await ctx.runQuery(api.functions.lessons.getMultiLessonByID,
             {
@@ -40,11 +41,10 @@ export const createTest = internalAction({
         const documentIds = lessonInfo?.flatMap(lesson => lesson?.Content || []);
         console.log("All document Ids: ", documentIds);
 
-
-        const lessonId = "jh76vsq8bgtadqrp9z7p0j9dxd6qxwn5" as Id<"Lessons">
         const messageId = await ctx.runMutation(internal.serve.testcreator.addBotMessage, {
             courseId,
             creatorId,
+            creationId,
             testName,
             testObjectives,
             testDescription,
@@ -148,6 +148,7 @@ export const addBotMessage = internalMutation(
     async (ctx, {
         courseId,
         creatorId,
+        creationId,
         lessonIds,
         testName,
         testObjectives,
@@ -156,6 +157,7 @@ export const addBotMessage = internalMutation(
     }: {
         courseId: string,
         creatorId: string,
+        creationId: string,
         lessonIds: string[],
         testName: string,
         testObjectives: string,
@@ -166,6 +168,8 @@ export const addBotMessage = internalMutation(
             TestName: testName,
             Description: testDescription,
             Objectives: testObjectives,
+            CreationID: creationId
+
         };
         return await ctx.db.insert("Tests", {
             CourseID: courseId as Id<"Courses">,

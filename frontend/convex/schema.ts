@@ -151,10 +151,12 @@ export default defineSchema({
         TestContent: v.string(),
         CourseID: v.optional(v.id("Courses")),
         Metadata: v.optional(v.any())
+        
     }) 
     .index("byCreatorID", ["CreatorID"])
     .index("byMetadata", ["Metadata"])
-    .index("byCourseID", ["CourseID"]),
+    .index("byCourseID", ["CourseID"])
+    .index("byMetadataCreationID", ["Metadata.CreationID"]),
     
     // interviewer agent
     InterviewerMessages: defineTable({

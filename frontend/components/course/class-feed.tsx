@@ -2,25 +2,25 @@
 import { AuthContext} from "../../providers/AuthProvider";
 import useUserConvexData from "../../hooks/useUserConvexData";
 import {api} from "../../convex/_generated/api";
-import ClassCard from "./class-card";
+import ClassCard from "../class/class-card";
 import { useQuery } from "convex/react";
 import React from "react";
+import { Id } from "../../convex/_generated/dataModel";
 
 
-export default function ClassFeed() {
-    const {user}: any = AuthContext();
-    const userConvex = useUserConvexData();
+export default function ClassFeed({params} : {params: {slug: string}}) {
 
 
-    const getClassesJoined = useQuery(api.functions.students.getClassesForUser, {
-        UserID: userConvex?._id 
+    const getClasses = useQuery(api.functions.classes.getClassesByCourse, {
+ 
+        CourseID: params.slug as Id<"Courses">
     }) 
 
 
     return (
         <>  
             <div className="mt-3 flex flex-wrap gap-4">
-                {getClassesJoined?.map((course: any) => {
+                {getClasses?.map((course: any) => {
                     return <ClassCard 
                     key={course._id}
                     classID={course._id}

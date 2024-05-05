@@ -112,6 +112,14 @@ export default defineSchema({
         LessonID: v.id("Lessons")
       }).index("bySessionId", ["SessionID"]),
 
+    //Lesson Chat Messages
+    TeacherBotMessages: defineTable({
+        IsViewer: v.boolean(),
+        SessionID: v.string(),
+        Text: v.string(),
+        LessonID: v.id("Lessons")
+      }).index("bySessionId", ["SessionID"]),
+
     //Class (Classroom for a course)
     Classes: defineTable({
         CourseID: v.id("Courses"),

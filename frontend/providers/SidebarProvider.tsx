@@ -11,7 +11,7 @@ const SidebarProvider = ({children}:any) =>{
     const initialNone = null
     const [collapsed, setCollapsed] = useState(initialState);
     const [params, setParams] = useState(null)
-    
+    console.log("Params", params)
 
     
     return (

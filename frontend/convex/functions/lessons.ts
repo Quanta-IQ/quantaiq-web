@@ -23,7 +23,7 @@ export const createLesson = mutation({
 // Get Lesson by ID
 export const getLessonByID = query({
     args: {
-        LessonID: v.optional(v.string())
+        LessonID: v.optional(v.any())
     },
     handler: async (ctx, args) => {
         if (!args.LessonID) {

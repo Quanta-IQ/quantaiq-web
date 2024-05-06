@@ -32,14 +32,14 @@ const testimonials: TestimonialProps[] = [
   {
     image: "https://media.licdn.com/dms/image/D4E03AQFb3ji1n5g_IQ/profile-displayphoto-shrink_100_100/0/1706745499858?e=1720656000&v=beta&t=yfaG-5UciFDbURt9lsATMoF6_gmDB7AjAc2O-5kkO7E",
     name: "Sean Andres",
-    userName: "@Sean-Andres",
+    userName: "@smandres",
     comment:
       "This gave me the summary of all of my textbooks, not that I read them answay!",
   },
   {
     image: "https://scontent-den2-1.cdninstagram.com/v/t51.2885-19/273948571_1342621592818121_8293940397281879619_n.jpg?stp=dst-jpg_s320x320&_nc_ht=scontent-den2-1.cdninstagram.com&_nc_cat=105&_nc_ohc=JDyG9fqGKFoQ7kNvgFeb4XZ&edm=AOQ1c0wBAAAA&ccb=7-5&oh=00_AfAis1gRvqcnQiE734KgmKBu7-SGCen22TI5un7g1pc30A&oe=663E547F&_nc_sid=8b3546",
     name: "Andre Birkner",
-    userName: "@AndreBirkner",
+    userName: "@andreblob",
     comment:
       "It even knows 中文!",
   },

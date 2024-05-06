@@ -18,6 +18,7 @@ export default function Home() {
             <Testimonials />
             <Newsletter />
             <FAQ />
+            
             <Footer />
         </div>
     </>

@@ -12,17 +12,8 @@ import BotsFeed from "@/components/custombots/feed";
 import {Separator} from "@/components/ui/separator"
 
 export default function Page({params} : {params: {slug: string}}) {
-    let { setParams}:any = SidebarContext();
-    setParams(params.slug);
 
-
-    const pathname = usePathname();
-    const searchParams = useSearchParams();
-
-    //url pathname
-
-
-    
+ 
   
     
      return (

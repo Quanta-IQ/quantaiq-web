@@ -20,11 +20,7 @@ export default function Page() {
     let botList = useQuery(api.functions.custombots.getPublicBots , {
        
     })
-    const pathname = usePathname();
-    const searchParams = useSearchParams();
 
-    //url pathname
-    const selectedBot = searchParams.get("bot");
 
     
     

@@ -64,7 +64,7 @@ export default function TestChat({ testID, sessionID }: TestSession) {
     };
 
     return (
-      <div className="flex flex-col relative h-full max-w-full">
+      <div className="flex flex-col relative h-full w-full">
           <TestHeader />
 
           <div className="h-5/6 flex flex-col space-y-4 p-3 overflow-y-auto"

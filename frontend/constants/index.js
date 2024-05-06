@@ -1,14 +1,14 @@
 export const sidebarLinks = [
-    {
-        imgURL: "/assets/home.svg",
-        route: "/",
-        label: "Home",
-    },
-    {
-        imgURL: "/assets/events.svg",
-        route: "/tests",
-        label: "Tests",
-    },
+    // {
+    //     imgURL: "/assets/home.svg",
+    //     route: "/",
+    //     label: "Home",
+    // },
+    // {
+    //     imgURL: "/assets/events.svg",
+    //     route: "/tests",
+    //     label: "Tests",
+    // },
     {
         imgURL:"/assets/book.svg",
         route: "/courses",
@@ -24,11 +24,11 @@ export const sidebarLinks = [
         route: "/learn",
         label: "Learn AI",
     },
-    {
-        imgURL: "/assets/create.svg",
-        route: "/create",
-        label: "Create",
-    },
+    // {
+    //     imgURL: "/assets/create.svg",
+    //     route: "/create",
+    //     label: "Create",
+    // },
     // {
     //     imgURL: "/assets/inbox.svg",
     //     route: "/inbox",

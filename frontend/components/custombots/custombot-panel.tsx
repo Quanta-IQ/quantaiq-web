@@ -36,6 +36,7 @@ import TemporaryPDF from "@/components/class/teacher/pdf-frame-temp"
 import Markdown from 'react-markdown'
 import { Separator } from "@/components/ui/separator";
 import CreateBot from "./create-custombot"
+import EditBot from "./edit-custombot"
 
 
 export default function CustomBotPanel(
@@ -56,11 +57,13 @@ export default function CustomBotPanel(
         console.log(botId)
     }
 
+    
+
     return (<div className="relative h-screen">
         <ResizablePanelGroup direction="horizontal" className="max-w-full h-screen">
             <ResizablePanel className=" " defaultSize={15}  > 
             <div className="w-full h-full pl-4 pr-4">
-                <div className="pt-8 h-full">
+                <div className="pt-4 h-full">
                     <p className="text-2xl font-extrabold">
                         Custom Bots
                     </p>
@@ -92,9 +95,11 @@ export default function CustomBotPanel(
             <ResizableHandle withHandle  />
             <ResizablePanel className=" " defaultSize={65}>
                 <div className="w-full justify-center items-center">
-                    {courseInfo && userConvex && <CreateBot courseID={courseInfo._id} userID={userConvex._id}/>}
+                    {courseInfo && userConvex && !selectedBot &&  <CreateBot courseID={courseInfo._id} userID={userConvex._id}/>}
+                    {courseInfo && userConvex && selectedBot &&  <EditBot courseID={courseInfo._id} userID={userConvex._id} botId={botList?.find((bot: any) => bot._id === selectedBot)} />}
                 </div>
             </ResizablePanel>
+
             <ResizableHandle withHandle  />
             {/* <ResizablePanel className="" defaultSize={20} >
             </ResizablePanel> */}

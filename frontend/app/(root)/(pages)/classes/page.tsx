@@ -31,7 +31,7 @@ export default function Home() {
     <div className="mb-4 mt-4 ml-8 mr-4">
       <div className="flex flex-row justify-between">
         <div>
-          <h1 className="text-4xl font-bold">Classes</h1>
+          <h1 className="text-2xl font-bold">Classes</h1>
         </div>
         <div className="flex space-x-2 items-center pt-2">
           <Dialog>
@@ -75,7 +75,7 @@ export default function Home() {
       <div className="mt-3">
         <h1 className="text-2xl font-bold">Owned Classes</h1>
         <ClassAdminFeed />
-        <h1 className="text-2xl font-bold">Joined Classes</h1>
+        <h1 className="text-2xl font-bold mt-4">Joined Classes</h1>
         <ClassFeed/>
       </div>
 

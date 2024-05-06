@@ -29,7 +29,7 @@ export default function Page({params} : {params: {slug: string}}) {
       <div className="h-screen pl-4">
      
           <div className="pl-4 pt-4">
-            <h1 className="text-4xl font-bold">Classes</h1>
+            <h1 className="text-2xl font-bold">Classes</h1>
             <p className="text-gray-500 "> Classes using the current course</p>
           </div>
 

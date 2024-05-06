@@ -102,14 +102,12 @@ export default function LessonFeed(
                                 Add Lesson
                             </Button>
                         </Link>
-                        <Button variant="outline">
-                            {/* Make Functional Delete Button */}
+                        {/* <Button variant="outline">
                             Re-arrange
                         </Button>
                         <Button variant="outline">
-                            {/* Make Functional Delete Button */}
                             Print
-                        </Button>
+                        </Button> */}
                     </div>
                 </CardHeader>
                 <div className="flex flex-col gap-4 pb-16">

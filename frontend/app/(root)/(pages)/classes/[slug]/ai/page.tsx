@@ -11,14 +11,16 @@ import { usePathname, useSearchParams } from "next/navigation";
 import BotsFeed from "@/components/custombots/feed";
 import {Separator} from "@/components/ui/separator"
 
-export default function Page() {
- 
-    // let classInfo = useQuery(api.functions.classes.getClassByClassID, {
-    //     ClassID: params.slug as Id<"Classes">
-    // }) 
+export default function Page({params} : {params: {slug: string}}) {
+  let { setParams}:any = SidebarContext();
+  setParams(params.slug);
 
-    let botList = useQuery(api.functions.custombots.getPublicBots , {
-       
+    let classInfo = useQuery(api.functions.classes.getClassByClassID, {
+        ClassID: params.slug as Id<"Classes">
+    }) 
+
+    let botList = useQuery(api.functions.custombots.getBotsByCourseID , {
+        CourseID: classInfo?.CourseID
     })
     const pathname = usePathname();
     const searchParams = useSearchParams();
@@ -30,7 +32,25 @@ export default function Page() {
     
   
     
-    return(
+    if(selectedBot ) return (
+      <>
+     
+      <div className="h-screen ">
+     
+        <div className="pl-4  ">
+          {classInfo && <AITeacherPanel botId={selectedBot} classId={classInfo._id} />}
+          {!classInfo && <div className="font-extrabold items-center w-full h-full justify-center text-center">
+              <p>
+              Please Find a Valid Class
+              </p>
+            </div>}
+
+        </div>
+      </div>
+        
+      </>
+    );
+    else return(
         <>
         <div className="h-screen pl-4 ">
             <div>
@@ -39,7 +59,7 @@ export default function Page() {
             </div>
             <Separator />
             <div className="ml-4">
-              <BotsFeed botList={botList} />
+            <BotsFeed botList={botList} classID={classInfo?._id}/>
 
             </div>
         </div>

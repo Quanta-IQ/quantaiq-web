@@ -53,15 +53,18 @@ function LeftSidebar() {
         setIsHidden(!isHidden);
         setCollapsed(!isHidden);
     }
-    let courseInfo = useQuery(api.functions.courses.getCourseByCourseID, {
+    const courseInfo = useQuery(api.functions.courses.getCourseByCourseID, {
         CourseID: params as Id<"Courses">
       }) 
 
 
-    let classInfo = useQuery(api.functions.classes.getClassByClassID, {
+    const classInfo = useQuery(api.functions.classes.getClassByClassID, {
       ClassID: params as Id<"Classes">
     }) 
 
+    const botInfo = useQuery(api.functions.custombots.getCustomBot, {
+        id: params as Id<"CustomBots">
+      }) 
     
 
     useEffect(() => {
@@ -112,7 +115,7 @@ function LeftSidebar() {
             }
             
             {
-                (classInfo?.Name && !isHidden) &&
+                (classInfo?.Name && !botInfo?.Model &&  !isHidden) &&
                 <div className="  flex w-full flex-1 flex-col gap-3 px-3 ">
                     <div className="flex flex-col  pb-2 pl-4">
                     <h1 className="text-2xl font-bold text-black dark:text-white">{classInfo.Name}</h1>
@@ -125,7 +128,7 @@ function LeftSidebar() {
                 
             }
             {
-                (classInfo?.Name && isHidden) &&
+                (classInfo?.Name && !botInfo?.Model && isHidden) &&
                 <div className="  flex w-full flex-1 flex-col gap-3  ">
                 <div className="px-4">
                 <ClassHead classID={classInfo._id}/>
@@ -136,7 +139,7 @@ function LeftSidebar() {
            
 
 
-             {!courseInfo && !classInfo && <div className="flex w-full flex-1 flex-col gap-3 px-3 ">
+             {!courseInfo?.CourseName && !classInfo?.ImageURL && <div className="flex w-full flex-1 flex-col gap-3 px-3 ">
                 {sidebarLinks.map((link) => {
                     const isActive = 
                     (pathname?.startsWith(link.route) && link.route.length > 1) ||

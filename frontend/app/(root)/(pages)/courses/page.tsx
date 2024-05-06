@@ -57,11 +57,11 @@ export default function Home() {
           </div>
         </div>
         
-        <div className="mt-3 mb-3"> 
+        {/* <div className="mt-3 mb-3"> 
           <Suspense fallback={<div>Loading...</div>}>
             <Search  placeholder="TODO: Make this functional"  />
           </Suspense>
-        </div>
+        </div> */}
         <div className="mt-3">
             <CourseFeed />
         </div>

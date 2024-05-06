@@ -9,6 +9,7 @@ import { useQuery, useMutation } from "convex/react";
 import { api } from "@/convex/_generated/api";
 import { toast } from "@/components/ui/use-toast";
 import { Button } from "@/components/ui/button";
+import { Progress } from "@/components/ui/progress"
 
 interface CreatorSession {
     creationId: string;
@@ -23,7 +24,9 @@ export default function TestCreateRender({ creationId }: CreatorSession) {
     const [editorInitialized, setEditorInitialized] = useState(false);
     const [content, setContent] = useState("");
     const [format, setFormat] = useState(false);
-
+    const [done, setDone] = useState(false);
+    const [progress, setProgress]=useState(5);
+    
     useEffect(() => {
         if (isScrolled) {
             return;
@@ -35,9 +38,34 @@ export default function TestCreateRender({ creationId }: CreatorSession) {
                 behavior: "smooth",
             });
         }, 5);
-    }, [test, isScrolled]);
+
+        let interval: NodeJS.Timeout | null = null;
+        if (test) {
+            interval = setInterval(() => {
+                setProgress((prevProgress) => prevProgress + 0.5);
+            }, 100);
+            if(test.TestContent != ""){
+                setProgress(100);
+                setTimeout(() => {
+                    setDone(true);
+                }, 1000);
+                return
+            }
+        }
+        return () => {
+            if (interval) {
+                clearInterval(interval);
+            }
+        };
+
+    }, [test, isScrolled,editorInitialized]);
+
 
     useEffect(() => {
+        if(test?.TestContent == ""){
+            setContent("Processing Test...")
+
+        }
         if (test?.TestContent && !editorInitialized) {
             setContent(test.TestContent);
             setEditorInitialized(true);  // Marks the editor as initialized
@@ -46,25 +74,35 @@ export default function TestCreateRender({ creationId }: CreatorSession) {
         }
     }, [test?.TestContent]);
 
+    
+
     return (
         <div className="flex flex-col relative h-full max-w-full ">
             <div
-                className="flex-grow overflow-scroll gap-2 flex flex-col mx-2 pb-2 rounded-lg"
+                className="flex-grow  gap-2 flex flex-col mx-2 pb-2 rounded-lg"
                 ref={listRef}
                 onWheel={() => {
                     setScrolled(true);
                 }}
             >
                 <div
-                    className="h-5/6 flex flex-col space-y-4 p-3 overflow-y-auto"
+                    className="h-full w-full flex flex-col space-y-4 p-3 "
                 >
-                    <div className="flex justify-end p 2">
+                    <div className="flex justify-end p-2 pt-0">
+                    <p className="text-2xl font-semibold leading-none tracking-tight m-2 justify-start w-full">Editor</p>
+                    
+                    
+                            
+                 
                     <Button className="bg-primary hover:bg-secondary text-white font-bold py-1 px-2 rounded"
                         onClick={() => setFormat(true)}>
-                        Format Output
+                        Edit Test
                     </Button>
-                </div>
+                    </div>
+                    {test && !done && <Progress value={progress} className="m-3"  />}
+                    
                     <Editor content={content} format={format} />
+                    
                 </div>
             </div>
         </div>

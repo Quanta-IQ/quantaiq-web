@@ -121,16 +121,20 @@ export const createTest = internalAction({
                 ],
             });
             let text = "";
+
+            // REMOVE BUFFER DURING DEMO!!!
+            const updateBuffer = [];
+            const bufferThreshold = 30000; // number of choices to buffer
+
             for await (const { choices } of stream) {
-                const replyDelta = choices[0].delta.content;
-                if (typeof replyDelta === "string" && replyDelta.length > 0) {
-                    text += replyDelta;
-                    await ctx.runMutation(internal.serve.testcreator.updateBotMessage, {
-                        messageId,
-                        text,
-                    });
-                }
+                updateBuffer.push(choices[0].delta.content);
             }
+
+            text += updateBuffer.join('');
+            await ctx.runMutation(internal.serve.testcreator.updateBotMessage, {
+                messageId,
+                text,
+            });
 
 
         } catch (error: any) {

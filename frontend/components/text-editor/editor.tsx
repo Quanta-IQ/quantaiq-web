@@ -1,11 +1,11 @@
 "use client"; // this registers <Editor> as a Client Component
-import React, { useEffect, useRef } from "react";
-import { BlockNoteView, useCreateBlockNote } from "@blocknote/react";
+import React, { useEffect, useRef, useState } from "react";
+import { BlockNoteView, Theme, useCreateBlockNote } from "@blocknote/react";
 import "@blocknote/core/fonts/inter.css";
 import "@blocknote/react/style.css";
 import { BlockNoteEditor } from "@blocknote/core";
 import { toast } from "../ui/use-toast";
-
+import { useTheme } from "next-themes"
 interface EditorProps {
   content: string; 
   format: boolean;
@@ -20,11 +20,16 @@ function isValidMessage(message: any) {
 }
 
 export default function Editor({content, format}: EditorProps) {
+  //Current theme
+  const {theme} = useTheme();
+
+  console.log(theme)
+  
   // Creates a new editor instance.
   const editor = useCreateBlockNote();
-
   const firstRender = useRef(true)
   console.log("Format received in Editor: ", format);
+
 
   const multiBlocks = async (messages: string[]) => {
     const deletableBlocks = editor.document.filter(block => block.content !== undefined && isDeletableContent(block.content));
@@ -126,7 +131,7 @@ export default function Editor({content, format}: EditorProps) {
         updateBlocks(content)
       } 
     }
-  }, [content, format]);
+  }, [content, format, insertBlock, multiBlocks, updateBlocks]);
 
-  return <BlockNoteView editor={editor} />;
+  return <BlockNoteView editor={editor} theme={theme as Theme}  />;
 }

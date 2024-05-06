@@ -119,6 +119,27 @@ export default defineSchema({
         Text: v.string(),
         LessonID: v.id("Lessons")
       }).index("bySessionId", ["SessionID"]),
+    //Lesson Chat Messages
+    CustomBotMessages: defineTable({
+        IsViewer: v.boolean(),
+        SessionID: v.string(),
+        Text: v.string(),
+        BotID: v.id("CustomBots"),
+        Metadata: v.optional(v.any())
+      }).index("bySessionId", ["SessionID"]),
+
+    //Custom bots
+    CustomBots: defineTable({
+        CreatorID: v.id("Users"),
+        Name: v.string(),
+        Type: v.string(),
+        Model: v.string(),
+        CourseID: v.optional(v.id("Courses")),
+        Lessons: v.optional(v.array(v.id("Lessons"))),
+        Instructions: v.string(),
+        Config: v.any(),
+    }).index("by_CourseID", ["CourseID"])
+    .index("by_CreatorID", ["CreatorID"]),
 
     //Class (Classroom for a course)
     Classes: defineTable({
@@ -166,7 +187,7 @@ export default defineSchema({
     .index("byCourseID", ["CourseID"])
     .index("byMetadataCreationID", ["Metadata.CreationID"]),
     
-    // interviewer agent
+    // Interviewer Agent
     InterviewerMessages: defineTable({
         IsViewer: v.boolean(),
         SessionID: v.string(),

@@ -1,0 +1,37 @@
+export type AIConfig = {
+    type: "learning-assistant" | "teaching-assistant" | "grading-assistant";
+    model:
+      | "gpt-4-turbo"
+      | "gpt-3.5-turbo-0125"
+      | "dolphin-2.5-mixtral-8x7b"
+      | "dbrix-instruct"
+      | "deepseek-coder-33b-instruct"
+      | "gemma-2b-it"
+      | "gemma-7b-it"
+      | "llama-3-8b-chat"
+      | "llama-3-70b-chat"
+      | "mistral-7b-instruct"
+      | "mistral-7b-instruct-v0.2"
+      | "mixtral-8x7b-instruct-v0.1"
+      | "mixtral-8x22b-instruct-v0.1"
+      | "nous-capybara-v1p9"
+      | "nous-hermes-2-mistral-7b-dpo"
+      | "nous-hermes-2-mixtral-8x7b-dpo"
+      | "nous-hermes-2-mixtral-8x7b-sft"
+      | "openchat-3.5-1210"
+      | "openorca-mistral-7b-8k"
+      | "qwen-1.5-0.5b-chat"
+      | "qwen-1.5-1.8b-chat"
+      | "qwen-1.5-4b-chat"
+      | "qwen-1.5-7b-chat"
+      | "qwen-1.5-14b-chat"
+      | "qwen-1.5-32b-chat"
+      | "qwen-1.5-72b-chat"
+      | "snorkel-mistral-pair"
+      | "snorkel-mistral-pairrm-dpo"
+      | "teknium-openhermes-2-mistral-7b"
+      | "teknium-openhermes-2p5-mistral-7b"
+      | "together-redpajama-incite-chat-3b"
+      | "together-stripedhyena-nous-7b";
+    
+  };

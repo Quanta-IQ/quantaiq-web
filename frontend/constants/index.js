@@ -67,9 +67,28 @@ export const features = [
 ];
 
 
+//assistant types
+export const assistantTypes = [
+  "teaching-assistant",
+  "learning-assistant",
+]
+
+
 //Models
 
 export const models = [
+    {
+      organization: "open-ai",
+      modelName: "gpt-4-turbo",
+      modelString: "gpt-4-turbo",
+      contextLength:128000
+    },
+    {
+      organization: "open-ai",
+      modelName: "gpt-3.5-turbo-0125",
+      modelString: "gpt-3.5-turbo-0125",
+      contextLength:16385
+    },
     {
       organization: "cognitivecomputations",
       modelName: "Dolphin 2.5 Mixtral 8x7b",

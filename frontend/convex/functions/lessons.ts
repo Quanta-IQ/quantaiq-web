@@ -158,6 +158,7 @@ export const getMultiLessonByID = query({
         selectedLessonIDs: v.optional(v.array(v.string()))
     },
     handler: async (ctx, args) => {
+        
         if (!args.selectedLessonIDs || args.selectedLessonIDs.length === 0) {
             return null;        
         }
@@ -173,4 +174,5 @@ export const getMultiLessonByID = query({
         }
     }
 });
+
 

@@ -47,6 +47,13 @@ export default function ClassHead(
             
           </Button>
           </Link>
+          <Link href={`/classes/${classID}/ai`}>
+          <Button className="w-full" variant={pathname.includes('/ai') ? 'default' : 'secondary'}>
+            <Bot className="h-4 w-4 " />
+            {!collapsed && <p>AI</p>}
+            
+          </Button>
+          </Link>
           <Link href={`/classes/${classID}/edit`}>
           <Button className="w-full" variant={pathname.includes('/edit') ? 'default' : 'secondary'}>
             <Settings className="h-4 w-4 " />

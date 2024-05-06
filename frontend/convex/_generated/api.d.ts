@@ -19,6 +19,7 @@ import type * as ai_together from "../ai/together.js";
 import type * as crons from "../crons.js";
 import type * as functions_classes from "../functions/classes.js";
 import type * as functions_courses from "../functions/courses.js";
+import type * as functions_custombots from "../functions/custombots.js";
 import type * as functions_lessons from "../functions/lessons.js";
 import type * as functions_students from "../functions/students.js";
 import type * as functions_tests from "../functions/tests.js";
@@ -27,12 +28,20 @@ import type * as helpers from "../helpers.js";
 import type * as ingest_document from "../ingest/document.js";
 import type * as ingest_embed from "../ingest/embed.js";
 import type * as ingest_load from "../ingest/load.js";
+
 import type * as messages_formater from "../messages/formater.js";
+
+import type * as messages_custombot from "../messages/custombot.js";
+
 import type * as messages_interviewer from "../messages/interviewer.js";
 import type * as messages_lessonbot from "../messages/lessonbot.js";
 import type * as messages_teacherbot from "../messages/teacherbot.js";
 import type * as messages_testcreator from "../messages/testcreator.js";
+
 import type * as serve_formater from "../serve/formater.js";
+
+import type * as serve_custombot from "../serve/custombot.js";
+
 import type * as serve_interviewer from "../serve/interviewer.js";
 import type * as serve_lessonbot from "../serve/lessonbot.js";
 import type * as serve_teacherbot from "../serve/teacherbot.js";
@@ -52,6 +61,7 @@ declare const fullApi: ApiFromModules<{
   crons: typeof crons;
   "functions/classes": typeof functions_classes;
   "functions/courses": typeof functions_courses;
+  "functions/custombots": typeof functions_custombots;
   "functions/lessons": typeof functions_lessons;
   "functions/students": typeof functions_students;
   "functions/tests": typeof functions_tests;
@@ -60,12 +70,20 @@ declare const fullApi: ApiFromModules<{
   "ingest/document": typeof ingest_document;
   "ingest/embed": typeof ingest_embed;
   "ingest/load": typeof ingest_load;
+
   "messages/formater": typeof messages_formater;
+
+  "messages/custombot": typeof messages_custombot;
+
   "messages/interviewer": typeof messages_interviewer;
   "messages/lessonbot": typeof messages_lessonbot;
   "messages/teacherbot": typeof messages_teacherbot;
   "messages/testcreator": typeof messages_testcreator;
+
   "serve/formater": typeof serve_formater;
+
+  "serve/custombot": typeof serve_custombot;
+
   "serve/interviewer": typeof serve_interviewer;
   "serve/lessonbot": typeof serve_lessonbot;
   "serve/teacherbot": typeof serve_teacherbot;

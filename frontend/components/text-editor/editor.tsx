@@ -5,10 +5,10 @@ import "@blocknote/core/fonts/inter.css";
 import "@blocknote/react/style.css";
 import { BlockNoteEditor } from "@blocknote/core";
 import { toast } from "../ui/use-toast";
-import { useTheme } from "next-themes"
 interface EditorProps {
   content: string; 
   format: boolean;
+  theme: Theme;
 }
 
 function isDeletableContent(content:any) {
@@ -19,11 +19,8 @@ function isValidMessage(message: any) {
   return message && message.trim().length > 0; // Add more conditions as needed
 }
 
-export default function Editor({content, format}: EditorProps) {
-  //Current theme
-  const {theme} = useTheme();
-
-  console.log(theme)
+export default function Editor({content, format, theme}: EditorProps) {
+  
   
   // Creates a new editor instance.
   const editor = useCreateBlockNote();
@@ -133,5 +130,5 @@ export default function Editor({content, format}: EditorProps) {
     }
   }, [content, format, insertBlock, multiBlocks, updateBlocks]);
 
-  return <BlockNoteView editor={editor} theme={theme as Theme}  />;
+  return <BlockNoteView editor={editor} theme={theme}  />;
 }

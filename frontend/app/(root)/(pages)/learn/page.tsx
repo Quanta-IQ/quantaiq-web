@@ -30,10 +30,9 @@ export default function Page() {
         <>
         <div className="h-screen pl-4 ">
             <div>
-                <h1 className="text-2xl font-bold mb-4 mt-4 ml-4">Bots</h1>
+                <h1 className="text-4xl font-bold mb-4 mt-4 ml-4">Bots</h1>
                 <p className="text-light-100 font-semibold mb-4 mt-4 ml-4"> Chat with a teaching assistant, learning assistant, or any type of bot to help your learning </p>
             </div>
-            <Separator />
             <div className="ml-4">
               <BotsFeed botList={botList} />
 

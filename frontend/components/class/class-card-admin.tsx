@@ -34,11 +34,11 @@ export default function ClassCardAdmin(
                             View Class
                         </Button>
                     </Link>
-                    <Link href={`/classes/${classID}/edit`}>
+                    {/* <Link href={`/classes/${classID}/edit`}>
                         <Button variant="secondary">
                             Edit Class
                         </Button>
-                    </Link>
+                    </Link> */}
                 </div>
             </div>
         </Card>

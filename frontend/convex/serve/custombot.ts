@@ -141,7 +141,7 @@ export const answer = internalAction({
 
       // REMOVE BUFFER DURING DEMO!!!
       const updateBuffer = [];
-      const bufferThreshold = 10; // number of choices to buffer
+      const bufferThreshold = 5; // number of choices to buffer
 
       for await (const { choices } of stream) {
         updateBuffer.push(choices[0].delta.content);

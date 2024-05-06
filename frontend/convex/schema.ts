@@ -131,15 +131,17 @@ export default defineSchema({
     //Custom bots
     CustomBots: defineTable({
         CreatorID: v.id("Users"),
-        Name: v.string(),
+    Name: v.string(),
         Type: v.string(),
         Model: v.string(),
         CourseID: v.optional(v.id("Courses")),
         Lessons: v.optional(v.array(v.id("Lessons"))),
         Instructions: v.string(),
         Config: v.any(),
+        Public: v.boolean(),
     }).index("by_CourseID", ["CourseID"])
-    .index("by_CreatorID", ["CreatorID"]),
+    .index("by_CreatorID", ["CreatorID"])
+    .index("by_Public", ["Public"]),
 
     //Class (Classroom for a course)
     Classes: defineTable({

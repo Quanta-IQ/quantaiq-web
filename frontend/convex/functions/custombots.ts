@@ -13,6 +13,7 @@ export const createCustomBot = mutation({
     Lessons: v.optional(v.array(v.id("Lessons"))),
     Instructions: v.string(),
     Config: v.any(),
+    Public: v.boolean(),
   },
   handler: async (ctx, args) => {
     return await ctx.db.insert("CustomBots", args);
@@ -52,6 +53,7 @@ export const updateBot = mutation({
             Lessons: v.optional(v.array(v.id("Lessons"))),
             Instructions: v.string(),
             Config: v.any(),
+            Public: v.boolean()
         })
     },
     handler: async (ctx, args) => {
@@ -125,3 +127,25 @@ export const getBotsByUser = query({
 
     }
 });
+
+
+//get all public bots
+export const getPublicBots = query({
+   
+    handler: async (ctx ) => {
+        try{
+            const bots = await ctx.db
+                .query("CustomBots")
+                .withIndex("by_Public", q => q.eq("Public", true))
+                .collect();
+            return bots;
+            }
+    
+            catch(e){
+                console.error(e);
+                return null;
+            }
+
+    }
+});
+

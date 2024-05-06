@@ -7,7 +7,7 @@ import Link from "next/link"
 
 
 interface Bots {
-    classID?: string,
+    classID?: string | null,
     botId: string
     Name: string
     Instructions: string
@@ -53,7 +53,7 @@ export default function BotCard(
                     <p className="text-gray-500 overflow-hidden text-ellipsis ">{Instructions}</p>
                 </div>
                 <div className="flex items-center pt-4 gap-4">
-                    <Link href={`/ai/${botId}`}>
+                    <Link href={`/learn/${botId}`}>
                         <Button variant="secondary">
                             Chat
                         </Button>

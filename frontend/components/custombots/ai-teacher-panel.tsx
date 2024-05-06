@@ -70,12 +70,10 @@ export default function AITeacherPanel(
     
     console.log(userSessions);
 
-    const handleNewSession = async (lessonId: string) => {
+    const handleNewSession = async () => {
         console.log("Triggered New Session with New Lesson")
         const sessionId = crypto.randomUUID()
         
-        // Do something with the selected lesson ID
-        console.log("Selected Lesson:", lessonId);
         // Create new Session
         if (userConvex?._id) {
             const newSession = await createSession({
@@ -154,7 +152,7 @@ export default function AITeacherPanel(
                         </p></>}
                         <ScrollArea className="max-h-36" >
                                 {lessons?.map((lesson: any) => (
-                                    <div className={`flex items-center space-x-2`}>
+                                    <div className={`flex items-center space-x-2`} key={lesson._id}>
                                         {lesson.Name}
                                     </div>
                                 ))}
@@ -172,7 +170,7 @@ export default function AITeacherPanel(
                         <p className="text-xl font-extrabold">
                             Bot Sessions
                         </p>
-                        <Button className="mt-2" onClick={handleNewSession}>
+                        <Button className="mt-2" onClick={() => handleNewSession()}>
                             New Session
                         </Button>
                         </div>
@@ -180,7 +178,7 @@ export default function AITeacherPanel(
                         <ScrollArea className="h-full pb-8" >
                             <div className=" flex flex-col space-y-3 pr-2 pt-4 w-full">
                                 {filteredSessions?.map((Session: any) => (
-                                    <Link key={Session._id} href={`/classes/${classId}/ai?session=${Session.sessionID}&bot=${botId}`}>
+                                    <Link key={Session._id} href={classId ? `/classes/${classId}/ai?session=${Session.sessionID}&bot=${botId}` : `/learn/${botId}?session=${Session.sessionID}`}> 
                                         <div className={`w-full flex flex-row items-center space-x-2 ${Session.SessionID === session ? 'font-extrabold' : ''}`} onClick={() => handleSessionChange(Session.SessionID, 
                                             Session.Metadata.lessonId
                                         )}>
@@ -222,7 +220,7 @@ export default function AITeacherPanel(
             <ResizableHandle withHandle  />
                 
                 <ResizablePanel defaultSize={85}>
-                    {initiate && <Chat key={session} firstMessage={firstMessage} botInfo={botInfo} sessionID={session} userID={userConvex?._id as string}/>}
+                    {initiate && <Chat key={session} lessonInfo="" firstMessage={firstMessage} botInfo={botInfo} sessionID={session} userID={userConvex?._id as string}/>}
                     {!initiate && <div className="w-full h-full flex items-center justify-center">
                                 <p className="text-2xl font-extrabold">
                                     Start A Session

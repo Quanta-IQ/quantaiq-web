@@ -55,17 +55,37 @@ export default function BotsFeed(
         <>
             
             <ScrollArea className="h-screen w-full ">
-                <div className="mt-3 flex flex-wrap gap-4">
+                
                     {botList?.map((bot: any) => {
-                        return <BotCard 
+                        return <div className="mt-3 flex flex-wrap gap-4" key={bot._id}><BotCard 
                         classID={classID}
                         botId={bot._id}
                         Name={bot.Name}
                         Instructions={bot.Instructions}
-                        />
+                        /></div>
                     })}
 
-                </div>
+                
+
+
+            </ScrollArea>
+
+        </>
+    )
+    if(!classID) return (
+        <>
+            
+            <ScrollArea className="h-screen w-full ">
+                
+                    {botList?.map((bot: any) => {
+                        return <div className="mt-3 flex flex-wrap gap-4" key={bot._id}><BotCard 
+                        botId={bot._id}
+                        Name={bot.Name}
+                        Instructions={bot.Instructions}
+                        /></div>
+                    })}
+
+                
 
 
             </ScrollArea>

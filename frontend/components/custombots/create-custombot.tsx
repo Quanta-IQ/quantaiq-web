@@ -47,7 +47,8 @@ const formSchema = z.object({
     Instructions: z.string().min(3).max(1000),
     Type: z.string().min(3),
     Model: z.string().min(3),
-    LessonSelection: z.array(z.string()).min(1, "Please select at least one lesson.")
+    LessonSelection: z.array(z.string()).min(1, "Please select at least one lesson."),
+    Public: z.string()
 });
 
 
@@ -79,7 +80,8 @@ export default function CreateBot(
             Name: "",
             Instructions: "",
             Type: "learning-assistant",
-            Model: "meta-llama/Llama-3-70b-chat-hf"
+            Model: "meta-llama/Llama-3-70b-chat-hf",
+            Public: "true"
         }
     });
 
@@ -97,6 +99,7 @@ export default function CreateBot(
               Lessons: lessonIds,
               Instructions: values.Instructions,
               Config: "null",
+              Public: values.Public === "true"
             })
             toast({
                         title: "AI Bot Created!",
@@ -235,6 +238,28 @@ export default function CreateBot(
                                         </ScrollArea>
                                         <FormMessage />
                                     </FormItem>
+                                )}
+                            />
+                            <FormField
+                                control={form.control}
+                                name="Public"
+                                render={({ field }) => (
+                                <FormItem>
+                                <FormLabel>Visibility</FormLabel>
+                                <Select onValueChange={field.onChange} defaultValue={field.value.toString()}>
+                                    <FormControl>
+                                        <SelectTrigger>
+                                            <SelectValue placeholder="Select your visibility" />
+                                        </SelectTrigger>
+                                    </FormControl>
+                                    <SelectContent>
+                                        <SelectItem value="true">Public</SelectItem>
+                                        <SelectItem value="false">Private</SelectItem>
+                                    </SelectContent>
+                                </Select>
+                
+                                <FormMessage />
+                                </FormItem>
                                 )}
                             />
 

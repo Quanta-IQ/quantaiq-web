@@ -43,7 +43,7 @@ const formSchema = z.object({
   Username: z.string().min(3).max(20),
   FirstName: z.string().min(3).max(20),
   LastName: z.string().min(3).max(20),
-  AvatarURL: z.string().url(),
+  AvatarURL: z.string(),
   Role: z.enum(["Teacher", "Student"]),
   Bio: z.string().max(200).optional(),
 })
@@ -92,7 +92,7 @@ export default function OnboardingForm({user} : Props) {
                 Role: values.Role,
                 Onboarded: false,
                 Bio: values.Bio,
-                AvatarURL:  avatarUrl as string,
+                AvatarURL: ( avatarUrl as string) || defaultAvatar,
               }
               });
           

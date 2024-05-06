@@ -91,17 +91,12 @@ export default function TestCreateRender({ creationId }: CreatorSession) {
 
     return (
         <div className="flex flex-col relative h-full max-w-full ">
-            <div
-                className="flex-grow  gap-2 flex flex-col mx-2 pb-2 rounded-lg"
-                ref={listRef}
-                onWheel={() => {
-                    setScrolled(true);
-                }}
-            >
+            
                 <div
-                    className="h-full w-full flex flex-col space-y-4 p-3 overflow-y-hidden overflow-auto"
+                    className="h-full w-full flex flex-col space-y-4 p-3 "
                 >
                     <div className="flex justify-end p-2 pt-0">
+                       
                     <p className="text-2xl font-semibold leading-none tracking-tight m-2 justify-start w-full">Editor</p>
                     
                     
@@ -114,6 +109,13 @@ export default function TestCreateRender({ creationId }: CreatorSession) {
                     </div>
                     
                     {test && !done && <Progress value={progress} className="m-3 overflow-auto w-full"  />}
+                    <div
+                className="flex-grow w-full  gap-2 flex flex-col mx-2 pb-2 rounded-lg overflow-y-scroll"
+                ref={listRef}
+                onWheel={() => {
+                    setScrolled(true);
+                }}
+            >
                     <Editor content={content} format={format} theme={blockTheme as Theme} />
                     
                 </div>

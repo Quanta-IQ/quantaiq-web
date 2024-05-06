@@ -27,7 +27,6 @@ export default function Editor({content, format, theme}: EditorProps) {
   const firstRender = useRef(true)
   console.log("Format received in Editor: ", format);
 
-
   const multiBlocks = async (messages: string[]) => {
     const deletableBlocks = editor.document.filter(block => block.content !== undefined && isDeletableContent(block.content));
     console.log(deletableBlocks)

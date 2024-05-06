@@ -11,9 +11,14 @@ import { useSearchParams } from 'next/navigation'
 import EditLesson from "../syllabus/edit-lesson";
 import { AuthContext } from "@/providers/AuthProvider";
 
-export default function TestCard(
-    {courseID} : {courseID: string}
-){
+interface TestCardProps {
+    courseID: string;
+    creationID: string;
+    onFormSubmit: (newCreationID: string) => void;
+}
+
+export default function TestCard({ courseID, creationID, onFormSubmit}: TestCardProps) {
+
     const searchParams = useSearchParams()
     const { user }: any = AuthContext();
 
@@ -24,8 +29,8 @@ export default function TestCard(
     return (
         <>
             <div className="grid grid-cols-1 gap-2">
-                {courseInfo &&  <CreateTest user={{ user_id: user.user?.uid }} courseID={courseID} courseName={courseInfo!.CourseName}/>}
+                {courseInfo && <CreateTest user={{ user_id: user.user?.uid }} courseID={courseID} courseName={courseInfo!.CourseName} creationID={creationID} onFormSubmit={onFormSubmit}/>}
             </div>
         </>
-    )
+    );
 }

@@ -49,13 +49,15 @@ interface FormData {
 interface Props {
     courseID: string;
     courseName: string;
+    creationID: string;
     user: {
         user_id: string,
     };
+    onFormSubmit: (newCreationID: string) => void; // Callback function to update the creationID
 }
 
 export default function CreateTest(
-    { courseID, courseName, user}: Props
+    { courseID, courseName, creationID, user, onFormSubmit}: Props
 
 ) {
     const [processState, setProcessState] = useState<string | null>("Create Test");
@@ -65,12 +67,10 @@ export default function CreateTest(
     const [processingFiles, setProcessingFiles] = useState(false);
     //List of File URLs
     const [files, setFiles] = useState<string[]>([]);
-    const createTest = useMutation(api.functions.tests.createTest)
     const courseLessons = useQuery(api.functions.lessons.getLessonsByCourseID, {
         CourseID: courseID as Id<"Courses">
     });
     const sendRequest = useMutation(api.messages.testcreator.send)
-    const createDocument = useMutation(api.functions.lessons.createDocument);
     const userInfo = useQuery(api.functions.users.getUser, {
         userId: user.user_id
     } );
@@ -89,11 +89,13 @@ export default function CreateTest(
     });
 
     const onSubmit = async (values: z.infer<typeof formSchema>) => {
+        const newCreationID = crypto.randomUUID();
         // create test
         try {
             const testContent = await sendRequest({
                 courseId: courseID,
                 creatorId: userInfo!._id,
+                creationId: newCreationID,
                 lessonIds: values.LessonSelection,
                 testName: values.Name,
                 testDescription: values.Description,
@@ -104,6 +106,7 @@ export default function CreateTest(
                         variant: "default"
                     });
             //form.reset();
+            onFormSubmit(newCreationID);
             
         } catch (error) {
             console.error("Error fetching data: ", error);

@@ -117,7 +117,6 @@ export default function CreateBot(
     return (
         <>
             <div className="h-full w-full">
-
            
                 <CardHeader>
                     <CardTitle>

@@ -136,6 +136,11 @@ export const createTest = internalAction({
                 text,
             });
 
+            // const testnoformat = await ctx.runMutation(internal.serve.testcreator.getBotMessage, {
+            //     messageId,
+            // });
+            
+
 
         } catch (error: any) {
             await ctx.runMutation(internal.serve.testcreator.updateBotMessage, {

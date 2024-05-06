@@ -10,12 +10,14 @@ export default function TestModule(
     const session = crypto.randomUUID();
     return (
         <div className="h-screen">
-            <div className="flex flex-col justify-center items-center h-full">
+            <div className="w-1/2 mx-auto flex justify-center items-center h-full">
+                
                     <TestChat
                         key={session}
                         testID={testID as Id<"Tests">}
                         sessionID={session}
                     />
+             
             </div>
         </div>
     );

@@ -54,13 +54,13 @@ export default function ClassHead(
             
           </Button>
           </Link>
-          <Link href={`/classes/${classID}/edit`}>
+          {/* <Link href={`/classes/${classID}/edit`}>
           <Button className="w-full" variant={pathname.includes('/edit') ? 'default' : 'secondary'}>
             <Settings className="h-4 w-4 " />
             {!collapsed && <p>Edit Details</p>}
             
           </Button>
-          </Link>
+          </Link> */}
 
           </div>
         </div>

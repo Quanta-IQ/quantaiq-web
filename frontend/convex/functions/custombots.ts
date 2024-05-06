@@ -20,17 +20,25 @@ export const createCustomBot = mutation({
 });
 
 export const getCustomBot = query({
-    args: { id: v.string() },
-    handler: async (ctx, args) => {
-    try {
-        return await ctx.db.get(args.id as Id<"CustomBots">);
-    } catch (error) {
-        // Handle the error here
-        console.log(error)
-        return null
-    }
+    args: {
+        id: v.optional(v.any()),
     },
-  });
+    handler: async (ctx, args) => {
+        if (!args.id) {
+            return null;
+        } else {
+            try{
+                const botInfo = await ctx.db
+                  .get(args.id as Id<"CustomBots">);
+      
+                return botInfo;}
+                catch{
+                  return null
+                  throw new Error
+                }
+        }
+    },
+});
 
 export const updateBot = mutation({
     args: {
@@ -48,7 +56,7 @@ export const updateBot = mutation({
     },
     handler: async (ctx, args) => {
         const bot = await ctx.db.get(args.BotID as Id<"CustomBots">);
-
+        
         if (!bot) {
             throw new Error("Bot not found");
         }

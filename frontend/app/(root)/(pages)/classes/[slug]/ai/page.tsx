@@ -3,7 +3,7 @@
 
 import React from "react";
 import {SidebarContext} from "@/providers/SidebarProvider";
-import AITeacherPanel from "@/components/class/teacher/ai-teacher-panel";
+import AITeacherPanel from "@/components/custombots/ai-teacher-panel";
 import { useQuery } from "convex/react";
 import { Id } from "@/convex/_generated/dataModel";
 import { api } from "@/convex/_generated/api";
@@ -27,15 +27,18 @@ export default function Page({params} : {params: {slug: string}}) {
 
     //url pathname
     const selectedBot = searchParams.get("bot");
+
+    
+    
   
     
-    if(selectedBot) return (
+    if(selectedBot ) return (
       <>
      
       <div className="h-screen ">
      
         <div className="pl-4  ">
-          {classInfo && <AITeacherPanel classInfo={classInfo} />}
+          {classInfo && <AITeacherPanel botId={selectedBot} classId={classInfo._id} />}
           {!classInfo && <div className="font-extrabold items-center w-full h-full justify-center text-center">
               <p>
               Please Find a Valid Class

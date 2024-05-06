@@ -8,8 +8,13 @@ const CollapseLayout = ({ children } : any) => {
     const {user}:any = AuthContext();
 
     
-    return (
-        <div className={`flex flex-col ${collapsed ?  'pl-16 ' : 'pl-44'} ${user ? 'pl-0' : ''} `}>
+    if (user.isLogin) return (
+        <div className={`flex flex-col ${collapsed ?  'pl-16 ' : 'pl-44'}  `}>
+            {children}
+        </div>
+    );
+    if (!user.isLogin) return (
+        <div className={`flex flex-col `}>
             {children}
         </div>
     );

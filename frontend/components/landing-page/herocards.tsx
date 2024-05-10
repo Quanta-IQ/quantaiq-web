@@ -28,12 +28,12 @@ export const HeroCards = () => {
           </Avatar>
 
           <div className="flex flex-col">
-            <CardTitle className="text-lg">FaceX</CardTitle>
-            <CardDescription>@gitit.ai</CardDescription>
+            <CardTitle className="text-lg">Teacher</CardTitle>
+            <CardDescription>@pips_ai</CardDescription>
           </div>
         </CardHeader>
 
-        <CardContent>I wish I had this when I was trying to learn HTML!</CardContent>
+        <CardContent>Perfect for designing my next course!</CardContent>
       </Card>
 
  
@@ -68,7 +68,7 @@ export const HeroCards = () => {
 
         <CardFooter className="flex">
           <div className="space-y-4">
-            {["4 Team members", "Current Unlimited Documents", "Please Provide Feedback"].map(
+            {["4 Teachers", "10 Course Documents", "Unlimited Students"].map(
               (benefit: string) => (
                 <span
                   key={benefit}
@@ -90,9 +90,9 @@ export const HeroCards = () => {
             <LightBulbIcon />
           </div>
           <div>
-            <CardTitle>Teachers Contact Us</CardTitle>
+            <CardTitle>Need More?</CardTitle>
             <CardDescription className="text-md mt-2">
-              In order to use the full set of features, please contact us so that we can cater to your needs.
+              If you have more than 100 students, please contact us so that we can cater to your needs.
             </CardDescription>
           </div>
         </CardHeader>

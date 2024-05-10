@@ -1,0 +1,1 @@
+Basically a brain dump of code for version 1 prototype of quanta-iq. 

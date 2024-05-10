@@ -9,21 +9,22 @@ export const Hero = () => {
       <div className="text-center lg:text-start space-y-6">
         <main className="text-5xl md:text-6xl font-bold">
           <h1 className="inline">
+            Less {" "}
             <span className="inline bg-gradient-to-r from-[#F596D3]  to-[#D247BF] text-transparent bg-clip-text">
-              Revolutionize
-            </span>{" "}
-            Your Studying Experience with
-          </h1>{" "}
+              Grading
+            </span>
+          </h1>
           {" "}
           <h2 className="inline">
+            More {" "}
             <span className="inline bg-gradient-to-r from-[#61DAFB] via-[#1fc0f1] to-[#03a3d7] text-transparent bg-clip-text">
-              quantaIQ
-            </span>{" "}
+              Guiding
+            </span>
           </h2>
         </main>
 
         <p className="text-xl text-muted-foreground md:w-10/12 mx-auto lg:mx-0">
-          Less Studying, More Learning... Less Grading, More Guiding
+          Improve tests, grading, and curriculum design with AI
         </p>
 
         <div className="space-y-4 md:space-y-0 md:space-x-4">
